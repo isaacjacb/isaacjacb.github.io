@@ -80,12 +80,15 @@ button:disabled{cursor:not-allowed;opacity:1}
 .related{background:var(--sea);padding:24px 28px;margin-top:18px;display:grid;grid-template-columns:150px 1fr;gap:24px;border-left:3px solid var(--cobalt)}
 .related p{font-size:12px;line-height:1.7;margin:0;color:#333e42}
 .related .micro{color:var(--cobalt)}
+.experience-art{margin:22px 0 0;max-width:380px;justify-self:end}
+.experience-art img{display:block;width:100%;height:auto;aspect-ratio:4 / 5;object-fit:cover;border:1px solid #c6c6b8;filter:saturate(.84)}
 /* AI feature: an optional chapter with live interaction, not a splashy visual showcase. */
 .ai-band{background:#e3e8e5;border-bottom:1px solid var(--ink)}
 .ai-wrap{padding:60px 0 67px;display:grid;grid-template-columns:1fr .87fr;gap:10%;align-items:end}
 .ai-wrap h2{font-size:clamp(45px,5.7vw,87px);letter-spacing:-.081em;line-height:.95;margin:20px 0 23px;font-weight:800}
 .ai-wrap h2 span{color:var(--cobalt)}
 .ai-wrap p{font-size:14px;line-height:1.68;margin:0 0 22px;max-width:560px}
+.ai-inline-art{display:block;width:min(100%,520px);height:auto;aspect-ratio:3 / 2;object-fit:cover;margin:30px 0 0;border:1px solid #b6c3c1;filter:saturate(.84)}
 .system-diagram{align-self:stretch;border-top:1px solid #73858a;border-bottom:1px solid #73858a;padding:20px 0;display:flex;flex-direction:column;justify-content:space-between;min-height:275px}
 .system-heading{display:flex;justify-content:space-between;gap:12px;color:#314249}
 .system-items{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:18px 0 0}
@@ -157,7 +160,7 @@ body:has(.modal-overlay:target) .entrance{opacity:0;visibility:hidden;pointer-ev
   :root{--paper:#fff;--white:#fff;--ink:#111;--muted:#4a4a4a;--line:#bbb}
   *{box-shadow:none!important;animation:none!important;transition:none!important}
   body{background:white;color:#111;font-size:10px}
-  .entrance,.ticker,.nav-right,.strap,.ai-band,.footer,.modal-overlay,.role-chips,.related,.selected-work{display:none!important}
+  .entrance,.ticker,.nav-right,.strap,.ai-band,.footer,.modal-overlay,.role-chips,.related,.experience-art,.practice-note,.tooling-artwork,.closing-art,.selected-work{display:none!important}
   .site-width{width:100%;max-width:none}
   .nav{min-height:0;padding:0 0 7px;border-color:#111}
   .nav-home{font-size:13px}
@@ -240,22 +243,16 @@ body:has(.modal-overlay:target) .entrance{opacity:0;visibility:hidden;pointer-ev
 .practice-index>div{border-top:1px solid #8b9089;padding-top:15px}
 .practice-index h3{font-size:clamp(23px,2.3vw,31px);letter-spacing:-.056em;line-height:1.03;margin:12px 0 10px}
 .practice-index p{font-size:12px;line-height:1.68;color:#424b4b;max-width:350px;margin:0}
-.selected-work{border-top:1px solid var(--ink);margin-top:54px;padding-top:22px}
-.selected-work-head{display:flex;justify-content:space-between;gap:24px;align-items:end;margin-bottom:20px}
-.selected-work-head h3{font-size:clamp(30px,4vw,52px);line-height:.95;letter-spacing:-.075em;margin:10px 0 0;font-weight:800}
-.selected-work-head p{max-width:420px;font-size:12px;line-height:1.65;color:var(--muted);margin:0}
-.artifact-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}
-.artifact-card{grid-column:span 6;margin:0;min-width:0}
-.artifact-card:nth-child(1){grid-column:span 7}.artifact-card:nth-child(2){grid-column:span 5}
-.artifact-card:nth-child(3){grid-column:span 5}.artifact-card:nth-child(4){grid-column:span 7}
-.artifact-card img{display:block;width:100%;height:clamp(220px,29vw,390px);object-fit:cover;border:1px solid #c6c6b8;background:#e9e8df;filter:saturate(.88);transition:filter .3s ease,transform .3s ease}
-.artifact-card:nth-child(1) img{object-position:center 48%}.artifact-card:nth-child(2) img{object-position:center 48%}.artifact-card:nth-child(3) img{object-position:center 50%}.artifact-card:nth-child(4) img{object-position:center 50%}
-.artifact-card:hover img{filter:saturate(1);transform:translateY(-2px)}
-.artifact-card figcaption{padding:11px 0 0;display:flex;justify-content:space-between;gap:16px;align-items:baseline;font-size:12px;line-height:1.4}
-.artifact-card figcaption strong{font-weight:750;letter-spacing:-.02em}.artifact-card figcaption span{font:500 9px/1.4 var(--mono);color:var(--muted);text-align:right}
-.artifact-slot{min-height:clamp(220px,29vw,390px);border:1px dashed #9da5a0;background:#f0eee6;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;color:var(--muted)}
-.artifact-slot span{font:600 10px/1.5 var(--mono);letter-spacing:.05em;text-transform:uppercase}
-.artifact-note{font:500 10px/1.55 var(--mono);color:var(--muted);margin:20px 0 0}
+.practice-note{border-top:1px solid var(--ink);margin-top:54px;padding-top:20px;display:flex;justify-content:space-between;gap:30px;align-items:baseline}
+.practice-note .micro{color:var(--cobalt)}
+.practice-note p{max-width:600px;font-size:12px;line-height:1.65;color:var(--muted);margin:0}
+.closing-art{display:grid;grid-template-columns:minmax(220px,390px) 1fr;gap:34px;align-items:end;padding:54px 0 0}
+.closing-art img{display:block;width:100%;height:auto;aspect-ratio:3 / 2;object-fit:cover;border:1px solid #c6c6b8;filter:saturate(.84)}
+.closing-art p{max-width:430px;font-size:15px;line-height:1.7;margin:0 0 3px;color:#384247}
+.tooling-art{margin:28px 0 0;max-width:340px}
+.tooling-art img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover;border:1px solid #c6d0cb;filter:saturate(.86)}
+.tooling-artwork{margin-top:44px;display:flex;justify-content:flex-end}
+.tooling-artwork img{display:block;width:min(100%,300px);height:auto;aspect-ratio:1;object-fit:cover;border:1px solid #c6d0cb;filter:saturate(.86)}
 .tooling-body{padding-bottom:36px}
 .tooling-intro{max-width:680px!important}
 .tooling-tabs{display:flex;gap:6px;margin:24px 0 0;flex-wrap:wrap;border-bottom:1px solid var(--ink);padding-bottom:15px}
@@ -279,7 +276,7 @@ body:has(.modal-overlay:target) .entrance{opacity:0;visibility:hidden;pointer-ev
  .entry-showcase .entry-aside{margin:0;border-top:0;border-left:1px solid var(--ink);padding:0 0 0 15px}
  .hero h1.screen-name{font-size:clamp(94px,17vw,140px)}
  .practice{padding:49px 0 47px}.practice-grid{grid-template-columns:1fr;gap:26px}.practice-copy h2{font-size:clamp(60px,10.7vw,87px)}
- .practice-art img{aspect-ratio:1.78}.practice-index{gap:18px}.selected-work{margin-top:39px}.selected-work-head{display:block}.selected-work-head p{margin-top:13px}.artifact-grid{grid-template-columns:1fr}.artifact-card,.artifact-card:nth-child(1),.artifact-card:nth-child(2),.artifact-card:nth-child(3),.artifact-card:nth-child(4){grid-column:auto}.artifact-card img,.artifact-slot{height:auto;min-height:260px}
+ .practice-art img{aspect-ratio:1.78}.practice-index{gap:18px}.practice-note{margin-top:39px;display:block}.practice-note p{margin-top:13px}.closing-art{grid-template-columns:1fr;gap:20px;padding-top:42px}.closing-art p{font-size:14px}
 }
 @media(max-width:520px){
  .entry-name{font-size:clamp(78px,22vw,110px)}.entry-formal{margin:13px 0 0 4px;font-size:8px}
@@ -512,6 +509,7 @@ body:has(#site:target) .entrance{opacity:0;visibility:hidden;pointer-events:none
         <h1 class="entry-name"><span class="entry-line"><span>ISAAC</span> <span>JACOB</span></span><span class="entry-line">DAJAY<span class="entry-period">.</span></span></h1>
         <p class="entry-formal micro">Sales · Customer Relations · Web &amp; AI Workflows</p>
       </div>
+      <div class="entry-showcase"><img src="assets/images/portfolio-01-personal-identity-v3.jpg" alt="Original editorial graphic composition exploring personal identity" loading="eager" decoding="async"><div class="entry-aside"><span class="micro">Independent visual practice</span><p>Original graphic design and visual curation, developed alongside the work shown here.</p></div></div>
     </div>
     <div class="entry-bottom"><p>Customer-facing experience and independent digital work. A concise record of the work, the tools, and the thinking behind them.</p><a class="action" id="enter-site" href="#site">VIEW MY CV <span aria-hidden="true">↗</span></a></div>
   </div>
@@ -537,25 +535,17 @@ body:has(#site:target) .entrance{opacity:0;visibility:hidden;pointer-events:none
         <article class="work-entry"><div><p class="employer">Haulla</p><h3>Business Development Manager</h3><p class="work-meta">Remote / Mar 2025 to Jan 2026</p></div><p class="work-desc">Worked across lead generation, outreach and business development, from initial prospecting to sales follow-up. The role emphasized organized communication, relationship building and keeping conversations moving toward clear next steps.</p></article>
         <article class="work-entry"><div><p class="employer">Independent systems practice</p><h3>AI Workflow & Operations Design</h3><p class="work-meta">Project-based / Applied systems</p></div><p class="work-desc">Developed an independent approach to AI-assisted workflows: organize reliable information, prepare drafts with tools, review the results and deliver usable outputs. This practice also includes interactive website building and visual design. Examples are identified as demonstrations where appropriate.</p></article>
         <aside class="related"><span class="micro">Related experience</span><p>Real estate client relations and property-information work, including understanding requirements, discussing listings and coordinating clear, approved information for prospective clients.</p></aside>
+        <figure class="experience-art"><img src="assets/images/portfolio-05-human-connections.png" alt="Editorial graphic composition about human connection and working relationships" loading="eager" decoding="async"></figure>
         <p class="print-related">Related experience: Real estate client relations and property-information work, including requirements gathering and communication of approved listing details.</p>
       </div>
     </section>
     <section class="practice" aria-labelledby="practice-title">
       <div class="site-width practice-grid">
         <div class="practice-copy"><span class="micro">Digital practice / Selected work</span><h2 id="practice-title">Behind<br><em>the</em><br>screen.</h2><p>Alongside client-facing work, I build websites, explore visual design and use digital tools to organize work. I focus on clear interfaces, reliable source material and results that people can actually use.</p><a href="#tooling-dialog" class="action light" data-open-tooling>HOW I USE THE TOOLS <span aria-hidden="true">↗</span></a></div>
-        <figure class="practice-art"><img src="assets/images/portfolio-02-behind-the-screen-v2.jpg" alt="Poster study showing a person working behind a computer screen" loading="eager" decoding="async"><figcaption><span>02 / Behind the screen</span><span>Digital practice study</span></figcaption></figure>
+        <figure class="practice-art"><img src="assets/images/portfolio-02-behind-the-screen-v2.jpg" alt="Editorial graphic composition about digital practice and the work behind interfaces" loading="eager" decoding="async"><figcaption><span>Digital practice</span><span>Original graphic work</span></figcaption></figure>
       </div>
-      <div class="site-width selected-work" aria-labelledby="selected-work-title">
-        <div class="selected-work-head"><div><span class="micro">Approved visual studies / 2026</span><h3 id="selected-work-title">Selected work.</h3></div><p>Four approved studies extend the CV's account of digital practice into visible work. Two additional slots remain intentionally open while the next pieces are developed.</p></div>
-        <div class="artifact-grid">
-          <figure class="artifact-card"><img src="assets/images/portfolio-01-personal-identity-v3.jpg" alt="Botanical editorial poster for a personal identity study" loading="lazy" decoding="async"><figcaption><strong>01 / Personal identity</strong><span>Editorial study · CC BY 2.0 source</span></figcaption></figure>
-          <figure class="artifact-card"><img src="assets/images/portfolio-03-ai-is-a-tool-v2.jpg" alt="Editorial poster about human judgment and AI as a tool" loading="lazy" decoding="async"><figcaption><strong>03 / AI is a tool</strong><span>Editorial study · Brooklyn Museum source</span></figcaption></figure>
-          <figure class="artifact-card"><img src="assets/images/portfolio-04-resourcefulness.jpg" alt="Graphic study showing two interpretations of a microscopic image" loading="lazy" decoding="async"><figcaption><strong>04 / Resourcefulness</strong><span>Graphic study · CMMI / scikit-image source</span></figcaption></figure>
-          <div class="artifact-slot" aria-label="Portfolio slot 05 reserved"><span>05 / In development</span></div>
-          <div class="artifact-slot" aria-label="Portfolio slot 06 reserved"><span>06 / In development</span></div>
-        </div>
-        <p class="artifact-note">Source notes are kept concise here; the visual studies remain demonstrations of process and direction, not employer work claims.</p>
-      </div>
+      <div class="site-width practice-note"><span class="micro">Visual practice</span><p>The graphic compositions and visual direction throughout this site are original work by Isaac Jacob Dajay, curated to show how I think through identity, technology, work and contemporary life.</p></div>
+      <figure class="site-width tooling-artwork"><img src="assets/images/portfolio-04-resourcefulness.jpg" alt="Graphic composition about resourcefulness and making more from available tools" loading="lazy" decoding="async"></figure>
       <div class="site-width practice-index" aria-label="Independent digital capabilities">
         <div><span class="micro">Built and working</span><h3>Web & interface</h3><p>This website demonstrates responsive layouts, interactive detail windows and a printable CV, built with HTML, CSS and JavaScript.</p></div>
         <div><span class="micro">Creative practice</span><h3>Visual direction</h3><p>I work with typography, editorial layouts and visual studies, choosing composition and hierarchy to make ideas easier to understand.</p></div>
@@ -563,7 +553,7 @@ body:has(#site:target) .entrance{opacity:0;visibility:hidden;pointer-events:none
       </div>
     </section>
     <section class="ai-band" aria-labelledby="systems-title"><div class="site-width ai-wrap">
-      <div><span class="micro">Independent work / Applied systems</span><h2 id="systems-title">AI is a tool.<br><span>The work is human.</span></h2><p>I use digital tools to turn information into clear, useful work. The approach is adaptable: understand the task, prepare a first version, review it carefully and take responsibility for the result.</p><a href="#ai-dialog" class="action" data-open-ai>EXPLORE THE WORKFLOW <span aria-hidden="true">↗</span></a></div>
+      <div><span class="micro">Independent work / Applied systems</span><h2 id="systems-title">AI is a tool.<br><span>The work is human.</span></h2><p>I use digital tools to turn information into clear, useful work. The approach is adaptable: understand the task, prepare a first version, review it carefully and take responsibility for the result.</p><a href="#ai-dialog" class="action" data-open-ai>EXPLORE THE WORKFLOW <span aria-hidden="true">↗</span></a><img class="ai-inline-art" src="assets/images/portfolio-03-ai-is-a-tool-v2.jpg" alt="Editorial graphic composition about human judgment and AI as a tool" loading="lazy" decoding="async"></div>
       <div class="system-diagram" role="group" aria-label="Human-reviewed workflow overview"><div class="system-heading"><span class="micro">Process study</span><span class="micro">Human-reviewed</span></div><div class="system-items">
         <div class="system-stage"><span class="symbol" aria-hidden="true">◌</span><span class="system-label">Context</span></div>
         <div class="system-stage"><span class="symbol" aria-hidden="true">≈</span><span class="system-label">Prepare</span></div>
@@ -571,6 +561,7 @@ body:has(#site:target) .entrance{opacity:0;visibility:hidden;pointer-events:none
         <div class="system-stage"><span class="symbol" aria-hidden="true">↗</span><span class="system-label">Deliver</span></div>
       </div><p>A simple method for different kinds of work, always guided and checked by a person.</p></div>
     </div></section>
+    <section class="site-width closing-art"><img src="assets/images/portfolio-06-life-within-the-internet.png" alt="Editorial graphic composition about life within an interconnected internet" loading="eager" decoding="async"><p>Work, information, culture and personal life now move through the same connected field. I stay curious about that field—and about how to make the tools inside it more useful.</p></section>
     <section class="site-width end-grid"><div><span class="micro">Education</span><h2>University of St. La Salle.</h2><p><strong>Bachelor of Arts in Interdisciplinary Studies</strong></p><p>Undergraduate studies · Bacolod City, Negros Occidental</p></div><div><span class="micro">Working strengths</span><h2>Tools & capabilities.</h2><p>Customer communication, sales outreach, business development, follow-through and operational coordination.</p><p><strong>Digital practice:</strong> responsive web interfaces (HTML, CSS, JavaScript), visual design, AI-assisted research and workflow organization, source verification and output review.</p><p><strong>Business tools:</strong> Microsoft Office, Google Workspace, HubSpot · <strong>Language:</strong> English</p></div></section>
   </main>
   <footer class="site-width footer"><span class="full-name">Isaac Jacob Dajay</span><span>Bacolod City, Philippines · <a href="#contact-dialog" class="text-button" data-open-contact>Get in touch ↗</a></span></footer>
