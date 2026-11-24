@@ -157,7 +157,7 @@ body:has(.modal-overlay:target) .entrance{opacity:0;visibility:hidden;pointer-ev
   :root{--paper:#fff;--white:#fff;--ink:#111;--muted:#4a4a4a;--line:#bbb}
   *{box-shadow:none!important;animation:none!important;transition:none!important}
   body{background:white;color:#111;font-size:10px}
-  .entrance,.ticker,.nav-right,.strap,.ai-band,.footer,.modal-overlay,.role-chips,.related{display:none!important}
+  .entrance,.ticker,.nav-right,.strap,.ai-band,.footer,.modal-overlay,.role-chips,.related,.selected-work{display:none!important}
   .site-width{width:100%;max-width:none}
   .nav{min-height:0;padding:0 0 7px;border-color:#111}
   .nav-home{font-size:13px}
@@ -240,6 +240,22 @@ body:has(.modal-overlay:target) .entrance{opacity:0;visibility:hidden;pointer-ev
 .practice-index>div{border-top:1px solid #8b9089;padding-top:15px}
 .practice-index h3{font-size:clamp(23px,2.3vw,31px);letter-spacing:-.056em;line-height:1.03;margin:12px 0 10px}
 .practice-index p{font-size:12px;line-height:1.68;color:#424b4b;max-width:350px;margin:0}
+.selected-work{border-top:1px solid var(--ink);margin-top:54px;padding-top:22px}
+.selected-work-head{display:flex;justify-content:space-between;gap:24px;align-items:end;margin-bottom:20px}
+.selected-work-head h3{font-size:clamp(30px,4vw,52px);line-height:.95;letter-spacing:-.075em;margin:10px 0 0;font-weight:800}
+.selected-work-head p{max-width:420px;font-size:12px;line-height:1.65;color:var(--muted);margin:0}
+.artifact-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}
+.artifact-card{grid-column:span 6;margin:0;min-width:0}
+.artifact-card:nth-child(1){grid-column:span 7}.artifact-card:nth-child(2){grid-column:span 5}
+.artifact-card:nth-child(3){grid-column:span 5}.artifact-card:nth-child(4){grid-column:span 7}
+.artifact-card img{display:block;width:100%;height:clamp(220px,29vw,390px);object-fit:cover;border:1px solid #c6c6b8;background:#e9e8df;filter:saturate(.88);transition:filter .3s ease,transform .3s ease}
+.artifact-card:nth-child(1) img{object-position:center 48%}.artifact-card:nth-child(2) img{object-position:center 48%}.artifact-card:nth-child(3) img{object-position:center 50%}.artifact-card:nth-child(4) img{object-position:center 50%}
+.artifact-card:hover img{filter:saturate(1);transform:translateY(-2px)}
+.artifact-card figcaption{padding:11px 0 0;display:flex;justify-content:space-between;gap:16px;align-items:baseline;font-size:12px;line-height:1.4}
+.artifact-card figcaption strong{font-weight:750;letter-spacing:-.02em}.artifact-card figcaption span{font:500 9px/1.4 var(--mono);color:var(--muted);text-align:right}
+.artifact-slot{min-height:clamp(220px,29vw,390px);border:1px dashed #9da5a0;background:#f0eee6;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;color:var(--muted)}
+.artifact-slot span{font:600 10px/1.5 var(--mono);letter-spacing:.05em;text-transform:uppercase}
+.artifact-note{font:500 10px/1.55 var(--mono);color:var(--muted);margin:20px 0 0}
 .tooling-body{padding-bottom:36px}
 .tooling-intro{max-width:680px!important}
 .tooling-tabs{display:flex;gap:6px;margin:24px 0 0;flex-wrap:wrap;border-bottom:1px solid var(--ink);padding-bottom:15px}
@@ -263,7 +279,7 @@ body:has(.modal-overlay:target) .entrance{opacity:0;visibility:hidden;pointer-ev
  .entry-showcase .entry-aside{margin:0;border-top:0;border-left:1px solid var(--ink);padding:0 0 0 15px}
  .hero h1.screen-name{font-size:clamp(94px,17vw,140px)}
  .practice{padding:49px 0 47px}.practice-grid{grid-template-columns:1fr;gap:26px}.practice-copy h2{font-size:clamp(60px,10.7vw,87px)}
- .practice-art img{aspect-ratio:1.78}.practice-index{gap:18px}
+ .practice-art img{aspect-ratio:1.78}.practice-index{gap:18px}.selected-work{margin-top:39px}.selected-work-head{display:block}.selected-work-head p{margin-top:13px}.artifact-grid{grid-template-columns:1fr}.artifact-card,.artifact-card:nth-child(1),.artifact-card:nth-child(2),.artifact-card:nth-child(3),.artifact-card:nth-child(4){grid-column:auto}.artifact-card img,.artifact-slot{height:auto;min-height:260px}
 }
 @media(max-width:520px){
  .entry-name{font-size:clamp(78px,22vw,110px)}.entry-formal{margin:13px 0 0 4px;font-size:8px}
@@ -527,7 +543,18 @@ body:has(#site:target) .entrance{opacity:0;visibility:hidden;pointer-events:none
     <section class="practice" aria-labelledby="practice-title">
       <div class="site-width practice-grid">
         <div class="practice-copy"><span class="micro">Digital practice / Selected work</span><h2 id="practice-title">Behind<br><em>the</em><br>screen.</h2><p>Alongside client-facing work, I build websites, explore visual design and use digital tools to organize work. I focus on clear interfaces, reliable source material and results that people can actually use.</p><a href="#tooling-dialog" class="action light" data-open-tooling>HOW I USE THE TOOLS <span aria-hidden="true">↗</span></a></div>
-        
+        <figure class="practice-art"><img src="assets/images/portfolio-02-behind-the-screen-v2.jpg" alt="Poster study showing a person working behind a computer screen" loading="eager" decoding="async"><figcaption><span>02 / Behind the screen</span><span>Digital practice study</span></figcaption></figure>
+      </div>
+      <div class="site-width selected-work" aria-labelledby="selected-work-title">
+        <div class="selected-work-head"><div><span class="micro">Approved visual studies / 2026</span><h3 id="selected-work-title">Selected work.</h3></div><p>Four approved studies extend the CV's account of digital practice into visible work. Two additional slots remain intentionally open while the next pieces are developed.</p></div>
+        <div class="artifact-grid">
+          <figure class="artifact-card"><img src="assets/images/portfolio-01-personal-identity-v3.jpg" alt="Botanical editorial poster for a personal identity study" loading="lazy" decoding="async"><figcaption><strong>01 / Personal identity</strong><span>Editorial study · CC BY 2.0 source</span></figcaption></figure>
+          <figure class="artifact-card"><img src="assets/images/portfolio-03-ai-is-a-tool-v2.jpg" alt="Editorial poster about human judgment and AI as a tool" loading="lazy" decoding="async"><figcaption><strong>03 / AI is a tool</strong><span>Editorial study · Brooklyn Museum source</span></figcaption></figure>
+          <figure class="artifact-card"><img src="assets/images/portfolio-04-resourcefulness.jpg" alt="Graphic study showing two interpretations of a microscopic image" loading="lazy" decoding="async"><figcaption><strong>04 / Resourcefulness</strong><span>Graphic study · CMMI / scikit-image source</span></figcaption></figure>
+          <div class="artifact-slot" aria-label="Portfolio slot 05 reserved"><span>05 / In development</span></div>
+          <div class="artifact-slot" aria-label="Portfolio slot 06 reserved"><span>06 / In development</span></div>
+        </div>
+        <p class="artifact-note">Source notes are kept concise here; the visual studies remain demonstrations of process and direction, not employer work claims.</p>
       </div>
       <div class="site-width practice-index" aria-label="Independent digital capabilities">
         <div><span class="micro">Built and working</span><h3>Web & interface</h3><p>This website demonstrates responsive layouts, interactive detail windows and a printable CV, built with HTML, CSS and JavaScript.</p></div>
