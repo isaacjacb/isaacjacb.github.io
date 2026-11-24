@@ -1,3681 +1,643 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-
-  <title>Isaac Jacob Dajay — AI Systems Architect</title>
-
-  <link
-    rel="icon"
-    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='10' fill='%23f7f7f4'/%3E%3Ctext x='50' y='69' font-family='Inter,sans-serif' font-size='54' font-weight='600' text-anchor='middle' fill='%231a1a1a'%3EI%3C/text%3E%3C/svg%3E"
-  />
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap"
-    rel="stylesheet"
-  />
-
-  <style>
-    :root {
-      --bg-page: #efefed;
-      --bg-container: #f7f7f4;
-      --bg-soft: #eeeeeb;
-
-      --text-primary: #1a1a1a;
-      --text-secondary: #3a3a3a;
-      --text-muted: #686866;
-      --text-muted-light: #797977;
-      --text-muted-lighter: #8b8b88;
-
-      --border-light: #d6d6d1;
-      --border-medium: #cdcdc8;
-      --border-dark: #bfbfba;
-
-      --bg-hover: #ecece8;
-      --bg-metrics: #e8e8e3;
-
-      --shadow-ios: rgba(0, 0, 0, 0.055);
-      --grain-opacity: 0.025;
-
-      --radius-ios: 14px;
-      --radius-card: 10px;
-
-      --status-green: #4f8a68;
-      --orchestration: #0f766e;
-
-      --transition-ios: cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    html { scroll-behavior: smooth; }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      position: relative;
-      min-height: 100vh;
-      overflow-x: hidden;
-      padding: 1.5rem;
-      background: var(--bg-page);
-      color: var(--text-primary);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      font-weight: 400;
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      opacity: var(--grain-opacity);
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
-      background-repeat: repeat;
-      background-size: 256px 256px;
-    }
-
-    /* ENTRANCE FIELD */
-    #bgNodesCanvas {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      opacity: 0.9;
-      filter: blur(0.2px);
-    }
-
-    .container {
-      position: relative;
-      z-index: 1;
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 2.5rem 2.5rem 2rem;
-      overflow: hidden;
-      background: rgba(247, 247, 244, 0);
-      backdrop-filter: blur(0);
-      -webkit-backdrop-filter: blur(0);
-    }
-
-    #heroSplash {
-      position: relative;
-      height: 100vh;
-      height: 100dvh;
-      margin-top: -2rem;
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-
-    .splash-brand {
-      position: relative;
-      z-index: 2;
-      font-size: clamp(2.6rem, 7vw, 5rem);
-      font-weight: 600;
-      letter-spacing: -0.045em;
-      line-height: 1;
-      color: var(--text-primary);
-    }
-
-    .splash-sub {
-      position: relative;
-      z-index: 2;
-      margin-top: 0.9rem;
-      font-size: 0.69rem;
-      color: var(--text-muted-light);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-    }
-
-    .splash-divider {
-      position: relative;
-      z-index: 2;
-      width: 40px;
-      height: 1px;
-      margin: 1.5rem auto;
-      background: var(--border-dark);
-    }
-
-    .scroll-indicator {
-      position: absolute;
-      z-index: 2;
-      bottom: 1.8rem;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.55rem;
-      pointer-events: none;
-      font-size: 0.52rem;
-      color: #41413e;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      opacity: 0.9;
-    }
-
-    .scroll-indicator-line {
-      display: block;
-      width: 1px;
-      height: 30px;
-      background: rgba(45, 45, 42, 0.72);
-      transform-origin: top;
-      animation: scrollLine 2.5s ease-in-out infinite;
-    }
-
-    @keyframes scrollLine {
-      0% { transform: scaleY(0.15); opacity: 0.3; }
-      45% { transform: scaleY(1); opacity: 1; }
-      100% { transform: scaleY(0.15); opacity: 0.3; }
-    }
-
-    /* NAV */
-    nav {
-      position: relative;
-      overflow: visible;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-bottom: 2rem;
-      margin-bottom: 3rem;
-      border-bottom: 1px solid var(--border-light);
-    }
-
-    .brand {
-      font-size: 1.1rem;
-      font-weight: 500;
-      letter-spacing: -0.025em;
-    }
-
-    .nav-right { position: relative; }
-
-    .contact-btn {
-      padding: 0.3rem 0;
-      border: 0;
-      border-bottom: 1px solid transparent;
-      background: transparent;
-      color: var(--text-muted);
-      font: inherit;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s var(--transition-ios);
-    }
-
-    .contact-btn:hover,
-    .contact-btn[aria-expanded="true"] {
-      color: var(--text-primary);
-      border-bottom-color: var(--text-primary);
-    }
-
-    .contact-btn:active { transform: scale(0.97); }
-
-    .contact-popover {
-      position: absolute;
-      top: calc(100% + 0.9rem);
-      right: 0;
-      z-index: 50;
-      width: 310px;
-      padding: 0.8rem;
-      visibility: hidden;
-      pointer-events: none;
-      border: 1px solid rgba(191, 191, 186, 0.8);
-      border-radius: var(--radius-ios);
-      background: rgba(247, 247, 244, 0.95);
-      backdrop-filter: blur(22px);
-      -webkit-backdrop-filter: blur(22px);
-      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.08), 0 2px 10px rgba(0, 0, 0, 0.04);
-      opacity: 0;
-      transform: translateY(-6px) scale(0.98);
-      transform-origin: top right;
-      transition: opacity 0.2s ease, transform 0.28s var(--transition-ios), visibility 0.2s ease;
-    }
-
-    .contact-popover.active {
-      visibility: visible;
-      pointer-events: auto;
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-
-    .contact-popover-title {
-      margin-bottom: 0.45rem;
-      padding: 0 0.2rem;
-      font-size: 0.62rem;
-      color: var(--text-muted-lighter);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-
-    .contact-row {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 0.8rem;
-      align-items: center;
-      padding: 0.75rem 0.7rem;
-      border-radius: 9px;
-      transition: background 0.18s ease;
-    }
-
-    .contact-row:hover { background: rgba(0, 0, 0, 0.025); }
-
-    .contact-info {
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 0.1rem;
-    }
-
-    .contact-type {
-      font-size: 0.55rem;
-      color: var(--text-muted-lighter);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .contact-value {
-      display: block;
-      max-width: 100%;
-      overflow: hidden;
-      color: var(--text-secondary);
-      font-size: 0.76rem;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      text-decoration: none;
-    }
-
-    a.contact-value:hover { color: var(--text-primary); }
-
-    .copy-btn {
-      min-width: 52px;
-      padding: 0.32rem 0.6rem;
-      border: 1px solid var(--border-light);
-      border-radius: 999px;
-      background: rgba(0, 0, 0, 0.025);
-      color: var(--text-muted);
-      font-family: inherit;
-      font-size: 0.6rem;
-      cursor: pointer;
-      transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.15s ease;
-    }
-
-    .copy-btn:hover {
-      border-color: var(--border-dark);
-      background: rgba(0, 0, 0, 0.055);
-      color: var(--text-primary);
-    }
-
-    .copy-btn:active { transform: scale(0.94); }
-
-    /* TYPOGRAPHY */
-    .hero { margin-bottom: 3rem; }
-
-    .hero h1 {
-      margin-bottom: 0.35rem;
-      font-size: clamp(2.8rem, 6vw, 4.6rem);
-      font-weight: 600;
-      line-height: 1.05;
-      letter-spacing: -0.04em;
-    }
-
-    .hero .title {
-      font-size: 1.2rem;
-      color: var(--text-secondary);
-      letter-spacing: -0.015em;
-    }
-
-    .hero-location {
-      margin-top: 0.65rem;
-      font-size: 0.75rem;
-      color: var(--text-muted-lighter);
-    }
-
-    .label,
-    .section-label,
-    .process-label,
-    .clients-label,
-    .live-feed-label,
-    .connect-label,
-    .core-eyebrow {
-      font-size: 0.65rem;
-      font-weight: 500;
-      color: var(--text-muted-lighter);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-
-    /* METHODOLOGY */
-    .methodology {
-      margin: 2rem 0 2.5rem;
-      padding: 2rem 0;
-      border-top: 1px solid var(--border-light);
-      border-bottom: 1px solid var(--border-light);
-    }
-
-    .methodology .label { margin-bottom: 0.6rem; }
-
-    .methodology p {
-      max-width: 720px;
-      font-size: 0.95rem;
-      color: var(--text-secondary);
-      line-height: 1.72;
-    }
-
-    .methodology p + p { margin-top: 0.8rem; }
-    .methodology strong { color: var(--text-primary); font-weight: 500; }
-
-    /* PROCESS */
-    .process {
-      margin: 2rem 0 2.5rem;
-      padding: 2rem 0;
-      border-top: 1px solid var(--border-light);
-      border-bottom: 1px solid var(--border-light);
-    }
-
-    .process-label { margin-bottom: 1rem; }
-
-    .process-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 1rem;
-    }
-
-    .process-step {
-      min-width: 0;
-      padding: 0.75rem 0.25rem 0.75rem 1rem;
-      border-left: 2px solid var(--border-light);
-      transition: border-color 0.2s ease;
-    }
-
-    .process-step:hover { border-left-color: var(--text-primary); }
-
-    .step-number {
-      display: block;
-      margin-bottom: 0.2rem;
-      font-size: 0.6rem;
-      color: var(--text-muted-lighter);
-    }
-
-    .process-step h4 {
-      margin-bottom: 0.25rem;
-      font-size: 0.88rem;
-      font-weight: 500;
-    }
-
-    .process-step p {
-      font-size: 0.72rem;
-      color: var(--text-muted-light);
-      line-height: 1.55;
-    }
-
-    /* STATUS */
-    .trust-metrics {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem 2.5rem;
-      margin: 1.5rem 0 3rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--border-light);
-    }
-
-    .trust-metrics .item {
-      display: flex;
-      align-items: baseline;
-      gap: 0.35rem;
-      font-size: 0.8rem;
-      color: var(--text-muted-lighter);
-    }
-
-    .trust-metrics .number {
-      font-size: 1rem;
-      font-weight: 500;
-      color: var(--text-secondary);
-    }
-
-    section { margin-bottom: 3rem; }
-    .core-section { margin-bottom: 3.5rem; }
-    .core-eyebrow { margin-bottom: 1rem; color: var(--text-muted); }
-
-    .core-system {
-      overflow: hidden;
-      border: 1px solid var(--border-dark);
-      border-radius: 14px;
-      background: linear-gradient(145deg, rgba(247, 247, 244, 0.85), rgba(239, 239, 235, 0.58));
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.035);
-    }
-
-    .core-system-header { padding: 1.5rem 1.5rem 1.25rem; }
-
-    .core-title-row {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 1rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .core-title-wrap h2 {
-      font-size: 1.75rem;
-      font-weight: 600;
-      line-height: 1;
-      letter-spacing: -0.035em;
-    }
-
-    .core-subtitle {
-      margin-top: 0.35rem;
-      font-size: 0.72rem;
-      color: var(--text-muted-light);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .core-version {
-      flex-shrink: 0;
-      padding: 0.18rem 0.65rem;
-      border: 1px solid var(--border-light);
-      border-radius: 999px;
-      background: rgba(0, 0, 0, 0.025);
-      font-size: 0.58rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-    }
-
-    .core-description {
-      max-width: 700px;
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-      line-height: 1.72;
-    }
-
-    .core-principle {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.35rem 0.8rem;
-      margin-top: 1rem;
-      padding-top: 1rem;
-      border-top: 1px solid var(--border-light);
-      font-size: 0.65rem;
-      color: var(--text-muted-light);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-
-    .core-principle strong { color: var(--text-primary); font-weight: 500; }
-    .mordred-artifact-wrap { padding: 0 1.5rem 1.5rem; }
-
-    .mordred-artifact-label {
-      margin-bottom: 0.45rem;
-      font-size: 0.58rem;
-      color: var(--text-muted-lighter);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .mordred-artifact {
-      position: relative;
-      width: 100%;
-      height: 330px;
-      overflow: hidden;
-      border: 1px solid var(--border-light);
-      border-radius: 11px;
-      background: rgba(0, 0, 0, 0.012);
-    }
-
-    .mordred-artifact canvas {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-
-    .route-readout {
-      min-height: 21px;
-      margin-top: 0.6rem;
-      display: flex;
-      align-items: center;
-      gap: 0.55rem;
-      font-size: 0.62rem;
-      color: var(--text-muted-lighter);
-    }
-
-    .route-readout span:last-child { color: var(--text-muted); }
-
-    .route-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--orchestration);
-      opacity: 0.65;
-    }
-
-    .core-facts {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      border-top: 1px solid var(--border-light);
-    }
-
-    .core-fact {
-      padding: 1rem 1.25rem;
-      border-right: 1px solid var(--border-light);
-    }
-
-    .core-fact:last-child { border-right: 0; }
-
-    .core-fact-label {
-      margin-bottom: 0.2rem;
-      font-size: 0.52rem;
-      color: var(--text-muted-lighter);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .core-fact-value {
-      font-size: 0.76rem;
-      color: var(--text-secondary);
-      line-height: 1.5;
-    }
-
-    .core-case { border-top: 1px solid var(--border-light); }
-
-    .core-case > summary {
-      padding: 1rem 1.5rem;
-      color: var(--text-muted);
-      font-size: 0.74rem;
-      cursor: pointer;
-    }
-
-    .core-case-content {
-      max-width: 720px;
-      padding: 0 1.5rem 1.5rem;
-    }
-
-    /* SYSTEMS */
-    .section-label {
-      margin-bottom: 1.5rem;
-      color: var(--text-muted);
-      letter-spacing: 0.12em;
-    }
-
-    .work-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    details.work-item {
-      display: block;
-      border: 1px solid var(--border-light);
-      border-radius: var(--radius-card);
-      background: rgba(247, 247, 244, 0.34);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.018);
-      transition: border-color 0.25s ease, box-shadow 0.35s var(--transition-ios), background 0.35s ease;
-    }
-
-    details.work-item:hover {
-      border-color: var(--border-dark);
-      box-shadow: 0 4px 16px var(--shadow-ios);
-    }
-
-    details.work-item[open] {
-      border-color: var(--border-dark);
-      background: rgba(247, 247, 244, 0.78);
-      box-shadow: 0 6px 24px var(--shadow-ios), 0 1px 2px rgba(0, 0, 0, 0.02);
-    }
-
-    summary {
-      list-style: none;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    summary::-webkit-details-marker { display: none; }
-
-    .work-item > summary {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.25rem;
-      border-radius: var(--radius-card);
-      cursor: pointer;
-      transition: background 0.2s ease, transform 0.15s ease;
-    }
-
-    .work-item > summary:hover { background: rgba(235, 235, 231, 0.56); }
-    .work-item > summary:active { transform: scale(0.99); }
-
-    .summary-left {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.6rem 0.3rem;
-    }
-
-    .summary-left .name {
-      font-size: 1rem;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-    }
-
-    .metrics {
-      padding: 0.1rem 0.6rem;
-      border: 1px solid var(--border-light);
-      border-radius: 20px;
-      background: var(--bg-metrics);
-      color: var(--text-muted-light);
-      font-size: 0.55rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      white-space: nowrap;
-    }
-
-    .summary-right {
-      display: flex;
-      align-items: center;
-      flex-shrink: 0;
-      gap: 0.75rem;
-    }
-
-    .summary-right .meta {
-      font-size: 0.8rem;
-      color: var(--text-muted-light);
-    }
-
-    .chevron {
-      width: 34px;
-      height: 34px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid rgba(0, 0, 0, 0.05);
-      border-radius: 50%;
-      background: rgba(0, 0, 0, 0.04);
-      color: var(--text-muted-light);
-    }
-
-    .chevron svg { transition: transform 0.35s var(--transition-ios); }
-    details[open] > summary .chevron svg { transform: rotate(180deg); }
-
-    .work-item .description {
-      max-width: 760px;
-      padding: 0 1.25rem 0.5rem;
-      color: var(--text-secondary);
-      font-size: 0.85rem;
-      line-height: 1.6;
-    }
-
-    .work-item .description p { margin-bottom: 0.5rem; }
-
-    .work-item .deployment {
-      padding: 0.25rem 1.25rem 1.25rem;
-      font-size: 0.65rem;
-      color: var(--text-muted-lighter);
-    }
-
-    .work-item .deployment::before { content: "→ "; }
-
-    .stack-line {
-      margin: 0.25rem 0 0.5rem;
-      font-size: 0.65rem;
-      color: var(--text-muted-lighter);
-    }
-
-    .stack-line span { color: var(--text-muted); }
-
-    .case-study {
-      margin-top: 0.75rem;
-      padding-top: 0.75rem;
-      border-top: 1px solid var(--border-light);
-    }
-
-    .case-study > summary {
-      width: auto;
-      display: inline-flex;
-      align-items: center;
-      padding: 0.4rem 0.8rem;
-      margin: 0 -0.25rem;
-      border: 1px solid var(--border-light);
-      border-radius: 20px;
-      color: var(--text-muted-light);
-      font-size: 0.75rem;
-      cursor: pointer;
-    }
-
-    .case-study > summary:hover {
-      border-color: var(--text-muted);
-      color: var(--text-primary);
-    }
-
-    .case-content {
-      max-width: 740px;
-      padding: 0.75rem 0.25rem 0.25rem;
-      color: var(--text-secondary);
-      font-size: 0.8rem;
-      line-height: 1.7;
-    }
-
-    .section-block { margin: 0.9rem 0; }
-
-    .section-block h4 {
-      margin-bottom: 0.2rem;
-      font-size: 0.75rem;
-      font-weight: 500;
-    }
-
-    .section-block p {
-      font-size: 0.8rem;
-      line-height: 1.7;
-    }
-
-    .section-block ul {
-      list-style: none;
-      margin: 0.25rem 0 0.5rem;
-    }
-
-    .section-block li {
-      position: relative;
-      padding: 0.15rem 0 0.15rem 1.2rem;
-      font-size: 0.75rem;
-      line-height: 1.6;
-    }
-
-    .section-block li::before {
-      content: "•";
-      position: absolute;
-      left: 0;
-      color: var(--text-muted-light);
-    }
-
-    .section-block strong { color: var(--text-primary); font-weight: 500; }
-
-    /* CASE ARTIFACTS */
-    .behaviour-wrapper {
-      margin: 1rem 0 0.25rem;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .behaviour-label {
-      margin-bottom: 0.35rem;
-      color: var(--text-muted-lighter);
-      font-size: 0.6rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      opacity: 0.62;
-    }
-
-    .behaviour-container {
-      width: 100%;
-      max-width: 190px;
-      aspect-ratio: 3 / 4;
-      padding: 0.35rem;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid var(--border-light);
-      border-radius: var(--radius-card);
-      background: rgba(0, 0, 0, 0.015);
-      transition: border-color 0.25s ease;
-    }
-
-    .behaviour-container:hover { border-color: var(--border-dark); }
-
-    .behaviour-container canvas {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.75rem;
-      margin: 1rem 0 1.25rem;
-      padding: 0.75rem 0.5rem;
-      border: 1px solid var(--border-light);
-      border-radius: var(--radius-card);
-      background: rgba(0, 0, 0, 0.012);
-    }
-
-    .metric-item {
-      min-height: 44px;
-      padding: 0.15rem 0.25rem;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .metric-label {
-      margin-bottom: 0.1rem;
-      font-size: 0.55rem;
-      color: var(--text-muted-lighter);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .metric-value {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.15rem;
-      color: var(--text-primary);
-      font-size: 0.75rem;
-      font-weight: 500;
-    }
-
-    .metric-value .before { color: var(--text-muted-light); font-weight: 400; }
-    .metric-value .arrow { color: var(--text-muted-lighter); font-weight: 300; }
-
-    .badge {
-      margin-left: 0.2rem;
-      padding: 0.05rem 0.35rem;
-      border-radius: 12px;
-      background: rgba(58, 158, 107, 0.12);
-      color: #3a7a5a;
-      font-size: 0.5rem;
-    }
-
-    .badge.accent { background: rgba(106, 74, 122, 0.1); color: #6a4a7a; }
-    .badge.warm { background: rgba(176, 122, 90, 0.1); color: #8a6a4a; }
-
-    /* APPLIED / NOW */
-    .clients-section {
-      margin: 2rem 0 2.5rem;
-      padding: 2rem 0;
-      border-top: 1px solid var(--border-light);
-      border-bottom: 1px solid var(--border-light);
-    }
-
-    .clients-label { margin-bottom: 0.5rem; }
-
-    .clients-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem 1.5rem;
-    }
-
-    .clients-list span { color: var(--text-secondary); font-size: 0.85rem; }
-
-    .now-section {
-      margin-bottom: 2rem;
-      padding: 1.5rem 1.25rem;
-      border: 1px solid var(--border-light);
-      border-radius: var(--radius-card);
-      background: rgba(247, 247, 244, 0.45);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-    }
-
-    .now-section .label { margin-bottom: 0.5rem; }
-
-    .now-section p {
-      max-width: 720px;
-      margin-bottom: 0.65rem;
-      color: var(--text-secondary);
-      font-size: 0.86rem;
-      line-height: 1.7;
-    }
-
-    .now-section strong { font-weight: 500; }
-
-    .now-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem 1rem;
-      margin-top: 0.75rem;
-    }
-
-    .now-tags span {
-      padding: 0.1rem 0.6rem;
-      border: 1px solid var(--border-light);
-      border-radius: 20px;
-      background: var(--bg-metrics);
-      color: var(--text-muted-light);
-      font-size: 0.68rem;
-    }
-
-    /* LIVE FEED */
-    .live-feed-section {
-      margin: 2rem 0 2.5rem;
-      padding: 2rem 0;
-      border-top: 1px solid var(--border-light);
-      border-bottom: 1px solid var(--border-light);
-    }
-
-    .live-feed-label { margin-bottom: 1rem; }
-
-    .live-feed-box {
-      position: relative;
-      height: 300px;
-      padding: 0.75rem;
-      overflow: hidden;
-      border: 1px solid var(--border-light);
-      border-radius: var(--radius-card);
-      background: rgba(0, 0, 0, 0.012);
-      transition: border-color 0.25s ease;
-    }
-
-    .live-feed-box:hover { border-color: var(--border-dark); }
-
-    .live-feed-box canvas {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-
-    .legend {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 0.75rem 1.25rem;
-      margin-top: 1rem;
-      padding: 0.25rem;
-    }
-
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-      color: var(--text-muted-light);
-      font-size: 0.62rem;
-    }
-
-    .legend-item .dot {
-      display: inline-block;
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-    }
-
-    /* CONNECT */
-    .connect-section {
-      margin: 2.5rem 0 0;
-      padding: 2rem 0 0;
-      border-top: 1px solid var(--border-light);
-    }
-
-    .connect-header {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.75rem;
-      margin-bottom: 1.35rem;
-    }
-
-    .connect-label { color: var(--text-muted); letter-spacing: 0.12em; }
-
-    .availability {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.55rem;
-      color: var(--text-muted-light);
-      font-size: 0.7rem;
-    }
-
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      flex-shrink: 0;
-      border-radius: 50%;
-      background: var(--status-green);
-      animation: statusBreath 3.6s ease-in-out infinite;
-    }
-
-    @keyframes statusBreath {
-      0%, 100% {
-        opacity: 0.55;
-        transform: scale(0.9);
-        box-shadow: 0 0 0 0 rgba(79, 138, 104, 0);
-      }
-      50% {
-        opacity: 1;
-        transform: scale(1);
-        box-shadow: 0 0 0 5px rgba(79, 138, 104, 0.08);
-      }
-    }
-
-    .connect-sheet { border-top: 1px solid var(--border-light); }
-
-    .connect-row {
-      display: grid;
-      grid-template-columns: 90px minmax(0, 1fr) auto;
-      gap: 1rem;
-      align-items: center;
-      padding: 1rem 0;
-      border-bottom: 1px solid var(--border-light);
-    }
-
-    .connect-type {
-      color: var(--text-muted-lighter);
-      font-size: 0.58rem;
-      text-transform: uppercase;
-      letter-spacing: 0.09em;
-    }
-
-    .connect-value {
-      min-width: 0;
-      overflow: hidden;
-      color: var(--text-secondary);
-      font-size: 0.82rem;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      text-decoration: none;
-    }
-
-    a.connect-value:hover { color: var(--text-primary); }
-
-    footer {
-      margin-top: 2.5rem;
-      padding-top: 2rem;
-      border-top: 1px solid var(--border-light);
-      color: var(--text-muted-lighter);
-      font-size: 0.7rem;
-      text-align: center;
-      letter-spacing: 0.04em;
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .fade-item {
-      opacity: 0;
-      animation: fadeUp 0.6s var(--transition-ios) forwards;
-    }
-
-    .delay-1 { animation-delay: 0.05s; }
-    .delay-2 { animation-delay: 0.10s; }
-    .delay-3 { animation-delay: 0.15s; }
-    .delay-4 { animation-delay: 0.20s; }
-
-    /* MOBILE */
-    @media (max-width: 700px) {
-      :root {
-        --bg-page: #f0f0ee;
-        --bg-container: #f8f8f5;
-        --grain-opacity: 0.018;
-      }
-
-      body {
-        padding: 0.5rem;
-        background: var(--bg-page);
-      }
-
-      #bgNodesCanvas {
-        filter: none;
-        opacity: 0.95;
-      }
-
-      .container {
-        padding: 1rem 0.75rem;
-        background: rgba(248, 248, 245, 0);
-      }
-
-      #heroSplash { margin-top: -1rem; padding: 1rem; }
-
-      .splash-brand {
-        max-width: 330px;
-        font-size: clamp(2.15rem, 10vw, 3.25rem);
-      }
-
-      .splash-sub {
-        max-width: 320px;
-        font-size: 0.53rem;
-        line-height: 1.65;
-      }
-
-      .scroll-indicator { bottom: 1.2rem; }
-      nav { margin-bottom: 2rem; padding-bottom: 1rem; }
-      .brand { font-size: 0.8rem; }
-      .contact-btn { font-size: 0.78rem; }
-
-      .contact-popover {
-        position: fixed;
-        top: auto;
-        right: 0.75rem;
-        bottom: 0.75rem;
-        left: 0.75rem;
-        width: auto;
-        background: rgba(248, 248, 245, 0.97);
-        transform-origin: bottom center;
-      }
-
-      .hero h1 { font-size: clamp(2rem, 10vw, 2.8rem); }
-      .hero .title { max-width: 320px; font-size: 0.95rem; }
-      .methodology p { font-size: 0.84rem; }
-      .process-grid { grid-template-columns: 1fr 1fr; }
-      .core-title-row { flex-direction: column; }
-
-      .core-system-header,
-      .mordred-artifact-wrap {
-        padding-left: 1rem;
-        padding-right: 1rem;
-      }
-
-      .mordred-artifact { height: 275px; }
-      .core-facts { grid-template-columns: 1fr; }
-
-      .core-fact {
-        border-right: 0;
-        border-bottom: 1px solid var(--border-light);
-      }
-
-      .core-fact:last-child { border-bottom: 0; }
-      .core-case > summary { padding: 1rem; }
-      .core-case-content { padding: 0 1rem 1rem; }
-      .work-item > summary { padding: 0.75rem 0.5rem; }
-      .summary-left .name { font-size: 0.7rem; }
-      .metrics { padding: 0.05rem 0.3rem; font-size: 0.4rem; }
-      .summary-right { gap: 0.2rem; }
-      .summary-right .meta { font-size: 0.55rem; }
-      .chevron { width: 26px; height: 26px; }
-      .work-item .description { padding: 0 0.5rem 0.5rem; font-size: 0.75rem; }
-      .work-item .deployment { padding: 0.25rem 0.5rem 1rem; font-size: 0.6rem; }
-      .metrics-grid { grid-template-columns: 1fr 1fr; }
-      .behaviour-wrapper { align-items: center; }
-      .behaviour-container { max-width: 160px; }
-
-      .live-feed-box {
-        height: 190px;
-        padding: 0.5rem;
-      }
-
-      .legend { gap: 0.4rem 0.85rem; }
-      .legend-item { font-size: 0.52rem; }
-      .legend-item .dot { width: 6px; height: 6px; }
-
-      .connect-header {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .connect-row {
-        grid-template-columns: 1fr auto;
-        gap: 0.25rem 0.75rem;
-      }
-
-      .connect-type { grid-column: 1 / -1; }
-      .connect-value { font-size: 0.75rem; }
-    }
-
-    @media (max-width: 460px) {
-      .process-grid { grid-template-columns: 1fr; }
-      .metrics-grid { grid-template-columns: 1fr; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      .scroll-indicator-line,
-      .status-dot { animation: none; }
-      .fade-item { animation: none; opacity: 1; }
-    }
-
-    @media print {
-      #bgNodesCanvas,
-      .scroll-indicator,
-      .contact-popover,
-      .contact-btn,
-      canvas { display: none !important; }
-
-      body {
-        padding: 0.5in !important;
-        background: white !important;
-      }
-
-      body::before { display: none !important; }
-      #heroSplash { height: auto !important; min-height: 25vh; }
-
-      .container {
-        max-width: none;
-        padding: 0;
-        background: white !important;
-      }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f4f1e9">
+<meta name="description" content="Isaac Jacob Dajay. Customer relations, sales, web & visual design, and independent AI workflow practice. Personal CV and selected work.">
+<title>Isaac Jacob Dajay | Experience & Selected Work</title>
+<style>
+:root{
+  --paper:#f4f1e9; --white:#fcfaf5; --ink:#16191a; --muted:#52595d; --line:#b9bcb5;
+  --cool:#b9c9d3; --cobalt:#405c72; --accent:#ec846b; --sea:#e7eceb;
+  --sans:"Helvetica Neue",Helvetica,Arial,-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:auto}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+button,a{font:inherit}
+button{cursor:pointer}
+a{color:inherit}
+button:focus-visible,a:focus-visible{outline:2px solid var(--cobalt);outline-offset:4px}
+button:disabled{cursor:not-allowed;opacity:1}
+::selection{background:#bcd3e4;color:#10242e}
+.skip{position:absolute;top:-100px;left:12px;padding:10px;background:white;z-index:80}.skip:focus{top:12px}
+.micro{font:600 10px/1.5 var(--mono);letter-spacing:.065em;text-transform:uppercase}
+.small{font-size:13px;line-height:1.62}.muted{color:var(--muted)}
+.rule{border-top:1px solid var(--line)}
+.site-width{width:min(calc(100% - 96px),1220px);margin-inline:auto}
+/* Entrance: typographic cover, not an additional résumé page. */
+.entrance{position:fixed;inset:0;z-index:50;display:flex;align-items:center;background:var(--paper);transition:opacity .36s ease,visibility .36s ease;overflow:auto}
+.entrance[aria-hidden="true"]{opacity:0;visibility:hidden;pointer-events:none}
+.entrance-inner{width:min(calc(100% - 96px),1320px);margin:auto;min-height:100%;padding:44px 0;display:flex;flex-direction:column}
+.entry-top{display:flex;justify-content:space-between;align-items:center;padding-bottom:13px;border-bottom:1px solid var(--ink);gap:12px}
+.entry-main{flex:1;min-height:440px;display:grid;grid-template-columns:1fr 226px;align-items:center;gap:36px;padding:54px 0}
+.entry-name{margin:0;font-size:clamp(77px,10vw,170px);line-height:.81;font-weight:800;letter-spacing:-.098em;text-transform:uppercase;max-width:990px}
+.entry-name span{display:block;white-space:nowrap}.entry-name span:nth-child(2){padding-left:6.5%;color:var(--cobalt)}
+.entry-aside{border-left:1px solid var(--ink);padding:17px 0 19px 18px;align-self:end;margin-bottom:3.5%;max-width:230px}
+.entry-aside p{font-size:14px;line-height:1.55;margin:11px 0 0}
+.entry-bottom{display:flex;justify-content:space-between;align-items:end;gap:36px;padding-top:20px;border-top:1px solid var(--ink)}
+.entry-bottom p{max-width:410px;margin:0;font-size:13px;line-height:1.6}
+.action{border:1px solid var(--ink);background:var(--ink);color:var(--white);padding:14px 18px;min-height:48px;font-size:12px;line-height:1;font-weight:750;letter-spacing:.035em;display:inline-flex;align-items:center;justify-content:space-between;gap:44px;transition:transform .18s ease,background .18s ease,color .18s ease}
+.action:hover{background:var(--cobalt);border-color:var(--cobalt);color:#fff;transform:translateY(-2px)}
+.action:active{transform:translateY(0);background:var(--ink);color:var(--white)}
+.action.light{background:transparent;color:var(--ink)}.action.light:hover{background:var(--ink);color:white}
+/* Always-visible running name, restrained like a publication masthead. */
+.ticker{height:46px;overflow:hidden;background:var(--ink);color:var(--white);display:flex;align-items:center;white-space:nowrap}
+.ticker-track{display:flex;align-items:center;min-width:max-content;animation:roll 42s linear infinite}
+.ticker-run{display:flex;align-items:center;gap:31px;padding-right:31px;font-size:12px;font-weight:750;letter-spacing:.025em}
+.ticker-run span.dot{color:var(--accent);font-size:20px;line-height:1}
+@keyframes roll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.nav{min-height:74px;display:flex;justify-content:space-between;align-items:center;gap:24px;border-bottom:1px solid var(--ink)}
+.nav-home{font-size:16px;font-weight:800;letter-spacing:-.05em;text-decoration:none}
+.nav-right{display:flex;align-items:center;gap:27px}.text-button{background:none;border:0;padding:8px 0;color:var(--ink);font-size:12px;font-weight:700}.text-button:hover{text-decoration:underline;text-underline-offset:4px}
+.nav-note{font:500 10px var(--mono);letter-spacing:.03em;color:var(--muted)}
+.print-contact{display:none}
+/* Introduction: editorial website rather than CV-sheet facsimile. */
+.hero{padding-top:69px;padding-bottom:69px;display:grid;grid-template-columns:minmax(0,1.28fr) minmax(260px,.72fr);column-gap:7%;align-items:end}
+.hero h1{font-size:clamp(69px,8.1vw,127px);line-height:.91;letter-spacing:-.087em;font-weight:800;margin:18px 0 33px;max-width:870px}
+.hero h1 span{display:block}
+.hero h1 span:last-child{color:var(--cobalt)}
+.hero-right{align-self:end;padding-bottom:7px}
+.hero-right h2{font-size:clamp(21px,2.3vw,31px);line-height:1.12;letter-spacing:-.052em;font-weight:750;margin:0 0 18px}
+.hero-right p{font-size:15px;line-height:1.68;max-width:390px;margin:0 0 20px;color:#303b40}
+.role-chips{display:flex;flex-wrap:wrap;gap:7px;padding-top:17px}
+.role-chips span{border:1px solid #8f999b;padding:5px 8px;font:600 10px/1.3 var(--mono);white-space:nowrap}
+.strap{background:var(--cool);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+.strap-inner{min-height:72px;display:flex;gap:30px;align-items:center;justify-content:space-between}
+.strap strong{font-size:18px;letter-spacing:-.045em}.strap span{font-size:11px;font-family:var(--mono)}
+/* Main CV content. */
+.chapter{display:grid;grid-template-columns:minmax(160px,.31fr) minmax(0,.69fr);gap:52px;padding:62px 0 75px;border-bottom:1px solid var(--ink)}
+.chapter-left{display:flex;flex-direction:column;gap:12px}.chapter-left h2{font-size:clamp(29px,3.7vw,49px);line-height:.99;font-weight:800;letter-spacing:-.075em;margin:0}.chapter-left p{font-size:12px;line-height:1.6;max-width:190px;color:var(--muted);margin:0}
+.chapter-right{min-width:0}
+.work-entry{display:grid;grid-template-columns:1fr 1.06fr;gap:22px;padding:23px 0 28px;border-top:1px solid var(--line)}
+.work-entry:first-child{border-top:1px solid var(--ink);padding-top:26px}
+.employer{font:700 11px/1.4 var(--mono);letter-spacing:.015em;text-transform:uppercase;margin:0 0 9px}
+.work-entry h3{font-size:clamp(21px,2.35vw,30px);line-height:1.06;letter-spacing:-.05em;font-weight:800;margin:0 0 12px}
+.work-meta{font:500 11px/1.6 var(--mono);color:var(--muted);margin:0}
+.work-desc{font-size:13px;line-height:1.75;margin:1px 0 0;max-width:455px;color:#374045}
+.related{background:var(--sea);padding:24px 28px;margin-top:18px;display:grid;grid-template-columns:150px 1fr;gap:24px;border-left:3px solid var(--cobalt)}
+.related p{font-size:12px;line-height:1.7;margin:0;color:#333e42}
+.related .micro{color:var(--cobalt)}
+/* AI feature: an optional chapter with live interaction, not a splashy visual showcase. */
+.ai-band{background:#e3e8e5;border-bottom:1px solid var(--ink)}
+.ai-wrap{padding:60px 0 67px;display:grid;grid-template-columns:1fr .87fr;gap:10%;align-items:end}
+.ai-wrap h2{font-size:clamp(45px,5.7vw,87px);letter-spacing:-.081em;line-height:.95;margin:20px 0 23px;font-weight:800}
+.ai-wrap h2 span{color:var(--cobalt)}
+.ai-wrap p{font-size:14px;line-height:1.68;margin:0 0 22px;max-width:560px}
+.system-diagram{align-self:stretch;border-top:1px solid #73858a;border-bottom:1px solid #73858a;padding:20px 0;display:flex;flex-direction:column;justify-content:space-between;min-height:275px}
+.system-heading{display:flex;justify-content:space-between;gap:12px;color:#314249}
+.system-items{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:18px 0 0}
+.system-items div{position:relative;border-right:1px solid #849999;padding:13px 10px 10px}
+.system-items div:first-child{padding-left:0}.system-items div:last-child{border-right:0}
+.system-items .symbol{display:block;font-size:clamp(25px,3.5vw,42px);font-weight:400;line-height:1;margin:2px 0 29px;letter-spacing:-.08em}
+.system-items .system-label{font:600 10px/1.4 var(--mono);text-transform:uppercase}
+.system-diagram p{font-size:11px;color:#51646b;line-height:1.4;margin:20px 0 0}
+/* Ending / contact */
+.end-grid{display:grid;grid-template-columns:1fr 1fr;gap:65px;padding:56px 0 64px}
+.end-grid h2{font-size:33px;line-height:1.05;letter-spacing:-.067em;margin:10px 0 20px}
+.end-grid p{font-size:13px;line-height:1.75;margin:7px 0;color:#384247}
+.end-grid strong{color:var(--ink)}
+.footer{border-top:1px solid var(--ink);padding:18px 0 38px;display:flex;justify-content:space-between;gap:18px;font:500 10px/1.7 var(--mono);color:var(--muted)}
+.footer .full-name{color:var(--ink);font-weight:750}
+/* Overlay panels: native fragment-link fallback plus optional JS enhancement. */
+.modal-overlay{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:18px;overflow:auto;background:rgba(21,30,32,.72);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);visibility:hidden;opacity:0;pointer-events:none;transition:opacity .18s ease,visibility .18s ease;overscroll-behavior:contain}
+.modal-overlay:target,.modal-overlay[data-visible="true"]{visibility:visible;opacity:1;pointer-events:auto}
+.modal-dismiss{position:absolute;inset:0;z-index:0;cursor:default}
+.modal-panel{position:relative;z-index:1;width:min(940px,100%);max-height:calc(100vh - 36px);max-height:calc(100dvh - 36px);overflow-y:auto;overscroll-behavior:contain;background:var(--white);color:var(--ink);border:1px solid #8a9695;box-shadow:0 28px 80px #0d181e42}
+body.modal-open{overflow:hidden}
+body:has(.modal-overlay:target) #site,body:has(.modal-overlay[data-visible="true"]) #site{filter:blur(5px)}
+body:has(.modal-overlay:target) .entrance{opacity:0;visibility:hidden;pointer-events:none}
+.action{text-decoration:none}
+.modal-overlay .close{text-decoration:none;color:var(--ink)}
+.modal-overlay .close:hover{color:#fff}
+.modal-header{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:20px 28px;border-bottom:1px solid var(--ink)}
+.modal-header strong{font-size:13px;font-weight:800;letter-spacing:-.025em}
+.close{background:transparent;border:1px solid var(--ink);width:36px;height:36px;display:grid;place-items:center;font-size:19px;line-height:1}.close:hover{background:var(--ink);color:white}
+.modal-body{padding:31px 32px 35px}
+.modal-body h2{font-size:clamp(33px,4vw,58px);line-height:.97;letter-spacing:-.073em;margin:9px 0 17px;font-weight:800}
+.modal-body p{font-size:14px;line-height:1.73;max-width:690px;color:#364247}
+.contact-link{display:block;text-decoration:none;font-size:clamp(16px,2.7vw,30px);font-weight:750;line-height:1.3;letter-spacing:-.035em;padding:15px 0;border-bottom:1px solid var(--line);word-break:break-word}
+.contact-link:hover{color:var(--cobalt)}
+.contact-copy{color:var(--muted);font-size:12px;line-height:1.6;margin-top:18px}
+.deck-slide{display:block;margin-bottom:26px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+.deck-slide:last-child{margin-bottom:0;padding-bottom:0;border-bottom:0}
+.js .deck-slide{display:none;animation:slideIn .26s ease both;margin:0;padding:0;border:0}
+.js .deck-slide.active{display:block}
+.deck-footer{display:none}.js .deck-footer{display:flex}
+.tooling-tabs,.scenario-buttons{display:none!important}
+.js .tooling-tabs{display:flex!important}.js .scenario-buttons{display:flex!important}
+@keyframes slideIn{from{opacity:.35;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.deck-columns{display:grid;grid-template-columns:.9fr 1.1fr;gap:38px;align-items:start;min-height:355px}
+.deck-copy p{font-size:14px;line-height:1.75;margin:0 0 18px}
+.deck-label{font:700 10px/1.45 var(--mono);color:var(--cobalt)}
+.deck-figure{background:#eef1ed;border:1px solid #c8d2d0;min-height:326px;padding:23px;display:flex;flex-direction:column;justify-content:space-between}
+.diagram-head{display:flex;justify-content:space-between;gap:9px;border-bottom:1px solid #9da9a8;padding-bottom:12px}
+.diagram-head span{font:600 10px/1.4 var(--mono)}
+.diagram-steps{display:grid;grid-template-columns:1fr;gap:0;margin-top:7px}
+.diagram-step{display:grid;grid-template-columns:32px 1fr auto;align-items:center;gap:11px;border-bottom:1px solid #b9c7c4;padding:15px 0;font-size:13px}
+.diagram-step .symbol{font:700 17px/1 var(--mono);color:var(--cobalt)}
+.diagram-step small{font:600 10px var(--mono);color:#5c6f72}
+.diagram-foot{font:500 10px/1.65 var(--mono);margin-top:14px;color:#58676a}
+.scenario-buttons{display:flex;gap:7px;flex-wrap:wrap;margin:18px 0 14px}
+.scenario-buttons button{padding:9px 12px;border:1px solid #81918d;background:#eef1ed;color:#1e2a30;font:600 11px var(--mono)}
+.scenario-buttons button:hover:not([aria-pressed="true"]){background:#d6e2de;color:#132128;border-color:#5d726c}
+.scenario-buttons button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.scenario-output{background:#f8f8f4;border-left:2px solid var(--cobalt);padding:16px 18px;color:#303c40;font-size:13px;line-height:1.72;min-height:124px}
+.note{font-size:11px!important;line-height:1.6!important;color:#5c686c!important}
+.deck-footer{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:15px 28px;border-top:1px solid var(--ink)}
+#ai-dialog .modal-panel{display:flex;flex-direction:column;overflow:hidden}
+#ai-dialog .modal-panel>.modal-body{min-height:0;overflow-y:auto;overscroll-behavior:contain}
+#ai-dialog .modal-panel>.deck-footer{flex-shrink:0;background:var(--white)}
+.deck-indicator{font:700 11px var(--mono)}.deck-controls{display:flex;gap:8px}.deck-btn{border:1px solid var(--ink);background:var(--white);color:var(--ink);padding:11px 13px;font-size:11px;font-weight:700}.deck-btn:hover:not(:disabled){background:var(--ink);color:#fff}.deck-btn:disabled{background:#e5e8e5;color:#596368;border-color:#adb7b7;opacity:1}
+/* Print as CV: entrance and interaction vanish; content becomes one considered sheet. */
+@page{size:A4;margin:13mm 13mm 12mm}
+@media print{
+  :root{--paper:#fff;--white:#fff;--ink:#111;--muted:#4a4a4a;--line:#bbb}
+  *{box-shadow:none!important;animation:none!important;transition:none!important}
+  body{background:white;color:#111;font-size:10px}
+  .entrance,.ticker,.nav-right,.strap,.ai-band,.footer,.modal-overlay,.role-chips,.related{display:none!important}
+  .site-width{width:100%;max-width:none}
+  .nav{min-height:0;padding:0 0 7px;border-color:#111}
+  .nav-home{font-size:13px}
+  .print-contact{display:block!important;text-align:right;font:500 8px/1.45 var(--mono);color:#333}
+  .hero{padding:16px 0 13px;grid-template-columns:1fr 1.2fr;gap:25px;border-bottom:1px solid #111;align-items:end}
+  .hero h1{font-size:49px;line-height:.9;margin:7px 0 0;letter-spacing:-.082em}
+  .hero-right h2{font-size:16px;margin:0 0 7px}
+  .hero-right p{font-size:9.2px;line-height:1.5;margin:0}
+  .micro{font-size:7.5px}
+  .chapter{grid-template-columns:123px 1fr;gap:19px;padding:16px 0 15px;border-color:#111;break-inside:avoid}
+  .chapter-left h2{font-size:23px}.chapter-left p{font-size:8px;line-height:1.4}
+  .work-entry{grid-template-columns:1fr 1.18fr;gap:13px;padding:9px 0 10px;break-inside:avoid}
+  .work-entry:first-child{padding-top:10px}
+  .employer{font-size:7.2px;margin:0 0 3px}
+  .work-entry h3{font-size:15px;margin:0 0 5px}
+  .work-meta{font-size:7.5px}
+  .work-desc{font-size:8.5px;line-height:1.48}
+  .print-related{display:block!important;margin-top:8px;font-size:8.5px;line-height:1.5}
+  .end-grid{padding:15px 0 0;gap:28px;break-inside:avoid}
+  .end-grid h2{font-size:19px;margin:5px 0 9px}
+  .end-grid p{font-size:8.5px;line-height:1.55;margin:3px 0}
+  a{text-decoration:none}
+}
+.print-related{display:none}
+@media(max-width:1000px){.site-width,.entrance-inner{width:min(calc(100% - 58px),1220px)}.entry-name{font-size:clamp(75px,12vw,132px)}.entry-main{grid-template-columns:1fr 190px}.chapter{gap:34px}.hero{gap:5%}}
+@media(max-width:730px){
+  .site-width,.entrance-inner{width:calc(100% - 36px)}
+  .entrance-inner{padding:23px 0}.entry-main{grid-template-columns:1fr;min-height:0;gap:26px;padding:56px 0 35px;align-items:center}
+  .entry-name{font-size:clamp(65px,13.2vw,105px)}.entry-name span:nth-child(2){padding-left:0}
+  .entry-aside{border-left:0;border-top:1px solid var(--ink);padding:13px 0 0;margin:0;max-width:450px;justify-self:start}
+  .entry-aside p{margin:6px 0 0}.entry-bottom{align-items:start;flex-direction:column;gap:19px}
+  .nav{min-height:67px}.nav-note{display:none}.nav-right{gap:18px}.nav-home{font-size:15px}
+  .hero{grid-template-columns:1fr;padding:47px 0 46px;gap:22px}.hero h1{font-size:clamp(69px,14vw,105px);margin:15px 0 11px}
+  .hero-right h2{font-size:23px;max-width:520px}.hero-right p{font-size:13px;max-width:560px}
+  .strap-inner{min-height:69px;flex-direction:column;align-items:start;justify-content:center;gap:2px}.strap strong{font-size:16px}.strap span{font-size:10px}
+  .chapter{grid-template-columns:1fr;gap:24px;padding:42px 0 50px}.chapter-left{gap:8px}.chapter-left h2{font-size:38px}.chapter-left p{max-width:400px}
+  .work-entry{grid-template-columns:1fr 1.2fr;gap:18px}.work-entry h3{font-size:22px}
+  .related{grid-template-columns:1fr;gap:10px;padding:20px}
+  .ai-wrap{grid-template-columns:1fr;gap:37px;padding:48px 0}.ai-wrap h2{font-size:clamp(50px,10vw,76px)}.system-diagram{min-height:225px}
+  .end-grid{grid-template-columns:1fr;gap:34px;padding:43px 0 45px}.end-grid h2{font-size:31px}
+  .footer{flex-direction:column;gap:4px}
+  .deck-columns{grid-template-columns:1fr;gap:18px}.deck-figure{min-height:260px}
+}
+@media(max-width:490px){
+  .entry-name{font-size:clamp(54px,13.3vw,74px)}.entry-top{font-size:9px}
+  .hero h1{font-size:clamp(54px,13.3vw,75px)}
+  .nav-home{font-size:13px}.nav-right{gap:11px}.nav-right .text-button{font-size:11px}
+  .work-entry{grid-template-columns:1fr;gap:9px;padding:18px 0 22px}.work-entry h3{font-size:24px}.work-desc{font-size:13px}
+  .modal-header{padding:13px 17px}.modal-body{padding:23px 18px}.deck-footer{padding:13px 17px}
+  .deck-figure{padding:16px}.diagram-step{font-size:12px;grid-template-columns:25px 1fr auto}
+  .system-items .system-label{font-size:8px}.system-items div{padding:9px 5px}.system-items .symbol{font-size:29px}
+}
+@media(prefers-reduced-motion:reduce){.ticker-track,.deck-slide{animation:none!important}.action{transition:none!important}}
+
+/* Jacob / Internet Field Notes: compact original editorial treatment. */
+.entry-name span span,.hero h1 span.hero-period{display:inline!important}
+:root{--field:#75815b;--warm:#e77a70}
+.entry-main{grid-template-columns:minmax(0,1fr) minmax(260px,340px);gap:4%;align-items:center}
+.entry-identity{min-width:0}
+.entry-name{font-size:clamp(100px,15vw,232px);letter-spacing:-.105em;line-height:.88;max-width:100%;}
+.entry-name span:nth-child(2){padding:0}
+.entry-formal{margin:22px 0 0 9px;color:var(--muted)}
+.entry-showcase{max-width:340px;justify-self:end;align-self:center}
+.entry-showcase img{display:block;width:100%;height:auto;aspect-ratio:1.23;object-fit:cover;object-position:center;border:1px solid #abae9e;filter:saturate(.86)}
+.entry-showcase .entry-aside{margin:16px 0 0;border:0;border-top:1px solid var(--ink);padding:14px 0 0;max-width:none}
+.hero h1.screen-name{font-size:clamp(97px,10.3vw,175px);letter-spacing:-.102em;line-height:.89;margin-bottom:8px}
+.hero-period,.nav-dot{color:var(--accent)}
+.hero-annotation{margin:13px 0 0;color:var(--muted);max-width:310px}
+.print-name{display:none}
+.practice{background:#faf8f2;padding:66px 0 58px;border-bottom:1px solid var(--ink)}
+.practice-grid{display:grid;grid-template-columns:.69fr 1.31fr;gap:7%;align-items:center}
+.practice-copy h2{font-size:clamp(55px,6.4vw,100px);line-height:.9;letter-spacing:-.09em;margin:18px 0 23px;font-weight:800}
+.practice-copy h2 em{font-style:normal;color:var(--cobalt)}
+.practice-copy p{font-size:14px;line-height:1.76;max-width:385px;margin:0 0 25px;color:#334048}
+.practice-art{margin:0;min-width:0}
+.practice-art img{display:block;width:100%;height:auto;aspect-ratio:1.6;object-fit:cover;object-position:center;border:1px solid #c6c6b8;filter:saturate(.83);transition:filter .3s ease}
+.practice-art:hover img{filter:saturate(1)}
+.practice-art figcaption{display:flex;justify-content:space-between;gap:20px;border-bottom:1px solid #a3a89e;padding:10px 0;font:600 10px/1.5 var(--mono);color:#565b52}
+.practice-index{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:38px}
+.practice-index>div{border-top:1px solid #8b9089;padding-top:15px}
+.practice-index h3{font-size:clamp(23px,2.3vw,31px);letter-spacing:-.056em;line-height:1.03;margin:12px 0 10px}
+.practice-index p{font-size:12px;line-height:1.68;color:#424b4b;max-width:350px;margin:0}
+.tooling-body{padding-bottom:36px}
+.tooling-intro{max-width:680px!important}
+.tooling-tabs{display:flex;gap:6px;margin:24px 0 0;flex-wrap:wrap;border-bottom:1px solid var(--ink);padding-bottom:15px}
+.tooling-tabs button{border:1px solid #89918a;background:#f9f8f3;color:#232a29;min-height:39px;padding:10px 15px;font:700 11px var(--mono)}
+.tooling-tabs button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.tooling-tabs button:hover:not([aria-pressed="true"]){background:#e4e9e4}
+.tooling-stage{background:#e8ece6;padding:25px 26px 20px;min-height:226px;border-left:3px solid var(--cobalt)}
+.tooling-stage h3{font-size:clamp(24px,3.3vw,39px);letter-spacing:-.06em;line-height:1.1;margin:12px 0 10px}
+.tooling-stage p{font-size:14px;line-height:1.65;margin:0 0 16px}
+.tooling-footnote{font:600 10px/1.45 var(--mono);color:#4e6268}
+.tooling-disclaimer{font-size:11px!important;color:var(--muted)!important;margin:14px 0 0!important}
+@media(max-width:900px){
+ .entry-main{grid-template-columns:1fr 230px;gap:3%}.entry-name{font-size:clamp(92px,13.5vw,170px)}
+ .practice-grid{gap:4%;grid-template-columns:.9fr 1.1fr}.practice-copy h2{font-size:clamp(52px,6vw,72px)}
+}
+@media(max-width:730px){
+ .entry-main{grid-template-columns:1fr;gap:30px;align-items:start;padding:55px 0 34px}
+ .entry-name{font-size:clamp(90px,21vw,160px)}
+ .entry-showcase{display:flex;align-items:center;gap:16px;max-width:100%;justify-self:start}
+ .entry-showcase img{width:128px;aspect-ratio:1.08;flex:0 0 128px}
+ .entry-showcase .entry-aside{margin:0;border-top:0;border-left:1px solid var(--ink);padding:0 0 0 15px}
+ .hero h1.screen-name{font-size:clamp(94px,17vw,140px)}
+ .practice{padding:49px 0 47px}.practice-grid{grid-template-columns:1fr;gap:26px}.practice-copy h2{font-size:clamp(60px,10.7vw,87px)}
+ .practice-art img{aspect-ratio:1.78}.practice-index{gap:18px}
+}
+@media(max-width:520px){
+ .entry-name{font-size:clamp(78px,22vw,110px)}.entry-formal{margin:13px 0 0 4px;font-size:8px}
+ .entry-showcase img{width:95px;flex-basis:95px}.entry-showcase .entry-aside p{font-size:12px}
+ .hero h1.screen-name{font-size:clamp(80px,19vw,105px)}
+ .practice-index{grid-template-columns:1fr;gap:22px;margin-top:29px}.practice-index h3{font-size:27px}
+ .practice-art figcaption{font-size:8px;gap:8px}.practice-copy h2{font-size:64px}
+ .tooling-stage{padding:18px 18px 17px}
+}
+@media(prefers-reduced-motion:reduce){.practice-art img{transition:none}}
+@media print{
+ .practice{display:none!important}
+ .hero h1.screen-name,.hero-annotation{display:none!important}
+ .hero h1.print-name{display:block!important;font-size:45px;line-height:.88;margin:8px 0 0;letter-spacing:-.072em}
+ .hero{padding-top:23px;padding-bottom:22px}
+ .chapter{padding-top:24px;padding-bottom:27px}
+ .work-entry{padding-top:14px;padding-bottom:16px}
+ .end-grid{padding-top:23px}
+ .nav-home{font-size:12px}
+ .end-grid p{font-size:8.1px;line-height:1.47}
+}
+
+/* Final identity treatment: no illustration assets, complete formal name. */
+.entrance[hidden]{display:none!important}
+body:has(#site:target) .entrance{opacity:0;visibility:hidden;pointer-events:none}
+.entry-main{display:flex;align-items:center;padding:35px 0;min-height:0}
+.entry-identity{width:100%}
+.entry-name{font-size:clamp(72px,10.35vw,151px);line-height:.86;letter-spacing:-.095em;max-width:none;margin:0}
+.entry-name>.entry-line{display:block;white-space:normal;padding:0!important;color:var(--ink)!important}
+.entry-name .entry-line:first-child{white-space:nowrap}
+.entry-name .entry-line:first-child>span{display:inline}
+.entry-name .entry-line:last-child{color:var(--cobalt)!important}
+.entry-name .entry-period{color:var(--accent)}
+.entry-formal{margin:23px 0 0 4px;font-size:10px}
+.entry-bottom{align-items:center}
+.entry-bottom p{max-width:500px}
+.entry-bottom .action{text-decoration:none;white-space:nowrap}
+.hero h1.screen-name{font-size:clamp(58px,7.15vw,104px);line-height:.92;letter-spacing:-.084em;margin-bottom:13px}
+.hero h1.screen-name span{display:block;white-space:nowrap}
+.hero h1.screen-name span:first-child{color:var(--ink)}
+.hero h1.screen-name span:last-child{color:var(--cobalt)}
+.practice-grid{display:block}
+.practice-copy{max-width:1000px}
+.practice-copy h2{font-size:clamp(55px,6.6vw,96px)}
+.practice-index{margin-top:33px}
+@media(max-width:730px){
+  .entrance-inner{min-height:100svh}
+  .entry-main{padding:34px 0 24px}
+  .entry-name{font-size:clamp(67px,15.3vw,109px);line-height:.86}
+  .entry-name .entry-line:first-child{white-space:normal}
+  .entry-name .entry-line:first-child>span{display:block}
+  .entry-bottom{align-items:stretch;gap:20px}
+  .entry-bottom .action{width:100%;justify-content:space-between}
+  .hero h1.screen-name{font-size:clamp(46px,11.2vw,79px)}
+  .practice-copy h2{font-size:clamp(55px,11vw,88px)}
+}
+@media(max-width:390px){
+  .entry-name{font-size:clamp(64px,18vw,78px)}
+  .entry-top{font-size:8px}
+  .hero h1.screen-name{font-size:clamp(39px,10.4vw,54px)}
+}
+@media print{
+ .hero h1.screen-name{display:none!important}
+ .entry-main{display:none!important}
+ .practice-grid,.practice-index{display:none!important}
+}
+
+/* Final optical alignment: explicit word spacing and a tighter text-only digital chapter. */
+.entry-name .entry-line:first-child>span+span{margin-left:.105em}
+.practice-copy{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.75fr);column-gap:8%;align-items:center;max-width:none}
+.practice-copy>.micro{grid-column:1/-1;margin-bottom:11px}
+.practice-copy h2{grid-column:1;grid-row:2/4;align-self:center;margin:0}
+.practice-copy p{grid-column:2;grid-row:2;max-width:410px;margin:0 0 16px}
+.practice-copy>.action{grid-column:2;grid-row:3;justify-self:start;align-self:start}
+@media(max-width:730px){
+ .entry-name .entry-line:first-child>span+span{margin-left:0}
+ .practice-copy{display:block}
+ .practice-copy h2{margin:15px 0 19px}
+ .practice-copy p{margin:0 0 24px}
+}
+
+/* Small iPhone / embedded preview: reachable, scrollable panels with visible close controls. */
+@media(max-width:490px){
+ .modal-overlay{align-items:center;padding:10px max(10px,env(safe-area-inset-right)) 10px max(10px,env(safe-area-inset-left))}
+ .modal-panel{width:100%;max-height:calc(100vh - 20px);max-height:calc(100dvh - 20px)}
+ .modal-header{position:sticky;top:0;z-index:2;background:var(--white)}
+ .modal-header strong{font-size:12px}
+ .deck-controls{gap:6px}.deck-btn{padding:11px 10px}
+}
+@media(prefers-reduced-motion:reduce){.modal-overlay{transition:none}}
+
+/* Avoid delayed invisible overlays intercepting subsequent touch controls. */
+.modal-overlay{transition:opacity .18s ease}
+/* CV readability pass: fewer tiny labels and calmer supporting copy. */
+.micro{font-size:11.5px;line-height:1.5;letter-spacing:.045em}
+.nav-note,.footer{font-size:11px}
+.chapter-left p{font-size:14px;line-height:1.55;max-width:230px}
+.employer{font-size:12px;line-height:1.45}
+.work-meta{font-size:12px;line-height:1.5}
+.work-desc{font-size:15px;line-height:1.62;color:#28363a}
+.related p,.practice-index p,.ai-wrap p,.end-grid p{font-size:14px;line-height:1.65}
+.practice-copy p{font-size:15px;line-height:1.62}
+.role-chips span{font-size:11px}
+.action{font-size:13px}
+.system-diagram p{font-size:12.5px;line-height:1.55;color:#3e5256}
+.system-items .system-label{font-size:12px;line-height:1.35}
+.system-heading .micro{font-size:11px}
+.deck-label{font-size:11.5px}.diagram-head span{font-size:11px}
+.diagram-step small,.diagram-foot,.note{font-size:11.5px!important;line-height:1.55!important}
+.tooling-disclaimer{font-size:12.5px!important;line-height:1.6!important}
+/* Readable process plate. The single button is the only workflow interaction. */
+.system-items .system-stage{position:relative;min-width:0;color:var(--ink);padding:13px 12px 14px;border-right:1px solid #849999;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:8px;min-height:145px}
+.system-items .system-stage:first-child{padding-left:0}
+.system-items .system-stage:last-child{border-right:0}
+.system-items .system-stage .symbol{margin:1px 0 23px;font-size:clamp(25px,3.5vw,42px);line-height:1;color:var(--ink)}
+.system-items .system-label{font:700 12px/1.4 var(--mono);text-transform:uppercase;letter-spacing:.01em}
+/* One quiet explanation window. No nested slides or click targets. */
+.ai-simple-panel{width:min(830px,100%)}
+.ai-simple-body{display:grid;grid-template-columns:minmax(0,.96fr) minmax(0,1fr);gap:34px;padding:34px 36px 26px}
+.ai-simple-intro h2{font-size:clamp(37px,4.5vw,58px);line-height:1.01;letter-spacing:-.075em;margin:14px 0 17px}
+.ai-simple-intro p{font-size:15px;line-height:1.7;margin:0;color:#344247}
+.ai-simple-sequence{display:flex;flex-wrap:wrap;gap:7px;align-items:center;border-top:1px solid var(--line);padding-top:17px;margin-top:25px;font:700 10px/1.5 var(--mono);color:#3c5660}
+.ai-simple-sequence i{font-style:normal;color:#8a9899}
+.ai-simple-examples>.micro{display:block;margin:0 0 7px}
+.ai-example{border-top:1px solid #bcc7c2;padding:12px 0 10px}
+.ai-example h3{font-size:17px;letter-spacing:-.035em;line-height:1.2;margin:0 0 5px}
+.ai-example p{font-size:13px;line-height:1.56;margin:0;color:#3e4b4e}
+.ai-simple-note{padding:15px 36px 20px;border-top:1px solid var(--line);font:500 11px/1.6 var(--mono);color:#506068}
+@media(max-width:730px){
+ .system-items .system-stage{min-height:133px;padding:10px 8px}
+ .system-items .system-stage:first-child{padding-left:0}
+ .ai-simple-body{grid-template-columns:1fr;gap:23px;padding:25px 24px 22px}
+ .ai-simple-intro h2{font-size:clamp(38px,7vw,52px)}
+ .ai-simple-sequence{margin-top:18px}
+ .ai-simple-note{padding:14px 24px 18px}
+}
+@media(max-width:490px){
+ .system-items .system-stage{min-height:116px;padding:9px 5px}
+ .system-items .system-stage .symbol{font-size:29px;margin:0 0 16px}
+ .system-items .system-label{font-size:10.5px}
+ .ai-simple-body{padding:22px 18px 18px;gap:19px}
+ .ai-simple-intro p{font-size:14px;line-height:1.58}
+ .ai-example h3{font-size:16px}
+ .ai-example p{font-size:13px;line-height:1.48}
+ .ai-simple-note{padding:13px 18px 17px;font-size:10.5px}
+ .system-diagram p{font-size:12.5px}
+}
+@media print{
+ .micro{font-size:7.5px}
+ .chapter-left p{font-size:8px;line-height:1.4}
+ .employer{font-size:7.2px;margin-bottom:3px}
+ .work-meta{font-size:7.5px}
+ .work-desc{font-size:8.5px;line-height:1.48}
+ .end-grid p{font-size:8.1px;line-height:1.47}
+}
+
+/* Editorial entrance reveal: the moving masthead appears first as the cover wipes down. */
+.entrance{clip-path:inset(0 0 0 0);-webkit-clip-path:inset(0 0 0 0)}
+.entrance.is-exiting{clip-path:inset(100% 0 0 0);-webkit-clip-path:inset(100% 0 0 0);transition:clip-path .7s cubic-bezier(.77,0,.18,1),-webkit-clip-path .7s cubic-bezier(.77,0,.18,1)}
+.entrance.is-exiting .entry-identity,.entrance.is-exiting .entry-bottom{opacity:.45;transform:translateY(8px);transition:opacity .36s ease,transform .48s ease}
+@media(prefers-reduced-motion:reduce){.entrance.is-exiting,.entrance.is-exiting .entry-identity,.entrance.is-exiting .entry-bottom{transition:none!important}}
+
+/* A4 release check: optimize the paper CV for actual printed reading size. */
+@media print{
+ .hero{padding-top:24px;padding-bottom:23px;gap:20px}
+ .hero h1.print-name{font-size:43px}
+ .hero-right h2{font-size:17.5px;line-height:1.13}
+ .hero-right p{font-size:10.6px;line-height:1.54}
+ .chapter{grid-template-columns:130px 1fr;gap:21px;padding-top:30px;padding-bottom:30px}
+ .chapter-left h2{font-size:25px}
+ .chapter-left p{font-size:9.5px;line-height:1.45}
+ .work-entry{gap:18px;padding-top:15px;padding-bottom:16px}
+ .work-entry h3{font-size:16.5px;line-height:1.1}
+ .employer{font-size:8.4px}
+ .work-meta{font-size:8.7px;line-height:1.45}
+ .work-desc{font-size:10.1px;line-height:1.52}
+ .print-related{font-size:9.5px;line-height:1.55;margin-top:11px}
+ .end-grid{padding-top:29px}
+ .end-grid h2{font-size:22px}
+ .end-grid p{font-size:9.8px;line-height:1.53}
+}
+/* Process-study rules: equal columns and connected, consistent strokes. */
+.system-diagram{
+  --process-rule:#829494;
+  border-top-color:var(--process-rule);
+  border-bottom-color:var(--process-rule);
+  display:grid;
+  grid-template-rows:auto auto auto;
+  gap:20px;
+  align-self:center;
+  min-height:0;
+  justify-content:initial;
+}
+.system-items{
+  align-self:center;
+  width:100%;
+  margin:0;
+  border-top:1px solid var(--process-rule);
+  border-bottom:1px solid var(--process-rule);
+}
+.system-items .system-stage{
+  border-right-color:var(--process-rule);
+  padding:14px 12px 16px;
+  min-height:140px;
+}
+.system-items .system-stage:first-child{padding-left:12px}
+.system-items .system-stage:last-child{padding-right:12px}
+.system-diagram p{margin:0;padding-top:15px}
+@media(max-width:730px){
+ .system-diagram{gap:16px}
+ .system-items .system-stage{min-height:130px;padding:12px 8px 13px}
+ .system-items .system-stage:first-child{padding-left:8px}
+ .system-items .system-stage:last-child{padding-right:8px}
+}
+@media(max-width:490px){
+ .system-items .system-stage{min-height:112px;padding:10px 7px 12px}
+ .system-items .system-stage:first-child{padding-left:7px}
+ .system-items .system-stage:last-child{padding-right:7px}
+ .system-diagram p{padding-top:13px}
+}
+</style>
 </head>
-
 <body>
-  <canvas id="bgNodesCanvas"></canvas>
-
-  <div class="container" id="portfolioContainer">
-    <div id="heroSplash">
-      <div class="splash-brand">Isaac Jacob Dajay</div>
-      <div class="splash-sub">Cognitive systems architecture · orchestration · execution governance</div>
-      <div class="splash-divider"></div>
-
-      <div class="scroll-indicator" id="scrollIndicator">
-        <span>Scroll</span>
-        <span class="scroll-indicator-line"></span>
+<a class="skip" href="#cv-content">Skip to experience</a>
+<section class="entrance" id="entrance" aria-label="Portfolio entrance" aria-hidden="false">
+  <div class="entrance-inner">
+    <div class="entry-top"><span class="micro">Personal website / Curriculum Vitae</span><span class="micro">Bacolod City · Philippines</span></div>
+    <div class="entry-main">
+      <div class="entry-identity">
+        <h1 class="entry-name"><span class="entry-line"><span>ISAAC</span> <span>JACOB</span></span><span class="entry-line">DAJAY<span class="entry-period">.</span></span></h1>
+        <p class="entry-formal micro">Sales · Customer Relations · Web &amp; AI Workflows</p>
       </div>
     </div>
-
-    <nav>
-      <div class="brand">Isaac Jacob Dajay</div>
-
-      <div class="nav-right">
-        <button class="contact-btn" id="contactBtn" type="button" aria-expanded="false" aria-controls="contactPopover">
-          Contact
-        </button>
-
-        <div class="contact-popover" id="contactPopover" aria-label="Contact information">
-          <div class="contact-popover-title">Contact</div>
-
-          <div class="contact-row">
-            <div class="contact-info">
-              <span class="contact-type">Email</span>
-              <a class="contact-value" href="mailto:isaacjacobdajay@gmail.com">isaacjacobdajay@gmail.com</a>
-            </div>
-            <button class="copy-btn" type="button" data-copy="isaacjacobdajay@gmail.com">Copy</button>
-          </div>
-
-          <div class="contact-row">
-            <div class="contact-info">
-              <span class="contact-type">Discord</span>
-              <span class="contact-value">house666420</span>
-            </div>
-            <button class="copy-btn" type="button" data-copy="house666420">Copy</button>
-          </div>
-        </div>
-      </div>
-    </nav>
-
-    <div class="hero">
-      <h1>Isaac Jacob Dajay</h1>
-      <div class="title">AI Systems Architect / Cognitive Systems Designer</div>
-      <div class="hero-location">Bacolod City, Philippines</div>
-    </div>
-
-    <div class="methodology fade-item">
-      <div class="label">Methodology</div>
-
-      <p>
-        I design cognitive systems for AI-assisted work — architectures that determine what a model should understand,
-        what context should matter, which methodology should lead, what capabilities actually exist, how execution should
-        be governed, and what state should persist.
-      </p>
-
-      <p>
-        My work spans orchestration, governance, production architecture, context isolation, protocol compilation,
-        evaluation, and execution control. The objective is not to make models more complicated. It is to make them use
-        the <strong>minimum machinery required to produce reliable work.</strong>
-      </p>
-    </div>
-
-    <div class="process fade-item">
-      <div class="process-label">How I work</div>
-
-      <div class="process-grid">
-        <div class="process-step fade-item delay-1">
-          <span class="step-number">01</span>
-          <h4>Diagnose</h4>
-          <p>Understand the actual objective, environment, uncertainty, consequence, and failure surface.</p>
-        </div>
-
-        <div class="process-step fade-item delay-2">
-          <span class="step-number">02</span>
-          <h4>Route</h4>
-          <p>Determine the minimum architecture and cognitive machinery the problem actually requires.</p>
-        </div>
-
-        <div class="process-step fade-item delay-3">
-          <span class="step-number">03</span>
-          <h4>Build</h4>
-          <p>Architect and construct the system, protocol, artifact, or production environment.</p>
-        </div>
-
-        <div class="process-step fade-item delay-4">
-          <span class="step-number">04</span>
-          <h4>Judge</h4>
-          <p>Evaluate independently, govern consequence where necessary, verify outcomes, and refine against use.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="trust-metrics">
-      <div class="item fade-item delay-1"><span class="number">1</span> orchestration kernel</div>
-      <div class="item fade-item delay-2"><span class="number">4</span> specialist systems</div>
-      <div class="item fade-item delay-3"><span class="number">active</span> development</div>
-    </div>
-
-    <section class="core-section">
-      <div class="core-eyebrow">Core system</div>
-
-      <div class="core-system fade-item">
-        <div class="core-system-header">
-          <div class="core-title-row">
-            <div class="core-title-wrap">
-              <h2>MORDRED</h2>
-              <div class="core-subtitle">The Sovereign · Cognitive Orchestration Kernel</div>
-            </div>
-
-            <div class="core-version">v3.1</div>
-          </div>
-
-          <p class="core-description">
-            Model-portable cognitive orchestration architecture for deciding what intelligence a task actually requires —
-            coordinating intent, context, methodology, capability, evaluation, governance, execution, memory, and retirement
-            without running unnecessary machinery.
-          </p>
-
-          <div class="core-principle">
-            <strong>Small at idle.</strong>
-            <span>Powerful under load.</span>
-            <span>Minimum machinery.</span>
-            <span>Maximum intelligence.</span>
-          </div>
-        </div>
-
-        <div class="mordred-artifact-wrap">
-          <div class="mordred-artifact-label">— live orchestration field —</div>
-          <div class="mordred-artifact"><canvas id="behaviourMordred"></canvas></div>
-
-          <div class="route-readout">
-            <span class="route-dot"></span>
-            <span id="mordredRouteText">route: GENERALIST</span>
-          </div>
-        </div>
-
-        <div class="core-facts">
-          <div class="core-fact">
-            <div class="core-fact-label">Routing</div>
-            <div class="core-fact-value">Generalist first; specialist machinery only when justified.</div>
-          </div>
-
-          <div class="core-fact">
-            <div class="core-fact-label">Composition</div>
-            <div class="core-fact-value">One lead with support only where it prevents material failure.</div>
-          </div>
-
-          <div class="core-fact">
-            <div class="core-fact-label">Retirement</div>
-            <div class="core-fact-value">Dead machinery dies when it no longer earns its cost.</div>
-          </div>
-        </div>
-
-        <details class="core-case">
-          <summary>View architecture →</summary>
-
-          <div class="core-case-content">
-            <div class="section-block">
-              <h4>Why I built it</h4>
-              <p>
-                Individual methodologies can become powerful while still leaving a larger problem unresolved: which
-                methodology should be active, what context is valid, how much processing a task deserves, what evidence
-                matters, what capabilities actually exist, and when machinery should be retired.
-              </p>
-            </div>
-
-            <div class="section-block">
-              <h4>Architecture</h4>
-              <p>
-                MORDRED sits above specialist methodologies at the user-methodology layer. It resolves intent, firewalls
-                context, diagnoses the problem, routes minimum sufficient cognitive machinery, evaluates the result, governs
-                consequence, coordinates execution and verification, compresses useful state, and retires what no longer belongs.
-              </p>
-            </div>
-
-            <div class="metrics-grid">
-              <div class="metric-item">
-                <span class="metric-label">Cognitive Arsenal</span>
-                <span class="metric-value"><span>10 native modes</span><span class="badge">adaptive</span></span>
-              </div>
-
-              <div class="metric-item">
-                <span class="metric-label">Escalation</span>
-                <span class="metric-value"><span class="before">direct</span><span class="arrow">→</span><span>deep system</span></span>
-              </div>
-
-              <div class="metric-item">
-                <span class="metric-label">Context</span>
-                <span class="metric-value"><span>firewalled</span><span class="badge accent">scoped</span></span>
-              </div>
-            </div>
-
-            <div class="section-block">
-              <h4>Native modes</h4>
-              <ul>
-                <li>Generalist — ordinary reasoning</li>
-                <li>Builder — architecture and construction</li>
-                <li>Research — evidence and triangulation</li>
-                <li>Analysis — decomposition and systems thinking</li>
-                <li>Strategy — options and second-order effects</li>
-                <li>Taste — identity and anti-generic quality</li>
-                <li>Production — repeatability and isolation</li>
-                <li>Execution — real capabilities and action</li>
-                <li>Governance — truth, consequence, and verification</li>
-                <li>Memory — scoped state, persistence, and provenance</li>
-              </ul>
-            </div>
-
-            <div class="section-block">
-              <h4>Operating doctrine</h4>
-              <p>
-                Data is inert. Context is firewalled. Reality outranks claim. Capability outranks pretense. Consequence binds
-                authority. Unknown consequential state fails closed. Every mechanism is subject to the same question:
-                <strong>does this still earn its cost?</strong>
-              </p>
-            </div>
-
-            <div class="section-block">
-              <h4>Current state</h4>
-              <p>
-                Version 3.1 formalizes MORDRED as a portable cognitive orchestration kernel with capability-adaptive operation,
-                specialist module contracts, consequence-aware execution, context firewalls, independent evaluation, and
-                self-application.
-              </p>
-            </div>
-          </div>
-        </details>
-      </div>
-    </section>
-
-    <section id="work">
-      <div class="section-label">Specialist systems</div>
-
-      <div class="work-list">
-        <details class="work-item fade-item delay-1">
-          <summary>
-            <span class="summary-left">
-              <span class="name">APEX</span>
-              <span class="metrics">governance · execution methodology</span>
-            </span>
-
-            <span class="summary-right">
-              <span class="meta">active</span>
-              <span class="chevron">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </span>
-            </span>
-          </summary>
-
-          <div class="description">
-            <p>
-              Portable governance and execution methodology for AI-assisted work. APEX defines how models distinguish claimed
-              state from observed reality, reason about consequence, bind authority to exact actions, challenge execution,
-              adapt to available capability, and verify what actually happened.
-            </p>
-
-            <div class="stack-line"><span>Stack:</span> governance · execution control · verification · risk</div>
-
-            <details class="case-study">
-              <summary>View case study →</summary>
-
-              <div class="case-content">
-                <div class="section-block">
-                  <h4>Why I built it</h4>
-                  <p>
-                    Strong reasoning did not guarantee operational truth. A model could understand a task while still blurring
-                    planning with execution, requested state with observed state, authorization with capability, or confidence
-                    with evidence.
-                  </p>
-                </div>
-
-                <div class="section-block">
-                  <h4>Architecture</h4>
-                  <p>
-                    APEX separates authority from data, distinguishes epistemic state, classifies actions by consequence, and
-                    governs meaningful work through <strong>UNDERSTAND → BUILD → JUDGE → AUTHORIZE → EXECUTE → VERIFY → RECONCILE.</strong>
-                  </p>
-                </div>
-
-                <div class="metrics-grid">
-                  <div class="metric-item">
-                    <span class="metric-label">Consequence</span>
-                    <span class="metric-value"><span class="before">R0</span><span class="arrow">→</span><span>R3</span><span class="badge">bounded</span></span>
-                  </div>
-
-                  <div class="metric-item">
-                    <span class="metric-label">Operating Modes</span>
-                    <span class="metric-value"><span>governance</span><span class="arrow">/</span><span>methodology</span></span>
-                  </div>
-
-                  <div class="metric-item">
-                    <span class="metric-label">Execution Cycle</span>
-                    <span class="metric-value"><span>7 stages</span><span class="badge warm">verified</span></span>
-                  </div>
-                </div>
-
-                <div class="section-block">
-                  <h4>Deployment</h4>
-                  <p>Used directly inside my own AI-assisted building environments as the governance methodology for meaningful work.</p>
-                </div>
-
-                <div class="section-block">
-                  <h4>Tested against</h4>
-                  <ul>
-                    <li>fresh-context initialization</li>
-                    <li>cross-model portability</li>
-                    <li>host capability differences</li>
-                    <li>unknown consequential context</li>
-                    <li>authorization boundaries</li>
-                    <li>uncertain execution</li>
-                    <li>verification and reconciliation</li>
-                  </ul>
-                </div>
-
-                <div class="behaviour-wrapper">
-                  <div class="behaviour-label">— governed execution field —</div>
-                  <div class="behaviour-container"><canvas id="behaviourApex" width="300" height="400"></canvas></div>
-                </div>
-              </div>
-            </details>
-          </div>
-
-          <div class="deployment">Governance methodology inside the wider cognitive systems stack</div>
-        </details>
-
-        <details class="work-item fade-item delay-2">
-          <summary>
-            <span class="summary-left">
-              <span class="name">BUILDER SYSTEMS</span>
-              <span class="metrics">production runtime · isolation</span>
-            </span>
-
-            <span class="summary-right">
-              <span class="meta">active</span>
-              <span class="chevron">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </span>
-            </span>
-          </summary>
-
-          <div class="description">
-            <p>
-              Production runtime methodology for carrying stable operating rules across AI-assisted projects while preventing
-              temporary job data from becoming permanent authority.
-            </p>
-
-            <div class="stack-line"><span>Stack:</span> production systems · context isolation · resource authority</div>
-
-            <details class="case-study">
-              <summary>View case study →</summary>
-
-              <div class="case-content">
-                <div class="section-block">
-                  <h4>Why I built it</h4>
-                  <p>Multiple production workflows exposed contamination from old assumptions, previous-job resources, temporary instructions, and behavioral drift.</p>
-                </div>
-
-                <div class="section-block">
-                  <h4>Architecture</h4>
-                  <p>BUILDER SYSTEMS separates persistent production protocol from temporary job state. Each current job receives its own resource boundary, authority, and working context.</p>
-                  <p><strong>protocol persists. job data dies.</strong></p>
-                </div>
-
-                <div class="metrics-grid">
-                  <div class="metric-item">
-                    <span class="metric-label">Context</span>
-                    <span class="metric-value"><span class="before">accumulated</span><span class="arrow">→</span><span>isolated</span></span>
-                  </div>
-
-                  <div class="metric-item">
-                    <span class="metric-label">Resources</span>
-                    <span class="metric-value"><span class="before">assumed</span><span class="arrow">→</span><span>classified</span></span>
-                  </div>
-
-                  <div class="metric-item">
-                    <span class="metric-label">Job State</span>
-                    <span class="metric-value"><span class="before">persistent</span><span class="arrow">→</span><span>disposable</span></span>
-                  </div>
-                </div>
-
-                <div class="section-block">
-                  <h4>Tested against</h4>
-                  <ul>
-                    <li>fresh-chat deployment</li>
-                    <li>new-job boundaries</li>
-                    <li>stale instructions</li>
-                    <li>unrelated supplied resources</li>
-                    <li>output-mode drift</li>
-                    <li>temporary job data attempting to persist</li>
-                  </ul>
-                </div>
-
-                <div class="behaviour-wrapper">
-                  <div class="behaviour-label">— isolation behaviour —</div>
-                  <div class="behaviour-container"><canvas id="behaviourBuilder" width="300" height="400"></canvas></div>
-                </div>
-              </div>
-            </details>
-          </div>
-
-          <div class="deployment">Production isolation layer across multi-project AI workflows</div>
-        </details>
-
-        <details class="work-item fade-item delay-3">
-          <summary>
-            <span class="summary-left">
-              <span class="name">SYSTEMS ARCHITECTURE</span>
-              <span class="metrics">methodology · architecture</span>
-            </span>
-
-            <span class="summary-right">
-              <span class="meta">canonical</span>
-              <span class="chevron">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </span>
-            </span>
-          </summary>
-
-          <div class="description">
-            <p>
-              Architectural methodology for diagnosing AI-assisted production environments before implementation. Separates permanent system logic from temporary job state, defines component roles, classifies resource authority, and determines how independent systems should interact.
-            </p>
-
-            <div class="stack-line"><span>Stack:</span> diagnosis · architecture · boundaries · handoffs</div>
-
-            <details class="case-study">
-              <summary>View case study →</summary>
-
-              <div class="case-content">
-                <div class="section-block">
-                  <h4>Why I built it</h4>
-                  <p>Better prompts could not solve unclear component boundaries, mixed responsibilities, undefined authority, or monolithic system growth.</p>
-                </div>
-
-                <div class="section-block">
-                  <h4>Architecture</h4>
-                  <p>SYSTEMS ARCHITECTURE starts before compilation. It diagnoses the environment, separates permanent protocol from temporary material, defines one dominant purpose per system, and establishes handoffs between components.</p>
-                </div>
-
-                <div class="metrics-grid">
-                  <div class="metric-item">
-                    <span class="metric-label">Starting Point</span>
-                    <span class="metric-value"><span class="before">prompt</span><span class="arrow">→</span><span>system</span></span>
-                  </div>
-
-                  <div class="metric-item">
-                    <span class="metric-label">Components</span>
-                    <span class="metric-value"><span class="before">mixed</span><span class="arrow">→</span><span>bounded</span></span>
-                  </div>
-
-                  <div class="metric-item">
-                    <span class="metric-label">Handoffs</span>
-                    <span class="metric-value"><span class="before">implicit</span><span class="arrow">→</span><span>explicit</span></span>
-                  </div>
-                </div>
-
-                <div class="section-block">
-                  <h4>Tested against</h4>
-                  <ul>
-                    <li>overlapping system responsibilities</li>
-                    <li>temporary resources treated as permanent rules</li>
-                    <li>monolithic prompt growth</li>
-                    <li>unclear system handoffs</li>
-                    <li>multiple output modes inside one system</li>
-                  </ul>
-                </div>
-
-                <div class="behaviour-wrapper">
-                  <div class="behaviour-label">— architecture emerging —</div>
-                  <div class="behaviour-container"><canvas id="behaviourArchitecture" width="300" height="400"></canvas></div>
-                </div>
-              </div>
-            </details>
-          </div>
-
-          <div class="deployment">Design layer behind reusable and project-specific AI systems</div>
-        </details>
-
-        <details class="work-item fade-item delay-4">
-          <summary>
-            <span class="summary-left">
-              <span class="name">PROTOCOL COMPILER</span>
-              <span class="metrics">architecture → execution</span>
-            </span>
-
-            <span class="summary-right">
-              <span class="meta">active</span>
-              <span class="chevron">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </span>
-            </span>
-          </summary>
-
-          <div class="description">
-            <p>
-              Translation layer between system architecture and executable model instructions. Converts architectural decisions into portable master protocols with explicit output modes, resource authority, failure behavior, context isolation, and operational boundaries.
-            </p>
-
-            <div class="stack-line"><span>Stack:</span> compilation · master prompts · execution constraints</div>
-
-            <details class="case-study">
-              <summary>View case study →</summary>
-
-              <div class="case-content">
-                <div class="section-block">
-                  <h4>Why I built it</h4>
-                  <p>Architecture alone does not execute. I needed a reliable translation layer between a system specification and the instructions a model receives in a fresh environment.</p>
-                </div>
-
-                <div class="section-block">
-                  <h4>Architecture</h4>
-                  <p>PROTOCOL COMPILER converts architectural decisions into executable master protocols, locking dominant purpose, allowed inputs and outputs, resource authority, and failure behavior.</p>
-                </div>
-
-                <div class="metrics-grid">
-                  <div class="metric-item">
-                    <span class="metric-label">Input</span>
-                    <span class="metric-value"><span>architecture</span><span class="badge">structured</span></span>
-                  </div>
-
-                  <div class="metric-item">
-                    <span class="metric-label">Compile</span>
-                    <span class="metric-value"><span>protocol</span><span class="badge accent">locked</span></span>
-                  </div>
-
-                  <div class="metric-item">
-                    <span class="metric-label">Output</span>
-                    <span class="metric-value"><span>executable</span><span class="badge warm">portable</span></span>
-                  </div>
-                </div>
-
-                <div class="section-block">
-                  <h4>Tested against</h4>
-                  <ul>
-                    <li>fresh-context portability</li>
-                    <li>missing source information</li>
-                    <li>conflicting resources</li>
-                    <li>output-mode drift</li>
-                    <li>unsupported assumptions</li>
-                    <li>scope expansion beyond system purpose</li>
-                  </ul>
-                </div>
-
-                <div class="behaviour-wrapper">
-                  <div class="behaviour-label">— continuous compilation —</div>
-                  <div class="behaviour-container"><canvas id="behaviourCompiler" width="300" height="400"></canvas></div>
-                </div>
-              </div>
-            </details>
-          </div>
-
-          <div class="deployment">Compiles architecture into portable production protocols</div>
-        </details>
-      </div>
-    </section>
-
-    <div class="clients-section fade-item">
-      <div class="clients-label">Applied through</div>
-      <div class="clients-list">
-        <span>Production Systems</span>
-        <span>Creative Workflows</span>
-        <span>Web Builds</span>
-        <span>AI-Assisted Operations</span>
-      </div>
-    </div>
-
-    <div class="now-section fade-item">
-      <div class="label">Now</div>
-
-      <p><strong>MORDRED v3.1</strong> — developing the cognitive orchestration layer above my specialist methodologies: context firewalls, routing, escalation, module admission, evaluation, consequence governance, memory, and machinery retirement.</p>
-      <p><strong>APEX LITE</strong> — distilling the governance system into a lighter portable edition while preserving consequence handling, capability honesty, execution discipline, and verification.</p>
-      <p><strong>BUILDER SYSTEMS</strong> — refining production isolation, resource authority, and reusable execution patterns across active AI-assisted workflows.</p>
-      <p><strong>Protocol Compiler</strong> — developing the translation layer between system architecture and portable executable instructions.</p>
-      <p><strong>Systems Architecture</strong> — formalizing the broader method used to diagnose and structure AI production environments.</p>
-
-      <div class="now-tags">
-        <span>MORDRED</span>
-        <span>APEX LITE</span>
-        <span>BUILDER SYSTEMS</span>
-        <span>Protocol Compiler</span>
-        <span>Systems Architecture</span>
-      </div>
-    </div>
-
-    <div class="live-feed-section fade-item">
-      <div class="live-feed-label">— Live feed of development —</div>
-      <div class="live-feed-box"><canvas id="liveFeedCanvas"></canvas></div>
-
-      <div class="legend">
-        <span class="legend-item"><span class="dot" style="background:#0f766e;"></span>Orchestration</span>
-        <span class="legend-item"><span class="dot" style="background:#3b82f6;"></span>Protocol</span>
-        <span class="legend-item"><span class="dot" style="background:#10b981;"></span>Job</span>
-        <span class="legend-item"><span class="dot" style="background:#f59e0b;"></span>Data</span>
-        <span class="legend-item"><span class="dot" style="background:#ef4444;"></span>Output</span>
-        <span class="legend-item"><span class="dot" style="background:#8b5cf6;"></span>Architecture</span>
-        <span class="legend-item"><span class="dot" style="background:#f97316;"></span>Fidelity</span>
-        <span class="legend-item"><span class="dot" style="background:#6b7280;"></span>Runtime</span>
-        <span class="legend-item"><span class="dot" style="background:#a78b6b;"></span>Compiler</span>
-      </div>
-    </div>
-
-    <div class="connect-section fade-item">
-      <div class="connect-header">
-        <div class="connect-label">Connect</div>
-
-        <div class="availability">
-          <span class="status-dot"></span>
-          <span>Available for selected engagements</span>
-        </div>
-      </div>
-
-      <div class="connect-sheet">
-        <div class="connect-row">
-          <div class="connect-type">Email</div>
-          <a class="connect-value" href="mailto:isaacjacobdajay@gmail.com">isaacjacobdajay@gmail.com</a>
-          <button class="copy-btn" type="button" data-copy="isaacjacobdajay@gmail.com">Copy</button>
-        </div>
-
-        <div class="connect-row">
-          <div class="connect-type">Discord</div>
-          <div class="connect-value">house666420</div>
-          <button class="copy-btn" type="button" data-copy="house666420">Copy</button>
-        </div>
-      </div>
-    </div>
-
-    <footer>Isaac Jacob Dajay · 2026</footer>
+    <div class="entry-bottom"><p>Customer-facing experience and independent digital work. A concise record of the work, the tools, and the thinking behind them.</p><a class="action" id="enter-site" href="#site">VIEW MY CV <span aria-hidden="true">↗</span></a></div>
   </div>
-
-  <script>
-    (function () {
-      'use strict';
-
-      var TYPE_COLORS = [
-        '#0f766e',
-        '#3b82f6',
-        '#10b981',
-        '#f59e0b',
-        '#ef4444',
-        '#8b5cf6',
-        '#f97316',
-        '#6b7280',
-        '#a78b6b'
-      ];
-
-      var NEUTRALS = [
-        '#87827b',
-        '#77736d',
-        '#696965',
-        '#5d735f',
-        '#756b61',
-        '#807870',
-        '#686863'
-      ];
-
-      function randomFrom(arr) {
-        return arr[Math.floor(Math.random() * arr.length)];
-      }
-
-      function clamp(value, min, max) {
-        return Math.max(min, Math.min(max, value));
-      }
-
-      function rand(min, max) {
-        return min + Math.random() * (max - min);
-      }
-
-      function isMobile() {
-        return window.innerWidth <= 700;
-      }
-
-      function distance(a, b) {
-        var dx = a.x - b.x;
-        var dy = a.y - b.y;
-        return Math.sqrt(dx * dx + dy * dy);
-      }
-
-      function keepInside(node, width, height, margin) {
-        if (node.x < margin) {
-          node.x = margin;
-          node.vx = Math.abs(node.vx);
-        }
-
-        if (node.x > width - margin) {
-          node.x = width - margin;
-          node.vx = -Math.abs(node.vx);
-        }
-
-        if (node.y < margin) {
-          node.y = margin;
-          node.vy = Math.abs(node.vy);
-        }
-
-        if (node.y > height - margin) {
-          node.y = height - margin;
-          node.vy = -Math.abs(node.vy);
-        }
-      }
-
-      function drawGlowNode(ctx, node, alpha, glowScale) {
-        var radius = node.radius;
-        var glow = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, radius * glowScale);
-
-        glow.addColorStop(0, node.color);
-        glow.addColorStop(1, 'transparent');
-
-        ctx.fillStyle = glow;
-        ctx.globalAlpha = alpha * 0.12;
-        ctx.beginPath();
-        ctx.arc(node.x, node.y, radius * glowScale, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.globalAlpha = 1;
-        ctx.beginPath();
-        ctx.arc(node.x, node.y, radius, 0, Math.PI * 2);
-        ctx.fillStyle = node.color;
-        ctx.globalAlpha = alpha;
-        ctx.fill();
-        ctx.globalAlpha = 1;
-      }
-
-      function resizeCanvasToParent(canvas, ctx) {
-        var rect = canvas.parentElement.getBoundingClientRect();
-        var dpr = Math.min(window.devicePixelRatio || 1, 2);
-        var width = Math.max(1, rect.width);
-        var height = Math.max(1, rect.height);
-
-        canvas.width = Math.floor(width * dpr);
-        canvas.height = Math.floor(height * dpr);
-        canvas.style.width = width + 'px';
-        canvas.style.height = height + 'px';
-
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-        return { width: width, height: height };
-      }
-
-      /* CONTACT */
-      var contactBtn = document.getElementById('contactBtn');
-      var contactPopover = document.getElementById('contactPopover');
-
-      function closeContact() {
-        contactPopover.classList.remove('active');
-        contactBtn.setAttribute('aria-expanded', 'false');
-      }
-
-      contactBtn.addEventListener('click', function (event) {
-        event.stopPropagation();
-        var open = contactPopover.classList.contains('active');
-
-        if (open) {
-          closeContact();
-        } else {
-          contactPopover.classList.add('active');
-          contactBtn.setAttribute('aria-expanded', 'true');
-        }
-      });
-
-      contactPopover.addEventListener('click', function (event) {
-        event.stopPropagation();
-      });
-
-      document.addEventListener('click', closeContact);
-      document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') closeContact();
-      });
-
-      function fallbackCopy(text) {
-        var textarea = document.createElement('textarea');
-        textarea.value = text;
-        textarea.style.position = 'fixed';
-        textarea.style.opacity = '0';
-        document.body.appendChild(textarea);
-        textarea.select();
-
-        try { document.execCommand('copy'); } catch (error) {}
-        document.body.removeChild(textarea);
-      }
-
-      document.querySelectorAll('.copy-btn').forEach(function (button) {
-        button.addEventListener('click', function () {
-          var text = button.getAttribute('data-copy');
-          var original = button.textContent;
-
-          function complete() {
-            button.textContent = 'Copied';
-            setTimeout(function () { button.textContent = original; }, 1300);
-          }
-
-          if (navigator.clipboard && window.isSecureContext) {
-            navigator.clipboard.writeText(text).then(complete).catch(function () {
-              fallbackCopy(text);
-              complete();
-            });
-          } else {
-            fallbackCopy(text);
-            complete();
-          }
-        });
-      });
-
-      /* ENTRANCE DEPTH FIELD */
-      var bgCanvas = document.getElementById('bgNodesCanvas');
-      var bgCtx = bgCanvas.getContext('2d');
-      var bgW = 0;
-      var bgH = 0;
-      var depthNodes = [];
-      var lastDepthTime = performance.now();
-      var previousEntranceMode = isMobile();
-
-      function resizeBackground() {
-        var dpr = Math.min(window.devicePixelRatio || 1, 2);
-        bgW = window.innerWidth;
-        bgH = window.innerHeight;
-
-        bgCanvas.width = Math.floor(bgW * dpr);
-        bgCanvas.height = Math.floor(bgH * dpr);
-        bgCanvas.style.width = bgW + 'px';
-        bgCanvas.style.height = bgH + 'px';
-
-        bgCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      }
-
-      function entranceNodeCount() {
-        return isMobile() ? 10 : 12;
-      }
-
-      function randomEntrancePosition(near) {
-        var mobile = isMobile();
-
-        if (near) {
-          var side = Math.floor(Math.random() * 4);
-          var x = rand(-0.35, 0.35);
-          var y = rand(-0.3, 0.3);
-          var edge = mobile ? rand(0.48, 0.82) : rand(0.9, 1.35);
-
-          if (side === 0) x = -edge;
-          if (side === 1) x = edge;
-          if (side === 2) y = -edge;
-          if (side === 3) y = edge;
-
-          return { x: x, y: y };
-        }
-
-        return {
-          x: rand(-1, 1),
-          y: rand(-0.8, 0.8)
-        };
-      }
-
-      function spawnDepthNode(node, initial, index) {
-        var mobile = isMobile();
-        var nearCount = mobile ? 3 : 2;
-        var mediumEnd = 6;
-        var near = false;
-
-        if (initial) {
-          if (index < nearCount) {
-            near = true;
-            node.z = mobile ? rand(0.72, 1.16) : rand(0.55, 1.2);
-          } else if (index < mediumEnd) {
-            node.z = mobile ? rand(1.3, 2.9) : rand(1.35, 3.25);
-          } else {
-            node.z = mobile ? rand(3, 6.2) : rand(3.3, 6.5);
-          }
-        } else {
-          node.z = mobile ? rand(4.8, 7) : rand(5, 7.6);
-        }
-
-        var p = randomEntrancePosition(near);
-        node.x = p.x;
-        node.y = p.y;
-
-        node.baseSize = near
-          ? (mobile ? rand(14, 27) : rand(14, 32))
-          : (mobile ? rand(10, 22) : rand(9, 29));
-
-        node.speed = mobile ? rand(0.06, 0.13) : rand(0.075, 0.18);
-        node.color = Math.random() < 0.7 ? randomFrom(TYPE_COLORS) : randomFrom(NEUTRALS);
-        node.opacity = near
-          ? (mobile ? rand(0.42, 0.56) : rand(0.34, 0.5))
-          : rand(0.15, 0.28);
-
-        node.phase = rand(0, Math.PI * 2);
-        node.phaseSpeed = rand(0.1, 0.24);
-        node.driftAngle = rand(0, Math.PI * 2);
-        node.driftStrength = rand(0.0008, 0.003);
-      }
-
-      function initDepthField() {
-        depthNodes = [];
-
-        for (var i = 0; i < entranceNodeCount(); i++) {
-          var node = {};
-          spawnDepthNode(node, true, i);
-          depthNodes.push(node);
-        }
-      }
-
-      function projectDepthNode(node) {
-        var perspective = 1 / Math.max(node.z, 0.12);
-        var field = isMobile() ? 0.31 : 0.34;
-
-        return {
-          x: bgW / 2 + node.x * bgW * field * perspective,
-          y: bgH / 2 + node.y * bgH * field * perspective
-        };
-      }
-
-      function projectedRadius(node) {
-        var mobile = isMobile();
-        var factor = Math.pow(6 / Math.max(node.z, 0.16), mobile ? 1.16 : 1.22);
-
-        return clamp(
-          node.baseSize * factor,
-          4,
-          mobile
-            ? Math.min(bgW * 1.15, bgH * 0.72)
-            : Math.max(bgW, bgH) * 0.72
-        );
-      }
-
-      function drawAtmosphericBody(ctx, node, point, radius) {
-        var mobile = isMobile();
-        var closeFactor = clamp(1 - node.z / 6.5, 0, 1);
-        var giant = clamp((radius - 110) / 400, 0, 1);
-
-        var outerRadius = radius * (
-          mobile
-            ? 1.10
-            : (1.08 + giant * 0.10)
-        );
-
-        var outer = ctx.createRadialGradient(
-          point.x,
-          point.y,
-          radius * 0.12,
-          point.x,
-          point.y,
-          outerRadius
-        );
-
-        outer.addColorStop(0, node.color);
-        outer.addColorStop(mobile ? 0.72 : 0.74, node.color);
-        outer.addColorStop(1, 'rgba(255,255,255,0)');
-
-        ctx.fillStyle = outer;
-        ctx.globalAlpha = node.opacity * (
-          mobile
-            ? (0.08 + closeFactor * 0.11)
-            : (0.045 + closeFactor * 0.09)
-        );
-
-        ctx.beginPath();
-        ctx.arc(point.x, point.y, outerRadius, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.globalAlpha = 1;
-
-        var inner = ctx.createRadialGradient(
-          point.x - radius * 0.08,
-          point.y - radius * 0.08,
-          radius * 0.02,
-          point.x,
-          point.y,
-          radius
-        );
-
-        if (mobile) {
-          inner.addColorStop(0, node.color);
-          inner.addColorStop(0.68, node.color);
-          inner.addColorStop(0.86, node.color);
-          inner.addColorStop(1, 'rgba(255,255,255,0)');
-        } else {
-          inner.addColorStop(0, node.color);
-          inner.addColorStop(0.72, node.color);
-          inner.addColorStop(0.91, node.color);
-          inner.addColorStop(1, 'rgba(255,255,255,0)');
-        }
-
-        ctx.fillStyle = inner;
-        ctx.globalAlpha = clamp(
-          node.opacity * (mobile ? 0.46 : 0.72) * (
-            1 - giant * (mobile ? 0.45 : 0.14)
-          ),
-          mobile ? 0.08 : 0.07,
-          mobile ? 0.34 : 0.27
-        );
-
-        ctx.beginPath();
-        ctx.arc(point.x, point.y, radius, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.globalAlpha = 1;
-      }
-
-      function animateDepthField(now) {
-        var dt = Math.min((now - lastDepthTime) / 1000, 0.05);
-        lastDepthTime = now;
-
-        bgCtx.clearRect(0, 0, bgW, bgH);
-        var projected = [];
-
-        depthNodes.forEach(function (node, index) {
-          node.phase += node.phaseSpeed * dt;
-
-          var drift = node.driftAngle + Math.sin(node.phase) * 0.55;
-          node.x += Math.cos(drift) * node.driftStrength * dt;
-          node.y += Math.sin(drift) * node.driftStrength * dt;
-          node.z -= node.speed * dt;
-
-          if (node.z < 0.15) spawnDepthNode(node, false, index);
-          projected.push(projectDepthNode(node));
-        });
-
-        for (var a = 0; a < depthNodes.length; a++) {
-          if (depthNodes[a].z < 1.4) continue;
-
-          for (var b = a + 1; b < depthNodes.length; b++) {
-            if (depthNodes[b].z < 1.4) continue;
-            if (Math.abs(depthNodes[a].z - depthNodes[b].z) > 0.85) continue;
-
-            var dx = projected[a].x - projected[b].x;
-            var dy = projected[a].y - projected[b].y;
-            var d = Math.sqrt(dx * dx + dy * dy);
-            var threshold = isMobile() ? 160 : 230;
-
-            if (d < threshold) {
-              bgCtx.strokeStyle = 'rgba(75,75,73,' + (1 - d / threshold) * 0.035 + ')';
-              bgCtx.lineWidth = 0.45;
-              bgCtx.beginPath();
-              bgCtx.moveTo(projected[a].x, projected[a].y);
-              bgCtx.lineTo(projected[b].x, projected[b].y);
-              bgCtx.stroke();
-            }
-          }
-        }
-
-        var order = depthNodes.map(function (node, index) {
-          return { node: node, point: projected[index] };
-        }).sort(function (x, y) {
-          return y.node.z - x.node.z;
-        });
-
-        order.forEach(function (entry) {
-          var radius = projectedRadius(entry.node) * (1 + 0.02 * Math.sin(entry.node.phase));
-          drawAtmosphericBody(bgCtx, entry.node, entry.point, radius);
-        });
-
-        requestAnimationFrame(animateDepthField);
-      }
-
-      resizeBackground();
-      initDepthField();
-
-      requestAnimationFrame(function (time) {
-        lastDepthTime = time;
-        animateDepthField(time);
-      });
-
-      /* SCROLL */
-      var container = document.getElementById('portfolioContainer');
-      var scrollIndicator = document.getElementById('scrollIndicator');
-
-      function updateScrollState() {
-        var progress = clamp(window.scrollY / (window.innerHeight * 0.9), 0, 1);
-
-        bgCanvas.style.opacity = String((isMobile() ? 0.95 : 0.9) * (1 - progress));
-
-        bgCanvas.style.filter = isMobile()
-          ? (progress > 0.02 ? 'blur(' + progress * 3.5 + 'px)' : 'none')
-          : ('blur(' + (0.2 + progress * 5) + 'px)');
-
-        var paper = isMobile() ? '248,248,245' : '247,247,244';
-        container.style.background = 'rgba(' + paper + ',' + progress * 0.94 + ')';
-
-        var blurAmount = progress * (isMobile() ? 10 : 16);
-        container.style.backdropFilter = 'blur(' + blurAmount + 'px)';
-        container.style.webkitBackdropFilter = 'blur(' + blurAmount + 'px)';
-
-        var cue = clamp(window.scrollY / 120, 0, 1);
-        scrollIndicator.style.opacity = String(0.9 * (1 - cue));
-        scrollIndicator.style.transform = 'translateX(-50%) translateY(' + cue * 8 + 'px)';
-      }
-
-      window.addEventListener('scroll', updateScrollState, { passive: true });
-
-      window.addEventListener('resize', function () {
-        resizeBackground();
-        var mode = isMobile();
-
-        if (mode !== previousEntranceMode) {
-          previousEntranceMode = mode;
-          initDepthField();
-        }
-      });
-
-      updateScrollState();
-
-      /* REVEALS */
-      var fadeItems = document.querySelectorAll('.fade-item');
-
-      if ('IntersectionObserver' in window) {
-        var observer = new IntersectionObserver(function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-              entry.target.style.opacity = '1';
-              entry.target.style.animationPlayState = 'running';
-            }
-          });
-        }, {
-          threshold: 0.08,
-          rootMargin: '0px 0px -20px 0px'
-        });
-
-        fadeItems.forEach(function (item) {
-          item.style.animationPlayState = 'paused';
-          observer.observe(item);
-        });
-      } else {
-        fadeItems.forEach(function (item) {
-          item.style.opacity = '1';
-        });
-      }
-
-      /* MORDRED */
-      var mordredCanvas = document.getElementById('behaviourMordred');
-      var mordredCtx = mordredCanvas.getContext('2d');
-      var mordredRouteText = document.getElementById('mordredRouteText');
-      var mw = 0;
-      var mh = 0;
-
-      var mordredCore = {
-        x: 0,
-        y: 0,
-        vx: 0.01,
-        vy: -0.008,
-        radius: 17,
-        color: '#0f766e',
-        phase: rand(0, Math.PI * 2)
-      };
-
-      var moduleDefinitions = [
-        ['GENERALIST', '#6b7280'],
-        ['BUILDER', '#3b82f6'],
-        ['RESEARCH', '#10b981'],
-        ['ANALYSIS', '#8b5cf6'],
-        ['STRATEGY', '#f59e0b'],
-        ['TASTE', '#ef4444'],
-        ['PRODUCTION', '#f97316'],
-        ['EXECUTION', '#77736d'],
-        ['GOVERNANCE', '#a78b6b'],
-        ['MEMORY', '#5d735f']
-      ];
-
-      var mordredModules = [];
-
-      var mordredSignals = [
-        { name: 'direct', lead: 'GENERALIST', support: [] },
-        { name: 'system build', lead: 'BUILDER', support: ['ANALYSIS'] },
-        { name: 'creative build', lead: 'BUILDER', support: ['TASTE'] },
-        { name: 'deep research', lead: 'RESEARCH', support: ['ANALYSIS'] },
-        { name: 'strategy', lead: 'STRATEGY', support: ['RESEARCH'] },
-        { name: 'production', lead: 'PRODUCTION', support: [] },
-        { name: 'governed execution', lead: 'EXECUTION', support: ['GOVERNANCE'] },
-        { name: 'memory compile', lead: 'MEMORY', support: [] }
-      ];
-
-      var activeSignal = mordredSignals[0];
-      var nextSignalChange = performance.now() + 4000;
-      var contextFragments = [];
-
-      function initMordredModules() {
-        mordredModules = [];
-        var mobile = isMobile();
-
-        moduleDefinitions.forEach(function (definition, index) {
-          var angle = (index / moduleDefinitions.length) * Math.PI * 2 + rand(-0.17, 0.17);
-          var rx = mw * (mobile ? rand(0.28, 0.34) : rand(0.27, 0.35));
-          var ry = mh * (mobile ? rand(0.26, 0.35) : rand(0.26, 0.37));
-
-          mordredModules.push({
-            name: definition[0],
-            color: definition[1],
-            x: mw / 2 + Math.cos(angle) * rx,
-            y: mh / 2 + Math.sin(angle) * ry,
-            vx: rand(-0.05, 0.05),
-            vy: rand(-0.05, 0.05),
-            radius: mobile ? rand(5.5, 8.5) : rand(7, 10.5),
-            phase: rand(0, Math.PI * 2),
-            strength: 0
-          });
-        });
-      }
-
-      function resizeMordred() {
-        var size = resizeCanvasToParent(mordredCanvas, mordredCtx);
-        mw = size.width;
-        mh = size.height;
-        mordredCore.x = mw / 2;
-        mordredCore.y = mh / 2;
-        initMordredModules();
-      }
-
-      function spawnContextFragment() {
-        var side = Math.floor(Math.random() * 4);
-
-        var fragment = {
-          x: 0,
-          y: 0,
-          vx: 0,
-          vy: 0,
-          radius: rand(2.2, 4),
-          trusted: Math.random() > 0.38,
-          alpha: rand(0.35, 0.68),
-          color: Math.random() > 0.5 ? '#a78b6b' : '#6b7280',
-          age: 0
-        };
-
-        if (side === 0) { fragment.x = -10; fragment.y = rand(0, mh); }
-        if (side === 1) { fragment.x = mw + 10; fragment.y = rand(0, mh); }
-        if (side === 2) { fragment.x = rand(0, mw); fragment.y = -10; }
-        if (side === 3) { fragment.x = rand(0, mw); fragment.y = mh + 10; }
-
-        contextFragments.push(fragment);
-      }
-
-      function chooseMordredSignal(now) {
-        if (now < nextSignalChange) return;
-
-        activeSignal = randomFrom(mordredSignals);
-        nextSignalChange = now + rand(5000, 10500);
-
-        var route = activeSignal.lead;
-        if (activeSignal.support.length) route += ' + ' + activeSignal.support.join(' + ');
-
-        mordredRouteText.textContent = 'signal: ' + activeSignal.name + ' · route: ' + route;
-      }
-
-      function animateMordred(now) {
-        mordredCtx.clearRect(0, 0, mw, mh);
-        chooseMordredSignal(now);
-
-        mordredCore.phase += 0.0022;
-        mordredCore.vx += Math.cos(mordredCore.phase) * 0.00022;
-        mordredCore.vy += Math.sin(mordredCore.phase * 0.82) * 0.00022;
-        mordredCore.vx *= 0.998;
-        mordredCore.vy *= 0.998;
-        mordredCore.x += mordredCore.vx;
-        mordredCore.y += mordredCore.vy;
-        mordredCore.x += (mw / 2 - mordredCore.x) * 0.0008;
-        mordredCore.y += (mh / 2 - mordredCore.y) * 0.0008;
-
-        var firewallRadius = Math.min(mw, mh) * (isMobile() ? 0.19 : 0.18);
-
-        mordredCtx.strokeStyle = 'rgba(15,118,110,0.12)';
-        mordredCtx.lineWidth = 0.8;
-        mordredCtx.setLineDash([5, 8]);
-        mordredCtx.beginPath();
-        mordredCtx.arc(mordredCore.x, mordredCore.y, firewallRadius + Math.sin(now / 1500) * 2, 0, Math.PI * 2);
-        mordredCtx.stroke();
-        mordredCtx.setLineDash([]);
-
-        mordredModules.forEach(function (module, index) {
-          module.phase += 0.0018 + index * 0.00004;
-          module.vx += Math.cos(module.phase + index) * 0.00048;
-          module.vy += Math.sin(module.phase * 0.9 + index) * 0.00048;
-
-          var dx = module.x - mordredCore.x;
-          var dy = module.y - mordredCore.y;
-          var d = Math.sqrt(dx * dx + dy * dy) || 1;
-          var desired = Math.min(mw, mh) * (0.34 + (index % 3) * 0.025);
-
-          module.vx += dx / d * (desired - d) * -0.00002;
-          module.vy += dy / d * (desired - d) * -0.00002;
-
-          mordredModules.forEach(function (other, otherIndex) {
-            if (index === otherIndex) return;
-
-            var ox = module.x - other.x;
-            var oy = module.y - other.y;
-            var od = Math.sqrt(ox * ox + oy * oy) || 1;
-            var minimum = isMobile() ? 28 : 42;
-
-            if (od < minimum) {
-              var repel = (minimum - od) * 0.00014;
-              module.vx += ox / od * repel;
-              module.vy += oy / od * repel;
-            }
-          });
-
-          module.vx *= 0.997;
-          module.vy *= 0.997;
-          module.x += module.vx;
-          module.y += module.vy;
-
-          keepInside(module, mw, mh, isMobile() ? 18 : 28);
-
-          var isLead = module.name === activeSignal.lead;
-          var isSupport = activeSignal.support.indexOf(module.name) !== -1;
-          var targetStrength = isLead ? 1 : (isSupport ? 0.62 : 0);
-
-          module.strength += (targetStrength - module.strength) * 0.025;
-        });
-
-        mordredModules.forEach(function (module) {
-          if (module.strength <= 0.02) return;
-
-          mordredCtx.strokeStyle = 'rgba(65,65,65,' + (0.07 + module.strength * 0.27) + ')';
-          mordredCtx.lineWidth = 0.55 + module.strength * 0.65;
-          mordredCtx.beginPath();
-          mordredCtx.moveTo(mordredCore.x, mordredCore.y);
-          mordredCtx.lineTo(module.x, module.y);
-          mordredCtx.stroke();
-        });
-
-        if (contextFragments.length < (isMobile() ? 5 : 8) && Math.random() < 0.012) {
-          spawnContextFragment();
-        }
-
-        contextFragments.forEach(function (fragment) {
-          fragment.age += 1;
-
-          var dx = mordredCore.x - fragment.x;
-          var dy = mordredCore.y - fragment.y;
-          var d = Math.sqrt(dx * dx + dy * dy) || 1;
-
-          if (fragment.trusted) {
-            if (d > firewallRadius * 0.62) {
-              fragment.vx += dx / d * 0.003;
-              fragment.vy += dy / d * 0.003;
-            } else {
-              fragment.vx += -dy / d * 0.002;
-              fragment.vy += dx / d * 0.002;
-              fragment.alpha *= 0.994;
-            }
-          } else {
-            if (d < firewallRadius * 1.08) {
-              fragment.vx += -dx / d * 0.012;
-              fragment.vy += -dy / d * 0.012;
-              fragment.alpha *= 0.985;
-            } else {
-              fragment.vx += dx / d * 0.0014;
-              fragment.vy += dy / d * 0.0014;
-            }
-          }
-
-          fragment.vx += rand(-0.0008, 0.0008);
-          fragment.vy += rand(-0.0008, 0.0008);
-          fragment.vx *= 0.992;
-          fragment.vy *= 0.992;
-          fragment.x += fragment.vx;
-          fragment.y += fragment.vy;
-
-          drawGlowNode(mordredCtx, fragment, fragment.alpha, 2.4);
-        });
-
-        contextFragments = contextFragments.filter(function (fragment) {
-          return fragment.alpha > 0.025 && fragment.age < 1800;
-        });
-
-        mordredModules.forEach(function (module) {
-          var alpha = 0.24 + module.strength * 0.6;
-          var radius = module.radius * (1 + module.strength * 0.24 + 0.04 * Math.sin(module.phase));
-
-          drawGlowNode(mordredCtx, {
-            x: module.x,
-            y: module.y,
-            radius: radius,
-            color: module.color
-          }, alpha, 3);
-
-          mordredCtx.font = isMobile() ? '500 6.5px Inter, sans-serif' : '500 8px Inter, sans-serif';
-          mordredCtx.fillStyle = 'rgba(70,70,68,' + (0.32 + module.strength * 0.5) + ')';
-          mordredCtx.textAlign = 'center';
-          mordredCtx.fillText(module.name, module.x, module.y + radius + (isMobile() ? 9 : 13));
-        });
-
-        drawGlowNode(mordredCtx, {
-          x: mordredCore.x,
-          y: mordredCore.y,
-          radius: mordredCore.radius * (1 + 0.05 * Math.sin(now / 900)),
-          color: mordredCore.color
-        }, 0.78, 4);
-
-        mordredCtx.font = isMobile() ? '600 7px Inter, sans-serif' : '600 9px Inter, sans-serif';
-        mordredCtx.textAlign = 'center';
-        mordredCtx.fillStyle = 'rgba(45,65,62,0.75)';
-        mordredCtx.fillText('MORDRED', mordredCore.x, mordredCore.y + 3);
-
-        requestAnimationFrame(animateMordred);
-      }
-
-      resizeMordred();
-      window.addEventListener('resize', resizeMordred);
-      requestAnimationFrame(animateMordred);
-
-      /* APEX */
-      var apexCanvas = document.getElementById('behaviourApex');
-      var apexCtx = apexCanvas.getContext('2d');
-      var apexW = apexCanvas.width;
-      var apexH = apexCanvas.height;
-
-      var apexColors = ['#6b7280', '#3b82f6', '#8b5cf6', '#f59e0b', '#f97316', '#10b981', '#a78b6b'];
-      var apexNodes = [];
-
-      for (var ai = 0; ai < 7; ai++) {
-        apexNodes.push({
-          x: rand(45, 255),
-          y: rand(48, 352),
-          vx: rand(-0.055, 0.055),
-          vy: rand(-0.055, 0.055),
-          radius: rand(10, 17),
-          color: apexColors[ai],
-          phase: rand(0, Math.PI * 2)
-        });
-      }
-
-      var apexExecution = {
-        x: apexW / 2,
-        y: apexH / 2,
-        vx: 0.08,
-        vy: -0.05,
-        radius: 8,
-        uncertainty: 0
-      };
-
-      var apexObserved = {
-        x: apexExecution.x,
-        y: apexExecution.y,
-        radius: 5,
-        alpha: 0
-      };
-
-      var apexMode = 'normal';
-      var apexInfluence = [0];
-      var apexModeUntil = performance.now() + 3500;
-
-      function chooseApexMode(now) {
-        if (now < apexModeUntil) return;
-
-        var roll = Math.random();
-
-        if (roll < 0.38) {
-          apexMode = 'normal';
-          apexInfluence = [Math.floor(Math.random() * 7)];
-        } else if (roll < 0.59) {
-          apexMode = 'conflict';
-          var first = Math.floor(Math.random() * 7);
-          var second = Math.floor(Math.random() * 7);
-          while (second === first) second = Math.floor(Math.random() * 7);
-          apexInfluence = [first, second];
-        } else if (roll < 0.72) {
-          apexMode = 'gate';
-          apexInfluence = [3];
-        } else if (roll < 0.88) {
-          apexMode = 'verify';
-          apexInfluence = [5];
-          apexObserved.x = clamp(apexExecution.x + rand(-70, 70), 35, apexW - 35);
-          apexObserved.y = clamp(apexExecution.y + rand(-80, 80), 35, apexH - 35);
-          apexObserved.alpha = 1;
-        } else {
-          apexMode = 'reconcile';
-          apexInfluence = [6, 5];
-          apexObserved.x = clamp(apexExecution.x + rand(-85, 85), 35, apexW - 35);
-          apexObserved.y = clamp(apexExecution.y + rand(-90, 90), 35, apexH - 35);
-          apexObserved.alpha = 1;
-        }
-
-        apexModeUntil = now + rand(2600, 7200);
-      }
-
-      function animateApex(now) {
-        apexCtx.clearRect(0, 0, apexW, apexH);
-        chooseApexMode(now);
-
-        apexNodes.forEach(function (node, index) {
-          node.phase += 0.0025 + index * 0.00006;
-          node.vx += Math.cos(node.phase) * 0.00065;
-          node.vy += Math.sin(node.phase * 0.9) * 0.00065;
-
-          apexNodes.forEach(function (other, otherIndex) {
-            if (index === otherIndex) return;
-
-            var dx = node.x - other.x;
-            var dy = node.y - other.y;
-            var d = Math.sqrt(dx * dx + dy * dy) || 1;
-
-            if (d < 58) {
-              var repel = (58 - d) * 0.00018;
-              node.vx += dx / d * repel;
-              node.vy += dy / d * repel;
-            }
-          });
-
-          node.vx *= 0.997;
-          node.vy *= 0.997;
-          node.x += node.vx;
-          node.y += node.vy;
-          keepInside(node, apexW, apexH, 24);
-        });
-
-        for (var i = 0; i < apexNodes.length; i++) {
-          for (var j = i + 1; j < apexNodes.length; j++) {
-            var d = distance(apexNodes[i], apexNodes[j]);
-
-            if (d < 118) {
-              var active = apexInfluence.indexOf(i) !== -1 || apexInfluence.indexOf(j) !== -1;
-              apexCtx.strokeStyle = 'rgba(72,72,70,' + (1 - d / 118) * (active ? 0.22 : 0.07) + ')';
-              apexCtx.lineWidth = active ? 0.85 : 0.45;
-              apexCtx.beginPath();
-              apexCtx.moveTo(apexNodes[i].x, apexNodes[i].y);
-              apexCtx.lineTo(apexNodes[j].x, apexNodes[j].y);
-              apexCtx.stroke();
-            }
-          }
-        }
-
-        apexInfluence.forEach(function (index, influenceIndex) {
-          var node = apexNodes[index];
-          var dx = node.x - apexExecution.x;
-          var dy = node.y - apexExecution.y;
-          var d = Math.sqrt(dx * dx + dy * dy) || 1;
-          var strength = apexMode === 'conflict' ? (influenceIndex === 0 ? 0.0015 : 0.00125) : 0.00155;
-
-          if (apexMode !== 'gate') {
-            apexExecution.vx += dx / d * strength;
-            apexExecution.vy += dy / d * strength;
-          }
-
-          apexCtx.strokeStyle = apexMode === 'gate' ? 'rgba(245,158,11,0.26)' : 'rgba(72,72,70,0.17)';
-          apexCtx.lineWidth = 0.8;
-          apexCtx.beginPath();
-          apexCtx.moveTo(node.x, node.y);
-          apexCtx.lineTo(apexExecution.x, apexExecution.y);
-          apexCtx.stroke();
-        });
-
-        if (apexMode === 'gate') {
-          apexExecution.vx *= 0.955;
-          apexExecution.vy *= 0.955;
-          apexCtx.strokeStyle = 'rgba(245,158,11,0.28)';
-          apexCtx.lineWidth = 0.8;
-          apexCtx.beginPath();
-          apexCtx.arc(apexExecution.x, apexExecution.y, 16 + Math.sin(now / 300) * 3, 0, Math.PI * 2);
-          apexCtx.stroke();
-        }
-
-        if (apexMode === 'conflict') {
-          apexExecution.uncertainty += (1 - apexExecution.uncertainty) * 0.025;
-        } else {
-          apexExecution.uncertainty *= 0.98;
-        }
-
-        if (apexMode === 'verify' || apexMode === 'reconcile') {
-          apexObserved.alpha += (1 - apexObserved.alpha) * 0.03;
-
-          var odx = apexObserved.x - apexExecution.x;
-          var ody = apexObserved.y - apexExecution.y;
-          var od = Math.sqrt(odx * odx + ody * ody) || 1;
-          var pull = apexMode === 'reconcile' ? 0.0021 : 0.00135;
-
-          apexExecution.vx += odx / od * pull;
-          apexExecution.vy += ody / od * pull;
-
-          apexCtx.setLineDash([4, 5]);
-          apexCtx.strokeStyle = 'rgba(16,185,129,' + (apexMode === 'reconcile' ? 0.28 : 0.17) + ')';
-          apexCtx.beginPath();
-          apexCtx.moveTo(apexExecution.x, apexExecution.y);
-          apexCtx.lineTo(apexObserved.x, apexObserved.y);
-          apexCtx.stroke();
-          apexCtx.setLineDash([]);
-        } else {
-          apexObserved.alpha *= 0.97;
-        }
-
-        apexExecution.vx += rand(-0.0016, 0.0016);
-        apexExecution.vy += rand(-0.0016, 0.0016);
-        apexExecution.vx *= 0.996;
-        apexExecution.vy *= 0.996;
-        apexExecution.x += apexExecution.vx;
-        apexExecution.y += apexExecution.vy;
-        keepInside(apexExecution, apexW, apexH, 18);
-
-        if (apexObserved.alpha > 0.02) {
-          drawGlowNode(apexCtx, {
-            x: apexObserved.x,
-            y: apexObserved.y,
-            radius: 5,
-            color: '#10b981'
-          }, 0.55 * apexObserved.alpha, 2.4);
-        }
-
-        apexNodes.forEach(function (node, index) {
-          var active = apexInfluence.indexOf(index) !== -1;
-          drawGlowNode(apexCtx, node, active ? 0.78 : 0.36, active ? 3.1 : 2.3);
-        });
-
-        drawGlowNode(apexCtx, {
-          x: apexExecution.x,
-          y: apexExecution.y,
-          radius: apexExecution.radius * (1 + apexExecution.uncertainty * 0.2 * Math.sin(now / 120)),
-          color: apexMode === 'gate' ? '#f59e0b' : '#b9b9b4'
-        }, 0.82, 3.2);
-
-        requestAnimationFrame(animateApex);
-      }
-
-      requestAnimationFrame(animateApex);
-
-      /* BUILDER SYSTEMS */
-      var builderCanvas = document.getElementById('behaviourBuilder');
-      var builderCtx = builderCanvas.getContext('2d');
-      var bw = builderCanvas.width;
-      var bh = builderCanvas.height;
-
-      var protocolNodes = [
-        { x: 50, y: 200, vx: 0.011, vy: -0.003, radius: 9, color: '#a78b6b' },
-        { x: 150, y: 198, vx: -0.007, vy: 0.004, radius: 11, color: '#a78b6b' },
-        { x: 250, y: 203, vx: 0.006, vy: -0.003, radius: 9, color: '#a78b6b' }
-      ];
-
-      var builderJobs = [
-        { x: 82, y: 105, vx: 0.022, vy: -0.012, radius: 52, color: '#3b82f6', life: 1, dying: false, reviveAt: 0 },
-        { x: 218, y: 115, vx: -0.018, vy: 0.014, radius: 49, color: '#10b981', life: 1, dying: false, reviveAt: 0 },
-        { x: 151, y: 307, vx: 0.012, vy: -0.018, radius: 56, color: '#8b5cf6', life: 1, dying: false, reviveAt: 0 }
-      ];
-
-      var builderResources = [];
-
-      function createBuilderResource(jobIndex) {
-        var job = builderJobs[jobIndex];
-        var angle = rand(0, Math.PI * 2);
-        var d = rand(7, job.radius * 0.52);
-
-        return {
-          job: jobIndex,
-          x: job.x + Math.cos(angle) * d,
-          y: job.y + Math.sin(angle) * d,
-          vx: rand(-0.09, 0.09),
-          vy: rand(-0.09, 0.09),
-          radius: rand(7, 13),
-          color: randomFrom(TYPE_COLORS),
-          alpha: 1,
-          contamination: Math.random() < 0.16,
-          wander: rand(0, Math.PI * 2)
-        };
-      }
-
-      function seedBuilderResources() {
-        builderResources = [];
-        var perJob = isMobile() ? 3 : 4;
-
-        for (var jobIndex = 0; jobIndex < builderJobs.length; jobIndex++) {
-          for (var resourceIndex = 0; resourceIndex < perJob; resourceIndex++) {
-            builderResources.push(createBuilderResource(jobIndex));
-          }
-        }
-      }
-
-      seedBuilderResources();
-
-      function reviveBuilderJob(jobIndex) {
-        var job = builderJobs[jobIndex];
-        job.x = rand(55, 245);
-        job.y = Math.random() < 0.5 ? rand(65, 140) : rand(260, 335);
-        job.vx = rand(-0.024, 0.024);
-        job.vy = rand(-0.024, 0.024);
-        job.life = 0;
-        job.dying = false;
-        job.reviveAt = 0;
-
-        var perJob = isMobile() ? 3 : 4;
-        for (var i = 0; i < perJob; i++) builderResources.push(createBuilderResource(jobIndex));
-      }
-
-      var nextBuilderMutation = performance.now() + 6500;
-
-      function animateBuilder(now) {
-        builderCtx.clearRect(0, 0, bw, bh);
-
-        protocolNodes.forEach(function (node) {
-          node.x += node.vx;
-          node.y += node.vy;
-
-          if (node.x < 36 || node.x > bw - 36) node.vx *= -1;
-          if (node.y < 185 || node.y > 215) node.vy *= -1;
-        });
-
-        builderCtx.setLineDash([4, 6]);
-
-        for (var pn = 0; pn < protocolNodes.length - 1; pn++) {
-          builderCtx.strokeStyle = 'rgba(167,139,107,0.2)';
-          builderCtx.lineWidth = 1;
-          builderCtx.beginPath();
-          builderCtx.moveTo(protocolNodes[pn].x, protocolNodes[pn].y);
-          builderCtx.lineTo(protocolNodes[pn + 1].x, protocolNodes[pn + 1].y);
-          builderCtx.stroke();
-        }
-
-        builderCtx.setLineDash([]);
-        protocolNodes.forEach(function (node) { drawGlowNode(builderCtx, node, 0.48, 2.8); });
-
-        if (now > nextBuilderMutation) {
-          if (Math.random() < 0.6) {
-            var candidates = builderJobs.map(function (job, index) {
-              return { job: job, index: index };
-            }).filter(function (entry) {
-              return !entry.job.dying && entry.job.life > 0.72;
-            });
-
-            if (candidates.length) {
-              var chosen = randomFrom(candidates);
-              chosen.job.dying = true;
-              chosen.job.reviveAt = now + rand(5000, 10500);
-            }
-          }
-
-          nextBuilderMutation = now + rand(6500, 14000);
-        }
-
-        builderJobs.forEach(function (job, index) {
-          job.vx += rand(-0.00032, 0.00032);
-          job.vy += rand(-0.00032, 0.00032);
-
-          builderJobs.forEach(function (other, otherIndex) {
-            if (index === otherIndex || other.life < 0.2) return;
-
-            var dx = job.x - other.x;
-            var dy = job.y - other.y;
-            var d = Math.sqrt(dx * dx + dy * dy) || 1;
-
-            if (d < 105) {
-              var force = (105 - d) * 0.00007;
-              job.vx += dx / d * force;
-              job.vy += dy / d * force;
-            }
-          });
-
-          job.vx *= 0.999;
-          job.vy *= 0.999;
-          job.x += job.vx;
-          job.y += job.vy;
-
-          if (job.x < 48 || job.x > bw - 48) job.vx *= -1;
-          if (job.y < 54 || job.y > bh - 54) job.vy *= -1;
-
-          if (job.dying) {
-            job.life *= 0.989;
-            if (now > job.reviveAt && job.life < 0.07) reviveBuilderJob(index);
-          } else {
-            job.life += (1 - job.life) * 0.012;
-          }
-        });
-
-        builderResources.forEach(function (resource) {
-          var job = builderJobs[resource.job];
-
-          if (job.dying) resource.alpha *= 0.985;
-          else resource.alpha += (1 - resource.alpha) * 0.02;
-
-          resource.wander += rand(-0.012, 0.012);
-          resource.vx += Math.cos(resource.wander) * 0.0012;
-          resource.vy += Math.sin(resource.wander) * 0.0012;
-
-          var dx = job.x - resource.x;
-          var dy = job.y - resource.y;
-          var d = Math.sqrt(dx * dx + dy * dy) || 1;
-          var ownLimit = job.radius * (resource.contamination ? 0.72 : 0.5);
-
-          if (d > ownLimit) {
-            resource.vx += dx / d * 0.0065;
-            resource.vy += dy / d * 0.0065;
-          }
-
-          builderJobs.forEach(function (other, otherIndex) {
-            if (otherIndex === resource.job || other.life < 0.2) return;
-
-            var ox = resource.x - other.x;
-            var oy = resource.y - other.y;
-            var od = Math.sqrt(ox * ox + oy * oy) || 1;
-            var limit = other.radius + 20;
-
-            if (od < limit) {
-              var repel = (limit - od) * 0.0013;
-              resource.vx += ox / od * repel;
-              resource.vy += oy / od * repel;
-              resource.contamination = false;
-            }
-          });
-
-          resource.vx *= 0.992;
-          resource.vy *= 0.992;
-          resource.x += resource.vx;
-          resource.y += resource.vy;
-        });
-
-        builderResources = builderResources.filter(function (resource) {
-          return resource.alpha > 0.025;
-        });
-
-        builderJobs.forEach(function (job) {
-          if (job.life < 0.03) return;
-
-          builderCtx.globalAlpha = 0.18 * job.life;
-          builderCtx.strokeStyle = job.color;
-          builderCtx.lineWidth = 1;
-          builderCtx.setLineDash([4, 7]);
-          builderCtx.beginPath();
-          builderCtx.arc(job.x, job.y, job.radius * (0.96 + 0.025 * Math.sin(now / 950 + job.x)), 0, Math.PI * 2);
-          builderCtx.stroke();
-          builderCtx.setLineDash([]);
-          builderCtx.globalAlpha = 1;
-        });
-
-        builderResources.forEach(function (resource) {
-          drawGlowNode(builderCtx, resource, 0.54 * resource.alpha, 2.5);
-        });
-
-        requestAnimationFrame(animateBuilder);
-      }
-
-      requestAnimationFrame(animateBuilder);
-
-      /* SYSTEMS ARCHITECTURE */
-      var architectureCanvas = document.getElementById('behaviourArchitecture');
-      var architectureCtx = architectureCanvas.getContext('2d');
-      var aw = architectureCanvas.width;
-      var ah = architectureCanvas.height;
-      var architecturePalette = ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b'];
-      var architectureNodes = [];
-      var architectureCount = isMobile() ? 10 : 15;
-
-      for (var an = 0; an < architectureCount; an++) {
-        architectureNodes.push({
-          x: rand(28, aw - 28),
-          y: rand(34, ah - 34),
-          vx: rand(-0.07, 0.07),
-          vy: rand(-0.07, 0.07),
-          radius: rand(8, 15),
-          module: Math.floor(Math.random() * 3),
-          alpha: 1,
-          retiring: false,
-          phase: rand(0, Math.PI * 2)
-        });
-      }
-
-      var architectureModuleCount = 3;
-      var nextArchitectureEvent = performance.now() + 5000;
-
-      function architectureCenter(module) {
-        var members = architectureNodes.filter(function (node) {
-          return node.module === module && node.alpha > 0.15;
-        });
-
-        if (!members.length) return { x: aw / 2, y: ah / 2 };
-
-        var x = 0;
-        var y = 0;
-
-        members.forEach(function (node) {
-          x += node.x;
-          y += node.y;
-        });
-
-        return { x: x / members.length, y: y / members.length };
-      }
-
-      function architectureEvent(now) {
-        if (now < nextArchitectureEvent) return;
-
-        var roll = Math.random();
-
-        if (roll < 0.36) {
-          var candidate = randomFrom(architectureNodes);
-          candidate.module = Math.floor(Math.random() * architectureModuleCount);
-        } else if (roll < 0.62) {
-          var source = Math.floor(Math.random() * architectureModuleCount);
-          var target = Math.floor(Math.random() * architectureModuleCount);
-
-          if (source !== target) {
-            architectureNodes.forEach(function (node) {
-              if (node.module === source && Math.random() < 0.55) node.module = target;
-            });
-          }
-        } else if (roll < 0.84 && architectureModuleCount < 4) {
-          architectureModuleCount += 1;
-          var newModule = architectureModuleCount - 1;
-
-          architectureNodes.forEach(function (node) {
-            if (Math.random() < 0.22) node.module = newModule;
-          });
-        } else {
-          var retire = randomFrom(architectureNodes);
-          retire.retiring = true;
-        }
-
-        nextArchitectureEvent = now + rand(5500, 13000);
-      }
-
-      function animateArchitecture(now) {
-        architectureCtx.clearRect(0, 0, aw, ah);
-        architectureEvent(now);
-
-        architectureNodes.forEach(function (node, index) {
-          node.phase += 0.0025 + index * 0.00004;
-
-          if (node.retiring) {
-            node.alpha *= 0.988;
-
-            if (node.alpha < 0.05) {
-              node.x = rand(30, aw - 30);
-              node.y = rand(35, ah - 35);
-              node.module = Math.floor(Math.random() * architectureModuleCount);
-              node.alpha = 0.08;
-              node.retiring = false;
-            }
-          } else {
-            node.alpha += (1 - node.alpha) * 0.015;
-          }
-
-          node.vx += Math.cos(node.phase) * 0.00075;
-          node.vy += Math.sin(node.phase * 0.93) * 0.00075;
-
-          var center = architectureCenter(node.module);
-          node.vx += (center.x - node.x) * 0.00007;
-          node.vy += (center.y - node.y) * 0.00007;
-
-          architectureNodes.forEach(function (other, otherIndex) {
-            if (index === otherIndex) return;
-
-            var dx = node.x - other.x;
-            var dy = node.y - other.y;
-            var d = Math.sqrt(dx * dx + dy * dy) || 1;
-
-            if (d < 30) {
-              var repel = (30 - d) * 0.0005;
-              node.vx += dx / d * repel;
-              node.vy += dy / d * repel;
-            }
-          });
-
-          node.vx *= 0.997;
-          node.vy *= 0.997;
-          node.x += node.vx;
-          node.y += node.vy;
-          keepInside(node, aw, ah, 20);
-        });
-
-        for (var i = 0; i < architectureNodes.length; i++) {
-          for (var j = i + 1; j < architectureNodes.length; j++) {
-            var nodeA = architectureNodes[i];
-            var nodeB = architectureNodes[j];
-
-            if (nodeA.alpha < 0.1 || nodeB.alpha < 0.1) continue;
-
-            var d = distance(nodeA, nodeB);
-            var same = nodeA.module === nodeB.module;
-            var threshold = same ? (isMobile() ? 78 : 92) : (isMobile() ? 48 : 60);
-
-            if (d < threshold) {
-              architectureCtx.strokeStyle = 'rgba(72,72,70,' + (1 - d / threshold) * (same ? 0.24 : 0.04) + ')';
-              architectureCtx.lineWidth = same ? 0.8 : 0.4;
-              architectureCtx.beginPath();
-              architectureCtx.moveTo(nodeA.x, nodeA.y);
-              architectureCtx.lineTo(nodeB.x, nodeB.y);
-              architectureCtx.stroke();
-            }
-          }
-        }
-
-        var centers = [];
-        for (var c = 0; c < architectureModuleCount; c++) centers.push(architectureCenter(c));
-
-        for (var ci = 0; ci < centers.length; ci++) {
-          for (var cj = ci + 1; cj < centers.length; cj++) {
-            var cd = distance(centers[ci], centers[cj]);
-
-            if (cd < 180) {
-              architectureCtx.setLineDash([3, 7]);
-              architectureCtx.strokeStyle = 'rgba(72,72,70,' + (1 - cd / 180) * 0.055 + ')';
-              architectureCtx.lineWidth = 0.5;
-              architectureCtx.beginPath();
-              architectureCtx.moveTo(centers[ci].x, centers[ci].y);
-              architectureCtx.lineTo(centers[cj].x, centers[cj].y);
-              architectureCtx.stroke();
-              architectureCtx.setLineDash([]);
-            }
-          }
-        }
-
-        architectureNodes.forEach(function (node) {
-          drawGlowNode(architectureCtx, {
-            x: node.x,
-            y: node.y,
-            radius: node.radius * (1 + 0.04 * Math.sin(node.phase)),
-            color: architecturePalette[node.module % architecturePalette.length]
-          }, 0.56 * node.alpha, 2.6);
-        });
-
-        requestAnimationFrame(animateArchitecture);
-      }
-
-      requestAnimationFrame(animateArchitecture);
-
-      /* PROTOCOL COMPILER */
-      var compilerCanvas = document.getElementById('behaviourCompiler');
-      var compilerCtx = compilerCanvas.getContext('2d');
-      var cw = compilerCanvas.width;
-      var ch = compilerCanvas.height;
-      var compilerLeft = 112;
-      var compilerRight = 186;
-      var compilerFragments = [];
-      var compilerBatches = {};
-      var compilerBatchId = 0;
-      var nextCompilerBatch = performance.now() + 500;
-
-      function createCompilerBatch(now) {
-        compilerBatchId += 1;
-        var batch = compilerBatchId;
-        var count = isMobile() ? Math.floor(rand(3, 5)) : Math.floor(rand(4, 7));
-        var centerY = rand(80, ch - 80);
-
-        compilerBatches[batch] = { centerY: centerY, created: now };
-
-        for (var i = 0; i < count; i++) {
-          compilerFragments.push({
-            batch: batch,
-            x: rand(22, 46),
-            y: clamp(centerY + rand(-70, 70), 25, ch - 25),
-            vx: rand(0.07, 0.15),
-            vy: rand(-0.025, 0.025),
-            radius: rand(7, 13),
-            color: randomFrom(TYPE_COLORS),
-            state: 'raw',
-            rejected: false,
-            alpha: 1,
-            targetX: rand(220, 272),
-            targetY: clamp(centerY + rand(-50, 50), 38, ch - 38),
-            phase: rand(0, Math.PI * 2)
-          });
-        }
-      }
-
-      function animateCompiler(now) {
-        compilerCtx.clearRect(0, 0, cw, ch);
-
-        compilerCtx.fillStyle = 'rgba(167,139,107,0.03)';
-        compilerCtx.fillRect(compilerLeft, 26, compilerRight - compilerLeft, ch - 52);
-        compilerCtx.strokeStyle = 'rgba(167,139,107,0.16)';
-        compilerCtx.lineWidth = 0.8;
-        compilerCtx.setLineDash([4, 6]);
-        compilerCtx.strokeRect(compilerLeft, 26, compilerRight - compilerLeft, ch - 52);
-        compilerCtx.setLineDash([]);
-
-        if (now > nextCompilerBatch) {
-          createCompilerBatch(now);
-          nextCompilerBatch = now + rand(2600, 5600);
-        }
-
-        compilerFragments.forEach(function (fragment, index) {
-          fragment.phase += 0.003;
-
-          if (fragment.state === 'raw') {
-            fragment.vx += 0.0005;
-            fragment.vy += rand(-0.0008, 0.0008);
-
-            compilerFragments.forEach(function (other, otherIndex) {
-              if (index === otherIndex || other.state !== 'raw') return;
-              var d = distance(fragment, other);
-
-              if (d < 42) {
-                fragment.vx += (other.x - fragment.x) * 0.00003;
-                fragment.vy += (other.y - fragment.y) * 0.00003;
-              }
-            });
-
-            if (fragment.x >= compilerLeft) {
-              fragment.state = 'evaluate';
-              fragment.rejected = Math.random() < 0.18;
-            }
-          }
-
-          if (fragment.state === 'evaluate') {
-            if (fragment.rejected) {
-              fragment.vx *= 0.985;
-              fragment.vy += fragment.y < ch / 2 ? -0.009 : 0.009;
-              fragment.alpha *= 0.992;
-            } else {
-              var batchInfo = compilerBatches[fragment.batch];
-              fragment.vx += 0.0016;
-              fragment.vy += (batchInfo.centerY - fragment.y) * 0.00055;
-              fragment.vx *= 0.997;
-              fragment.vy *= 0.98;
-
-              if (fragment.x > compilerRight) fragment.state = 'compiled';
-            }
-          }
-
-          if (fragment.state === 'compiled') {
-            var tx = fragment.targetX - fragment.x;
-            var ty = fragment.targetY - fragment.y;
-
-            fragment.vx += tx * 0.00045;
-            fragment.vy += ty * 0.00045;
-            fragment.vx *= 0.985;
-            fragment.vy *= 0.985;
-
-            if (now - compilerBatches[fragment.batch].created > 12500) fragment.alpha *= 0.992;
-          }
-
-          fragment.x += fragment.vx;
-          fragment.y += fragment.vy;
-        });
-
-        for (var i = 0; i < compilerFragments.length; i++) {
-          for (var j = i + 1; j < compilerFragments.length; j++) {
-            var a = compilerFragments[i];
-            var b = compilerFragments[j];
-
-            if (a.alpha < 0.1 || b.alpha < 0.1) continue;
-
-            if (a.state === 'compiled' && b.state === 'compiled' && a.batch === b.batch) {
-              var d = distance(a, b);
-
-              if (d < 82) {
-                compilerCtx.strokeStyle = 'rgba(72,72,70,' + (1 - d / 82) * 0.26 + ')';
-                compilerCtx.lineWidth = 0.8;
-                compilerCtx.beginPath();
-                compilerCtx.moveTo(a.x, a.y);
-                compilerCtx.lineTo(b.x, b.y);
-                compilerCtx.stroke();
-              }
-            }
-
-            if (a.state === 'raw' && b.state === 'raw') {
-              var rawDistance = distance(a, b);
-
-              if (rawDistance < 44) {
-                compilerCtx.strokeStyle = 'rgba(72,72,70,' + (1 - rawDistance / 44) * 0.045 + ')';
-                compilerCtx.lineWidth = 0.4;
-                compilerCtx.beginPath();
-                compilerCtx.moveTo(a.x, a.y);
-                compilerCtx.lineTo(b.x, b.y);
-                compilerCtx.stroke();
-              }
-            }
-          }
-        }
-
-        compilerFragments.forEach(function (fragment) {
-          var color = fragment.rejected ? '#ef4444' : fragment.color;
-          var alpha = fragment.state === 'compiled' ? 0.62 : (fragment.rejected ? 0.38 : 0.52);
-
-          drawGlowNode(compilerCtx, {
-            x: fragment.x,
-            y: fragment.y,
-            radius: fragment.radius * (fragment.state === 'evaluate' && !fragment.rejected ? 0.82 : 1) * (1 + 0.03 * Math.sin(fragment.phase)),
-            color: color
-          }, alpha * fragment.alpha, 2.5);
-        });
-
-        compilerFragments = compilerFragments.filter(function (fragment) {
-          return fragment.alpha > 0.025 && fragment.x < cw + 40 && fragment.y > -40 && fragment.y < ch + 40;
-        });
-
-        Object.keys(compilerBatches).forEach(function (key) {
-          var id = Number(key);
-          var exists = compilerFragments.some(function (fragment) { return fragment.batch === id; });
-          if (!exists) delete compilerBatches[key];
-        });
-
-        requestAnimationFrame(animateCompiler);
-      }
-
-      createCompilerBatch(performance.now());
-      requestAnimationFrame(animateCompiler);
-
-      /* LIVE FEED */
-      var feedCanvas = document.getElementById('liveFeedCanvas');
-      var feedCtx = feedCanvas.getContext('2d');
-      var feedW = 0;
-      var feedH = 0;
-      var feedNodes = [];
-      var feedEdges = {};
-      var feedInfluencer = -1;
-      var feedInfluenceUntil = 0;
-      var nextFeedInfluence = performance.now() + 4500;
-
-      function feedNodeCount() {
-        return isMobile() ? 12 : 19;
-      }
-
-      function createFeedNode(existing) {
-        var node = existing || {};
-
-        node.type = Math.floor(Math.random() * TYPE_COLORS.length);
-        node.color = TYPE_COLORS[node.type];
-        node.x = rand(16, Math.max(17, feedW - 16));
-        node.y = rand(16, Math.max(17, feedH - 16));
-        node.vx = rand(-0.07, 0.07);
-        node.vy = rand(-0.07, 0.07);
-        node.radius = isMobile() ? rand(3.5, 6.5) : rand(4.5, 8);
-        node.heading = rand(0, Math.PI * 2);
-        node.turn = rand(-0.004, 0.004);
-        node.phase = rand(0, Math.PI * 2);
-        node.alpha = 1;
-        node.dying = false;
-        node.changeAt = performance.now() + rand(12000, 30000);
-
-        return node;
-      }
-
-      function resizeFeed() {
-        var size = resizeCanvasToParent(feedCanvas, feedCtx);
-        feedW = size.width;
-        feedH = size.height;
-      }
-
-      function initFeed() {
-        feedNodes = [];
-        feedEdges = {};
-
-        for (var i = 0; i < feedNodeCount(); i++) feedNodes.push(createFeedNode());
-      }
-
-      function typeAffinity(a, b) {
-        if (a === b) return 1;
-
-        var pair = [Math.min(a, b), Math.max(a, b)].join('-');
-
-        var strongPairs = {
-          '0-5': 0.8,
-          '0-7': 0.72,
-          '1-5': 0.82,
-          '1-8': 0.72,
-          '2-3': 0.8,
-          '2-4': 0.66,
-          '3-4': 0.78,
-          '5-8': 0.8,
-          '6-8': 0.68,
-          '7-8': 0.7
-        };
-
-        return strongPairs[pair] || 0.25;
-      }
-
-      function maybeChangeFeedInfluence(now) {
-        if (now < nextFeedInfluence) return;
-
-        if (feedNodes.length) {
-          feedInfluencer = Math.floor(Math.random() * feedNodes.length);
-          feedInfluenceUntil = now + rand(2400, 5800);
-        }
-
-        nextFeedInfluence = now + rand(6500, 14500);
-      }
-
-      function animateFeed(now) {
-        feedCtx.clearRect(0, 0, feedW, feedH);
-        maybeChangeFeedInfluence(now);
-
-        if (now > feedInfluenceUntil) feedInfluencer = -1;
-
-        feedNodes.forEach(function (node, index) {
-          node.phase += 0.004;
-          node.turn += rand(-0.00008, 0.00008);
-          node.turn = clamp(node.turn, -0.006, 0.006);
-          node.heading += node.turn;
-
-          node.vx += Math.cos(node.heading) * 0.0014;
-          node.vy += Math.sin(node.heading) * 0.0014;
-
-          if (index !== feedInfluencer && feedInfluencer >= 0) {
-            var influencer = feedNodes[feedInfluencer];
-            var idx = influencer.x - node.x;
-            var idy = influencer.y - node.y;
-            var id = Math.sqrt(idx * idx + idy * idy) || 1;
-            var influenceRadius = isMobile() ? 100 : 145;
-
-            if (id < influenceRadius) {
-              node.vx += idx / id * 0.00065;
-              node.vy += idy / id * 0.00065;
-            }
-          }
-
-          if (now > node.changeAt && !node.dying && Math.random() < 0.18) node.dying = true;
-
-          if (node.dying) {
-            node.alpha *= 0.994;
-
-            if (node.alpha < 0.04) {
-              createFeedNode(node);
-              node.alpha = 0.06;
-            }
-          } else {
-            node.alpha += (1 - node.alpha) * 0.018;
-          }
-        });
-
-        for (var i = 0; i < feedNodes.length; i++) {
-          for (var j = i + 1; j < feedNodes.length; j++) {
-            var a = feedNodes[i];
-            var b = feedNodes[j];
-            var dx = b.x - a.x;
-            var dy = b.y - a.y;
-            var d = Math.sqrt(dx * dx + dy * dy) || 1;
-            var repulsion = isMobile() ? 22 : 30;
-
-            if (d < repulsion) {
-              var push = (repulsion - d) * 0.00038;
-              a.vx -= dx / d * push;
-              a.vy -= dy / d * push;
-              b.vx += dx / d * push;
-              b.vy += dy / d * push;
-            }
-
-            var affinity = typeAffinity(a.type, b.type);
-            var cohesionRadius = isMobile() ? 90 : 132;
-
-            if (d > repulsion && d < cohesionRadius && affinity > 0.55) {
-              var pull = (1 - d / cohesionRadius) * affinity * 0.00017;
-              a.vx += dx / d * pull;
-              a.vy += dy / d * pull;
-              b.vx -= dx / d * pull;
-              b.vy -= dy / d * pull;
-            }
-
-            var key = i + '-' + j;
-            var edge = feedEdges[key] || { strength: 0 };
-            var connectionRadius = isMobile() ? 108 : 150;
-            var targetStrength = d < connectionRadius
-              ? (1 - d / connectionRadius) * (0.2 + affinity * 0.8)
-              : 0;
-
-            edge.strength += (targetStrength - edge.strength) * (targetStrength > edge.strength ? 0.045 : 0.015);
-            feedEdges[key] = edge;
-
-            if (edge.strength > 0.025) {
-              feedCtx.strokeStyle = 'rgba(72,72,70,' + edge.strength * 0.34 + ')';
-              feedCtx.lineWidth = 0.45 + edge.strength * 0.5;
-              feedCtx.beginPath();
-              feedCtx.moveTo(a.x, a.y);
-              feedCtx.lineTo(b.x, b.y);
-              feedCtx.stroke();
-            }
-          }
-        }
-
-        feedNodes.forEach(function (node, index) {
-          node.vx *= 0.992;
-          node.vy *= 0.992;
-
-          var maxSpeed = isMobile() ? 0.13 : 0.16;
-          var speed = Math.sqrt(node.vx * node.vx + node.vy * node.vy);
-
-          if (speed > maxSpeed) {
-            node.vx = node.vx / speed * maxSpeed;
-            node.vy = node.vy / speed * maxSpeed;
-          }
-
-          node.x += node.vx;
-          node.y += node.vy;
-
-          var margin = node.radius + 2;
-
-          if (node.x < margin) {
-            node.x = margin;
-            node.vx = Math.abs(node.vx);
-            node.heading = rand(-0.5, 0.5);
-          }
-
-          if (node.x > feedW - margin) {
-            node.x = feedW - margin;
-            node.vx = -Math.abs(node.vx);
-            node.heading = Math.PI + rand(-0.5, 0.5);
-          }
-
-          if (node.y < margin) {
-            node.y = margin;
-            node.vy = Math.abs(node.vy);
-            node.heading = Math.PI / 2 + rand(-0.5, 0.5);
-          }
-
-          if (node.y > feedH - margin) {
-            node.y = feedH - margin;
-            node.vy = -Math.abs(node.vy);
-            node.heading = -Math.PI / 2 + rand(-0.5, 0.5);
-          }
-
-          var influenced = index === feedInfluencer;
-          var radius = node.radius * (1 + 0.08 * Math.sin(node.phase) + (influenced ? 0.18 : 0));
-
-          drawGlowNode(feedCtx, {
-            x: node.x,
-            y: node.y,
-            radius: radius,
-            color: node.color
-          }, (influenced ? 0.88 : 0.68) * node.alpha, influenced ? 3.6 : 3);
-        });
-
-        requestAnimationFrame(animateFeed);
-      }
-
-      resizeFeed();
-      initFeed();
-
-      window.addEventListener('resize', function () {
-        resizeFeed();
-        initFeed();
-      });
-
-      requestAnimationFrame(animateFeed);
-    })();
-  </script>
+</section>
+<div id="site">
+  <div class="ticker" aria-label="Isaac Jacob Dajay portfolio"><div class="ticker-track" aria-hidden="true">
+    <div class="ticker-run"><span>ISAAC JACOB DAJAY</span><span class="dot">●</span><span>EXPERIENCE & SELECTED WORK</span><span class="dot">●</span><span>BACOLOD / PHILIPPINES</span><span class="dot">●</span></div>
+    <div class="ticker-run"><span>ISAAC JACOB DAJAY</span><span class="dot">●</span><span>EXPERIENCE & SELECTED WORK</span><span class="dot">●</span><span>BACOLOD / PHILIPPINES</span><span class="dot">●</span></div>
+    <div class="ticker-run"><span>ISAAC JACOB DAJAY</span><span class="dot">●</span><span>EXPERIENCE & SELECTED WORK</span><span class="dot">●</span><span>BACOLOD / PHILIPPINES</span><span class="dot">●</span></div>
+    <div class="ticker-run"><span>ISAAC JACOB DAJAY</span><span class="dot">●</span><span>EXPERIENCE & SELECTED WORK</span><span class="dot">●</span><span>BACOLOD / PHILIPPINES</span><span class="dot">●</span></div>
+  </div></div>
+  <header class="site-width nav"><span class="nav-home">Isaac Jacob Dajay<span class="nav-dot">.</span></span><span class="print-contact">Bacolod City, Philippines · +63 966 699 6966 · isaacjacobdajay@gmail.com</span><div class="nav-right"><span class="nav-note">WORK / EXPERIENCE / SYSTEMS</span><button type="button" class="text-button" id="print-cv">Save CV as PDF ↗</button><a href="#contact-dialog" class="text-button" data-open-contact>Contact ↗</a></div></header>
+  <main id="cv-content">
+    <section class="site-width hero">
+      <div><span class="micro">Personal profile / 2026</span><h1 class="screen-name"><span>ISAAC JACOB</span><span>DAJAY<span class="hero-period">.</span></span></h1><h1 class="print-name">ISAAC JACOB<br>DAJAY</h1><p class="hero-annotation micro">Client relations / Sales / Digital systems / Creative work</p></div>
+      <div class="hero-right"><h2>Customer Relations, Sales & Digital Workflow Design</h2><p>I work in customer service, sales and business development. Outside those roles, I explore website building, visual communication and human-directed AI workflows. I bring the same priorities to each: understand the context, work carefully and make the result useful.</p><div class="role-chips"><span>On-site & Remote</span><span>Client-facing</span><span>Web & creative practice</span></div></div>
+    </section>
+    <div class="strap"><div class="site-width strap-inner"><strong>People. Processes. Interfaces.</strong><span>Experience, digital craft and selected practice</span></div></div>
+    <section class="site-width chapter" aria-labelledby="experience-title">
+      <div class="chapter-left"><span class="micro">Background</span><h2 id="experience-title">Professional<br>experience.</h2><p>Customer service, relationship building and digital operations experience across on-site and remote environments.</p></div>
+      <div class="chapter-right">
+        <article class="work-entry"><div><p class="employer">Concentrix · Bacolod City</p><h3>Sales & Customer Service Representative</h3><p class="work-meta">On-site / July 2026 – November 2026</p></div><p class="work-desc">Supported customers in sales and service conversations by clarifying needs, explaining options and addressing concerns. I focused on clear communication, careful follow-through and balancing the customer experience with business goals.</p></article>
+        <article class="work-entry"><div><p class="employer">Haulla</p><h3>Business Development Manager</h3><p class="work-meta">Remote / Mar 2025 to Jan 2026</p></div><p class="work-desc">Worked across lead generation, outreach and business development, from initial prospecting to sales follow-up. The role emphasized organized communication, relationship building and keeping conversations moving toward clear next steps.</p></article>
+        <article class="work-entry"><div><p class="employer">Independent systems practice</p><h3>AI Workflow & Operations Design</h3><p class="work-meta">Project-based / Applied systems</p></div><p class="work-desc">Developed an independent approach to AI-assisted workflows: organize reliable information, prepare drafts with tools, review the results and deliver usable outputs. This practice also includes interactive website building and visual design. Examples are identified as demonstrations where appropriate.</p></article>
+        <aside class="related"><span class="micro">Related experience</span><p>Real estate client relations and property-information work, including understanding requirements, discussing listings and coordinating clear, approved information for prospective clients.</p></aside>
+        <p class="print-related">Related experience: Real estate client relations and property-information work, including requirements gathering and communication of approved listing details.</p>
+      </div>
+    </section>
+    <section class="practice" aria-labelledby="practice-title">
+      <div class="site-width practice-grid">
+        <div class="practice-copy"><span class="micro">Digital practice / Selected work</span><h2 id="practice-title">Behind<br><em>the</em><br>screen.</h2><p>Alongside client-facing work, I build websites, explore visual design and use digital tools to organize work. I focus on clear interfaces, reliable source material and results that people can actually use.</p><a href="#tooling-dialog" class="action light" data-open-tooling>HOW I USE THE TOOLS <span aria-hidden="true">↗</span></a></div>
+        
+      </div>
+      <div class="site-width practice-index" aria-label="Independent digital capabilities">
+        <div><span class="micro">Built and working</span><h3>Web & interface</h3><p>This website demonstrates responsive layouts, interactive detail windows and a printable CV, built with HTML, CSS and JavaScript.</p></div>
+        <div><span class="micro">Creative practice</span><h3>Visual direction</h3><p>I work with typography, editorial layouts and visual studies, choosing composition and hierarchy to make ideas easier to understand.</p></div>
+        <div><span class="micro">Independent systems</span><h3>Tooling & operations</h3><p>My workflow is to define the task, organize the inputs, prepare with appropriate tools, review the work and hand off a usable result.</p></div>
+      </div>
+    </section>
+    <section class="ai-band" aria-labelledby="systems-title"><div class="site-width ai-wrap">
+      <div><span class="micro">Independent work / Applied systems</span><h2 id="systems-title">AI is a tool.<br><span>The work is human.</span></h2><p>I use digital tools to turn information into clear, useful work. The approach is adaptable: understand the task, prepare a first version, review it carefully and take responsibility for the result.</p><a href="#ai-dialog" class="action" data-open-ai>EXPLORE THE WORKFLOW <span aria-hidden="true">↗</span></a></div>
+      <div class="system-diagram" role="group" aria-label="Human-reviewed workflow overview"><div class="system-heading"><span class="micro">Process study</span><span class="micro">Human-reviewed</span></div><div class="system-items">
+        <div class="system-stage"><span class="symbol" aria-hidden="true">◌</span><span class="system-label">Context</span></div>
+        <div class="system-stage"><span class="symbol" aria-hidden="true">≈</span><span class="system-label">Prepare</span></div>
+        <div class="system-stage"><span class="symbol" aria-hidden="true">✓</span><span class="system-label">Review</span></div>
+        <div class="system-stage"><span class="symbol" aria-hidden="true">↗</span><span class="system-label">Deliver</span></div>
+      </div><p>A simple method for different kinds of work, always guided and checked by a person.</p></div>
+    </div></section>
+    <section class="site-width end-grid"><div><span class="micro">Education</span><h2>University of St. La Salle.</h2><p><strong>Bachelor of Arts in Interdisciplinary Studies</strong></p><p>Undergraduate studies · Bacolod City, Negros Occidental</p></div><div><span class="micro">Working strengths</span><h2>Tools & capabilities.</h2><p>Customer communication, sales outreach, business development, follow-through and operational coordination.</p><p><strong>Digital practice:</strong> responsive web interfaces (HTML, CSS, JavaScript), visual design, AI-assisted research and workflow organization, source verification and output review.</p><p><strong>Business tools:</strong> Microsoft Office, Google Workspace, HubSpot · <strong>Language:</strong> English</p></div></section>
+  </main>
+  <footer class="site-width footer"><span class="full-name">Isaac Jacob Dajay</span><span>Bacolod City, Philippines · <a href="#contact-dialog" class="text-button" data-open-contact>Get in touch ↗</a></span></footer>
+</div>
+<section class="modal-overlay" id="contact-dialog" aria-labelledby="contact-title"><a class="modal-dismiss" href="#cv-content" data-close aria-label="Close dialog"></a><div class="modal-panel"><div class="modal-header"><strong>CONTACT / ISAAC JACOB DAJAY</strong><a class="close" data-close href="#cv-content" aria-label="Close contact dialog">×</a></div><div class="modal-body"><span class="micro">Get in touch</span><h2 id="contact-title">Let's talk work.</h2><p>For professional opportunities, collaborations or questions about the experience and systems work shown here:</p><a class="contact-link" href="mailto:isaacjacobdajay@gmail.com">isaacjacobdajay@gmail.com ↗</a><a class="contact-link" href="tel:+639666996966">+63 966 699 6966 ↗</a><p class="contact-copy">Bacolod City, Philippines. Contact details are taken from the supplied CV.</p></div></div></section>
+<section class="modal-overlay" id="tooling-dialog" aria-labelledby="tooling-title"><a class="modal-dismiss" href="#cv-content" data-close aria-label="Close dialog"></a><div class="modal-panel"><div class="modal-header"><strong>JACOB / DIGITAL PRACTICE</strong><a class="close" data-close href="#cv-content" aria-label="Close tooling explanation">×</a></div><div class="modal-body tooling-body"><span class="micro">Tool literacy / How I work</span><h2 id="tooling-title">Get more from<br>the computer.</h2><p class="tooling-intro">My focus is practical digital fluency: choosing a useful tool, organizing the inputs, connecting the steps and checking the result. I treat AI as one part of that process, not a substitute for judgment.</p><div class="tooling-tabs" role="group" aria-label="Areas of digital practice"><button type="button" data-tool="web" aria-pressed="true">WEB</button><button type="button" data-tool="systems" aria-pressed="false">WORKFLOWS</button><button type="button" data-tool="design" aria-pressed="false">DESIGN</button></div><div class="tooling-stage" aria-live="polite"><div class="tooling-stage-label micro" id="tooling-stage-label">WORKING EXAMPLE / THIS WEBSITE</div><h3 id="tooling-stage-title">Make the interface usable.</h3><p id="tooling-stage-text">This website demonstrates responsive page structure, accessible explanation windows and a printable CV. The front end is built with HTML, CSS and JavaScript.</p><div class="tooling-footnote" id="tooling-stage-foot">Proof: you are using the output now.</div></div><noscript><div class="tooling-stage" style="margin-top:14px"><h3>Workflow design</h3><p>I define the outcome, gather the right files and context, use appropriate software or AI for preparation, then check accuracy, correct weak parts and deliver an organized result.</p><h3>Visual and interface work</h3><p>I explore typography, hierarchy, visual artwork and digital layouts, and distinguish conceptual studies from actual project evidence.</p></div></noscript><p class="tooling-disclaimer">Independent personal practice. This does not imply professional software-engineering credentials, backend infrastructure ownership or AI deployment at employers.</p></div></div></section>
+<section class="modal-overlay" id="ai-dialog" role="dialog" aria-modal="true" aria-labelledby="ai-dialog-title"><a class="modal-dismiss" href="#systems-title" data-close aria-label="Close workflow overview"></a><div class="modal-panel ai-simple-panel"><div class="modal-header"><strong>AI WORKFLOW / INDEPENDENT PRACTICE</strong><a class="close" data-close href="#cv-content" aria-label="Close workflow overview">×</a></div>
+  <div class="modal-body ai-simple-body">
+    <div class="ai-simple-intro"><span class="micro">A method for different kinds of work</span><h2 id="ai-dialog-title">Tools prepare.<br>People decide.</h2><p>I start with the task and the information available. Software and AI can help with the preparation. I check the work, make the decisions and deliver the result.</p><div class="ai-simple-sequence" aria-label="Context, prepare, review, deliver"><span>CONTEXT</span><i aria-hidden="true">→</i><span>PREPARE</span><i aria-hidden="true">→</i><span>REVIEW</span><i aria-hidden="true">→</i><span>DELIVER</span></div></div>
+    <div class="ai-simple-examples"><span class="micro">What this looks like</span><div class="ai-example"><h3>Organize</h3><p>Turn notes, files and instructions into a clear picture of what matters.</p></div><div class="ai-example"><h3>Create</h3><p>Use suitable tools to prepare a draft, plan or working output.</p></div><div class="ai-example"><h3>Check</h3><p>Verify the details, refine the result and decide when it is ready.</p></div></div>
+  </div><div class="ai-simple-note">A flexible method from independent practice. The examples illustrate an approach, not employer deployments or measured results.</div>
+</div></section>
+<script>
+(()=>{
+  const entrance=document.getElementById('entrance'),site=document.getElementById('site'),enter=document.getElementById('enter-site');
+  const contact=document.getElementById('contact-dialog'),ai=document.getElementById('ai-dialog'),tooling=document.getElementById('tooling-dialog');
+  let lastTrigger=null;
+  // Progressive enhancement: a normal #cv-content link works even if scripts are disabled.
+  // The URL target also hides the cover in modern mobile browsers using CSS :has().
+  const entered=()=>location.hash==='#site'||location.hash==='#cv-content'||['#contact-dialog','#tooling-dialog','#ai-dialog','#systems-title'].includes(location.hash);
+  function finishEntrance(){
+    entrance.setAttribute('aria-hidden','true');
+    site.inert=false;
+    entrance.hidden=true;
+  }
+  if(entered()) finishEntrance(); else site.inert=true;
+  // The real #site link works without JavaScript. Enhanced browsers use
+  // an editorial cover wipe, revealing the moving masthead from the top.
+  let entering=false;
+  enter.addEventListener('click',e=>{
+    if(entering){e.preventDefault();return;}
+    e.preventDefault();
+    entering=true;
+    window.scrollTo(0,0);
+    const complete=()=>{
+      if(!entering)return;
+      entering=false;
+      entrance.removeEventListener('transitionend',onEnd);
+      history.replaceState(null,'','#site'); // no browser jump
+      finishEntrance();
+      window.scrollTo(0,0);
+    };
+    const onEnd=event=>{
+      if(event.target===entrance && event.propertyName==='clip-path')complete();
+    };
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){complete();return;}
+    entrance.addEventListener('transitionend',onEnd);
+    entrance.classList.add('is-exiting');
+    // Embedded previews may suppress CSS transitions; never trap navigation.
+    window.setTimeout(complete,850);
+  });
+  window.addEventListener('hashchange',()=>{
+    if(entered())finishEntrance();
+    if(location.hash==='#site')requestAnimationFrame(()=>window.scrollTo(0,0));
+  });
+  const overlays=[contact,ai,tooling];
+  function closeOverlay(d,e,restore=true){
+    if(e)e.preventDefault();
+    delete d.dataset.visible;
+    if(!overlays.some(el=>el.dataset.visible==='true'))document.body.classList.remove('modal-open');
+    if(restore && lastTrigger && lastTrigger.isConnected)lastTrigger.focus({preventScroll:true});
+  }
+  function openOverlay(d,e){
+    if(e)e.preventDefault();
+    overlays.forEach(other=>{if(other!==d)closeOverlay(other,null,false)});
+    lastTrigger=e?.currentTarget || null;
+    d.dataset.visible='true';
+    document.body.classList.add('modal-open');
+    d.querySelector('.modal-header [data-close]')?.focus({preventScroll:true});
+  }
+  document.querySelectorAll('[data-open-contact]').forEach(b=>b.addEventListener('click',e=>openOverlay(contact,e)));
+  document.querySelectorAll('[data-open-ai]').forEach(b=>b.addEventListener('click',e=>openOverlay(ai,e)));
+  document.querySelectorAll('[data-open-tooling]').forEach(b=>b.addEventListener('click',e=>openOverlay(tooling,e)));
+  document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',e=>closeOverlay(b.closest('.modal-overlay'),e)));
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape')overlays.forEach(d=>{if(d.dataset.visible==='true')closeOverlay(d,e)});
+  });
+  // Deep-linked overlays continue to work even when a host strips JavaScript.
+  window.addEventListener('hashchange',()=>{
+    if(overlays.some(d=>d===document.querySelector(':target')))document.body.classList.remove('modal-open');
+  });
+  const toolStates={
+    web:['WORKING EXAMPLE / THIS WEBSITE','Make the interface usable.','This website demonstrates responsive page structure, accessible explanation windows and a printable CV. The front end is built with HTML, CSS and JavaScript.','Proof: you are using the output now.'],
+    systems:['INDEPENDENT PRACTICE / METHOD','Connect the work, not just the apps.','I define the outcome, gather the right files and context, use appropriate software or AI for preparation, then check accuracy, correct weak parts and deliver an organized result. This is workflow design, not a claim of a deployed automation platform.','Methods: source discipline, human review, clear handoffs.'],
+    design:['EDITORIAL PRACTICE / ORIGINAL STUDIES','Make information easier to see.','I explore typography, interface hierarchy, visual artwork and digital layouts. My visual practice includes typography, layouts and interface design studies; I keep conceptual artwork distinct from real project evidence.','Proof: the design, typography and interactive layout of this website.']
+  };
+  tooling.querySelectorAll('[data-tool]').forEach(b=>b.addEventListener('click',()=>{
+    tooling.querySelectorAll('[data-tool]').forEach(other=>other.setAttribute('aria-pressed',String(other===b)));
+    const info=toolStates[b.dataset.tool];['tooling-stage-label','tooling-stage-title','tooling-stage-text','tooling-stage-foot'].forEach((id,i)=>document.getElementById(id).textContent=info[i]);
+  }));
+  document.getElementById('print-cv').addEventListener('click',()=>window.print());
+  // Mark the page enhanced only after all interactive controls are wired.
+  document.documentElement.classList.add('js');
+})();
+</script>
 </body>
 </html>
