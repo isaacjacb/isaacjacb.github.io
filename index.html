@@ -250,7 +250,7 @@ body:has(.modal-overlay:target) .entrance{opacity:0;visibility:hidden;pointer-ev
 .closing-art{display:grid;grid-template-columns:minmax(220px,390px) 1fr;gap:34px;align-items:end;padding:54px 0 0}
 .closing-art img{display:block;width:100%;height:auto;aspect-ratio:3 / 2;object-fit:cover;border:1px solid #c6c6b8;filter:saturate(.84)}
 .closing-art p{max-width:430px;font-size:15px;line-height:1.7;margin:0 0 3px;color:#384247}
-.tooling-art{margin:28px 0 0;max-width:340px}
+.tooling-art{margin:0;max-width:none}
 .tooling-art img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover;border:1px solid #c6d0cb;filter:saturate(.86)}
 .tooling-artwork{margin-top:44px;display:flex;justify-content:flex-end}
 .tooling-artwork img{display:block;width:min(100%,300px);height:auto;aspect-ratio:1;object-fit:cover;border:1px solid #c6d0cb;filter:saturate(.86)}
@@ -260,12 +260,14 @@ body:has(.modal-overlay:target) .entrance{opacity:0;visibility:hidden;pointer-ev
 .tooling-tabs button{border:1px solid #89918a;background:#f9f8f3;color:#232a29;min-height:39px;padding:10px 15px;font:700 11px var(--mono)}
 .tooling-tabs button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
 .tooling-tabs button:hover:not([aria-pressed="true"]){background:#e4e9e4}
-.tooling-stage{background:#e8ece6;padding:25px 26px 20px;min-height:226px;border-left:3px solid var(--cobalt)}
+.tooling-stage{display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:12px 24px;align-items:center;background:#e8ece6;padding:22px 24px;min-height:0;border-left:3px solid var(--cobalt)}
+.tooling-stage h3,.tooling-stage p{grid-column:1}.tooling-stage .tooling-art{grid-column:2;grid-row:1 / span 2}
 .tooling-stage h3{font-size:clamp(24px,3.3vw,39px);letter-spacing:-.06em;line-height:1.1;margin:12px 0 10px}
 .tooling-stage p{font-size:14px;line-height:1.65;margin:0 0 16px}
 .tooling-footnote{font:600 10px/1.45 var(--mono);color:#4e6268}
 .tooling-stage-label,.tooling-footnote,.tooling-disclaimer{display:none!important}
 .tooling-disclaimer{font-size:11px!important;color:var(--muted)!important;margin:14px 0 0!important}
+@media(max-width:620px){.tooling-stage{grid-template-columns:1fr;gap:14px}.tooling-stage .tooling-art{grid-column:1;grid-row:auto;max-width:170px}.tooling-stage h3,.tooling-stage p{grid-column:1}}
 @media(max-width:900px){
  .entry-main{grid-template-columns:1fr 230px;gap:3%}.entry-name{font-size:clamp(92px,13.5vw,170px)}
  .practice-grid{gap:4%;grid-template-columns:.9fr 1.1fr}.practice-copy h2{font-size:clamp(52px,6vw,72px)}
@@ -567,7 +569,21 @@ body:has(#site:target) .entrance{opacity:0;visibility:hidden;pointer-events:none
   <footer class="site-width footer"><span class="full-name">Isaac Jacob Dajay</span><span class="footer-credit">All graphic compositions and visual direction shown here are original work by Isaac Jacob Dajay.</span><span>Bacolod City, Philippines · <a href="#contact-dialog" class="text-button" data-open-contact>Get in touch ↗</a></span></footer>
 </div>
 <section class="modal-overlay" id="contact-dialog" aria-labelledby="contact-title"><a class="modal-dismiss" href="#cv-content" data-close aria-label="Close dialog"></a><div class="modal-panel"><div class="modal-header"><strong>CONTACT / ISAAC JACOB DAJAY</strong><a class="close" data-close href="#cv-content" aria-label="Close contact dialog">×</a></div><div class="modal-body"><span class="micro">Get in touch</span><h2 id="contact-title">Let's talk work.</h2><p>For professional opportunities, collaborations or questions about the experience and systems work shown here:</p><a class="contact-link" href="mailto:isaacjacobdajay@gmail.com">isaacjacobdajay@gmail.com ↗</a><a class="contact-link" href="tel:+639666996966">+63 966 699 6966 ↗</a><p class="contact-copy">Bacolod City, Philippines. Contact details are taken from the supplied CV.</p></div></div></section>
-<section class="modal-overlay" id="tooling-dialog" aria-labelledby="tooling-title"><a class="modal-dismiss" href="#cv-content" class="modal-dismiss" aria-label="Close dialog"></a><div class="modal-panel"><div class="modal-header"><strong>JACOB / DIGITAL PRACTICE</strong><a class="close" data-close href="#cv-content" aria-label="Close tooling explanation">×</a></div><div class="modal-body tooling-body"><span class="micro">Tool literacy / How I work</span><h2 id="tooling-title">Get more from<br>the computer.</h2><p class="tooling-intro">My focus is practical digital fluency: choosing a useful tool, organizing the inputs, connecting the steps and checking the result. I treat AI as one part of that process, not a substitute for judgment.</p><div class="tooling-tabs" role="group" aria-label="Areas of digital practice"><button type="button" data-tool="web" aria-pressed="true">WEB</button><button type="button" data-tool="systems" aria-pressed="false">WORKFLOWS</button><button type="button" data-tool="design" aria-pressed="false">DESIGN</button></div><div class="tooling-stage" aria-live="polite"><div class="tooling-stage-label micro" id="tooling-stage-label"></div><h3 id="tooling-stage-title">Make the interface usable.</h3><p id="tooling-stage-text">This website demonstrates responsive page structure, accessible explanation windows and a printable CV. The front end is built with HTML, CSS and JavaScript.</p><div class="tooling-footnote" id="tooling-stage-foot"></div></div><figure class="tooling-art"><img src="assets/images/portfolio-04-resourcefulness.jpg" alt="Graphic composition about resourcefulness and making more from available tools" loading="lazy" decoding="async"></figure><noscript><div class="tooling-stage" style="margin-top:14px"><h3>Workflow design</h3><p>I define the outcome, gather the right files and context, use appropriate software or AI for preparation, then check accuracy, correct weak parts and deliver an organized result.</p><h3>Visual and interface work</h3><p>I explore typography, hierarchy, visual artwork and digital layouts, and distinguish conceptual studies from actual project evidence.</p></div></noscript><p class="tooling-disclaimer"></p></div></div></section>
+<section class="modal-overlay" id="tooling-dialog" aria-labelledby="tooling-title">
+  <a class="modal-dismiss" href="#cv-content" aria-label="Close dialog"></a>
+  <div class="modal-panel">
+    <div class="modal-header"><strong>JACOB / DIGITAL PRACTICE</strong><a class="close" data-close href="#cv-content" aria-label="Close tooling explanation">×</a></div>
+    <div class="modal-body tooling-body">
+      <span class="micro">Tool literacy / How I work</span>
+      <h2 id="tooling-title">Get more from<br>the computer.</h2>
+      <p class="tooling-intro">My focus is practical digital fluency: choosing a useful tool, organizing the inputs, connecting the steps and checking the result. I treat AI as one part of that process, not a substitute for judgment.</p>
+      <div class="tooling-tabs" role="group" aria-label="Areas of digital practice"><button type="button" data-tool="web" aria-pressed="true">WEB</button><button type="button" data-tool="systems" aria-pressed="false">WORKFLOWS</button><button type="button" data-tool="design" aria-pressed="false">DESIGN</button></div>
+      <div class="tooling-stage" aria-live="polite"><div class="tooling-stage-label micro" id="tooling-stage-label"></div><h3 id="tooling-stage-title">Make the interface usable.</h3><p id="tooling-stage-text">This website demonstrates responsive page structure, accessible explanation windows and a printable CV. The front end is built with HTML, CSS and JavaScript.</p><div class="tooling-footnote" id="tooling-stage-foot"></div><figure class="tooling-art"><img src="assets/images/portfolio-04-resourcefulness.jpg" alt="Graphic composition about resourcefulness and making more from available tools" loading="lazy" decoding="async"></figure></div>
+      <noscript><div class="tooling-stage" style="margin-top:14px"><h3>Workflow design</h3><p>I define the outcome, gather the right files and context, use appropriate software or AI for preparation, then check accuracy, correct weak parts and deliver an organized result.</p><h3>Visual and interface work</h3><p>I explore typography, hierarchy, visual artwork and digital layouts, and distinguish conceptual studies from actual project evidence.</p></div></noscript>
+      <p class="tooling-disclaimer"></p>
+    </div>
+  </div>
+</section>
 <section class="modal-overlay" id="ai-dialog" role="dialog" aria-modal="true" aria-labelledby="ai-dialog-title"><a class="modal-dismiss" href="#systems-title" data-close aria-label="Close workflow overview"></a><div class="modal-panel ai-simple-panel"><div class="modal-header"><strong>AI WORKFLOW / INDEPENDENT PRACTICE</strong><a class="close" data-close href="#cv-content" aria-label="Close workflow overview">×</a></div>
   <div class="modal-body ai-simple-body">
     <div class="ai-simple-intro"><span class="micro">A method for different kinds of work</span><h2 id="ai-dialog-title">Tools prepare.<br>People decide.</h2><p>I start with the task and the information available. Software and AI can help with the preparation. I check the work, make the decisions and deliver the result.</p><div class="ai-simple-sequence" aria-label="Context, prepare, review, deliver"><span>CONTEXT</span><i aria-hidden="true">→</i><span>PREPARE</span><i aria-hidden="true">→</i><span>REVIEW</span><i aria-hidden="true">→</i><span>DELIVER</span></div></div>
