@@ -69,7 +69,7 @@ button:disabled{cursor:not-allowed;opacity:1}
 .strap strong{font-size:18px;letter-spacing:-.045em}.strap span{font-size:11px;font-family:var(--mono)}
 /* Main CV content. */
 .chapter{display:grid;grid-template-columns:minmax(160px,.31fr) minmax(0,.69fr);gap:52px;padding:62px 0 75px;border-bottom:1px solid var(--ink)}
-.chapter-left{display:flex;flex-direction:column;gap:12px}.chapter-left h2{font-size:clamp(29px,3.7vw,49px);line-height:.99;font-weight:800;letter-spacing:-.075em;margin:0}.chapter-left p{font-size:12px;line-height:1.6;max-width:190px;color:var(--muted);margin:0}
+.chapter-left{display:flex;flex-direction:column;align-items:flex-start;gap:12px}.chapter-left h2{font-size:clamp(29px,3.7vw,49px);line-height:.99;font-weight:800;letter-spacing:-.075em;margin:0}.chapter-left p{font-size:12px;line-height:1.6;max-width:190px;color:var(--muted);margin:0}
 .chapter-right{min-width:0}
 .work-entry{display:grid;grid-template-columns:1fr 1.06fr;gap:22px;padding:23px 0 28px;border-top:1px solid var(--line)}
 .work-entry:first-child{border-top:1px solid var(--ink);padding-top:26px}
@@ -80,7 +80,7 @@ button:disabled{cursor:not-allowed;opacity:1}
 .related{background:var(--sea);padding:24px 28px;margin-top:18px;display:grid;grid-template-columns:150px 1fr;gap:24px;border-left:3px solid var(--cobalt)}
 .related p{font-size:12px;line-height:1.7;margin:0;color:#333e42}
 .related .micro{color:var(--cobalt)}
-.experience-art{margin:24px 0 0;max-width:220px;justify-self:start}
+.experience-art{align-self:flex-start;margin:24px 0 0;width:min(100%,220px);max-width:220px}
 .experience-art img{display:block;width:100%;height:auto;aspect-ratio:4 / 5;object-fit:cover;border:1px solid #c6c6b8;filter:saturate(.84)}
 /* AI feature: an optional chapter with live interaction, not a splashy visual showcase. */
 .ai-band{background:#e3e8e5;border-bottom:1px solid var(--ink)}
@@ -102,8 +102,9 @@ button:disabled{cursor:not-allowed;opacity:1}
 .end-grid h2{font-size:33px;line-height:1.05;letter-spacing:-.067em;margin:10px 0 20px}
 .end-grid p{font-size:13px;line-height:1.75;margin:7px 0;color:#384247}
 .end-grid strong{color:var(--ink)}
-.footer{border-top:1px solid var(--ink);padding:18px 0 38px;display:flex;justify-content:space-between;gap:18px;font:500 10px/1.7 var(--mono);color:var(--muted)}
+.footer{border-top:1px solid var(--ink);padding:18px 0 38px;display:flex;align-items:flex-start;justify-content:space-between;gap:18px;font:500 10px/1.7 var(--mono);color:var(--muted)}
 .footer .full-name{color:var(--ink);font-weight:750}
+.footer-credit{max-width:370px;text-align:center}
 /* Overlay panels: native fragment-link fallback plus optional JS enhancement. */
 .modal-overlay{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:18px;overflow:auto;background:rgba(21,30,32,.72);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);visibility:hidden;opacity:0;pointer-events:none;transition:opacity .18s ease,visibility .18s ease;overscroll-behavior:contain}
 .modal-overlay:target,.modal-overlay[data-visible="true"]{visibility:visible;opacity:1;pointer-events:auto}
@@ -201,7 +202,7 @@ body:has(.modal-overlay:target) .entrance{opacity:0;visibility:hidden;pointer-ev
   .related{grid-template-columns:1fr;gap:10px;padding:20px}
   .ai-wrap{grid-template-columns:1fr;gap:37px;padding:48px 0}.ai-wrap h2{font-size:clamp(50px,10vw,76px)}.system-diagram{min-height:225px}
   .end-grid{grid-template-columns:1fr;gap:34px;padding:43px 0 45px}.end-grid h2{font-size:31px}
-  .footer{flex-direction:column;gap:4px}
+  .footer{flex-direction:column;gap:7px}.footer-credit{text-align:left;max-width:420px}
   .deck-columns{grid-template-columns:1fr;gap:18px}.deck-figure{min-height:260px}
 }
 @media(max-width:490px){
@@ -243,7 +244,7 @@ body:has(.modal-overlay:target) .entrance{opacity:0;visibility:hidden;pointer-ev
 .practice-index>div{border-top:1px solid #8b9089;padding-top:15px}
 .practice-index h3{font-size:clamp(23px,2.3vw,31px);letter-spacing:-.056em;line-height:1.03;margin:12px 0 10px}
 .practice-index p{font-size:12px;line-height:1.68;color:#424b4b;max-width:350px;margin:0}
-.practice-note{border-top:1px solid var(--ink);margin-top:54px;padding-top:20px;display:flex;justify-content:space-between;gap:30px;align-items:baseline}
+.practice-note{border-top:1px solid var(--ink);margin-top:34px;padding-top:20px;display:flex;justify-content:space-between;gap:30px;align-items:baseline}
 .practice-note .micro{color:var(--cobalt)}
 .practice-note p{max-width:600px;font-size:12px;line-height:1.65;color:var(--muted);margin:0}
 .closing-art{display:grid;grid-template-columns:minmax(220px,390px) 1fr;gap:34px;align-items:end;padding:54px 0 0}
@@ -562,7 +563,7 @@ body:has(#site:target) .entrance{opacity:0;visibility:hidden;pointer-events:none
     <section class="site-width end-grid"><div><span class="micro">Education</span><h2>University of St. La Salle.</h2><p><strong>Bachelor of Arts in Interdisciplinary Studies</strong></p><p>Undergraduate studies · Bacolod City, Negros Occidental</p></div><div><span class="micro">Working strengths</span><h2>Tools & capabilities.</h2><p>Customer communication, sales outreach, business development, follow-through and operational coordination.</p><p><strong>Digital practice:</strong> responsive web interfaces (HTML, CSS, JavaScript), visual design, AI-assisted research and workflow organization, source verification and output review.</p><p><strong>Business tools:</strong> Microsoft Office, Google Workspace, HubSpot · <strong>Language:</strong> English</p></div></section>
     <section class="site-width closing-art"><img src="assets/images/portfolio-06-life-within-the-internet.png" alt="Editorial graphic composition about life within an interconnected internet" loading="eager" decoding="async"><p>Work, information, culture and personal life now move through the same connected field. I stay curious about that field—and about how to make the tools inside it more useful.</p></section>
   </main>
-  <footer class="site-width footer"><span class="full-name">Isaac Jacob Dajay</span><span>Bacolod City, Philippines · <a href="#contact-dialog" class="text-button" data-open-contact>Get in touch ↗</a></span></footer>
+  <footer class="site-width footer"><span class="full-name">Isaac Jacob Dajay</span><span class="footer-credit">Graphic compositions and visual direction by Isaac Jacob Dajay; source imagery is credited where applicable.</span><span>Bacolod City, Philippines · <a href="#contact-dialog" class="text-button" data-open-contact>Get in touch ↗</a></span></footer>
 </div>
 <section class="modal-overlay" id="contact-dialog" aria-labelledby="contact-title"><a class="modal-dismiss" href="#cv-content" data-close aria-label="Close dialog"></a><div class="modal-panel"><div class="modal-header"><strong>CONTACT / ISAAC JACOB DAJAY</strong><a class="close" data-close href="#cv-content" aria-label="Close contact dialog">×</a></div><div class="modal-body"><span class="micro">Get in touch</span><h2 id="contact-title">Let's talk work.</h2><p>For professional opportunities, collaborations or questions about the experience and systems work shown here:</p><a class="contact-link" href="mailto:isaacjacobdajay@gmail.com">isaacjacobdajay@gmail.com ↗</a><a class="contact-link" href="tel:+639666996966">+63 966 699 6966 ↗</a><p class="contact-copy">Bacolod City, Philippines. Contact details are taken from the supplied CV.</p></div></div></section>
 <section class="modal-overlay" id="tooling-dialog" aria-labelledby="tooling-title"><a class="modal-dismiss" href="#cv-content" data-close aria-label="Close dialog"></a><div class="modal-panel"><div class="modal-header"><strong>JACOB / DIGITAL PRACTICE</strong><a class="close" data-close href="#cv-content" aria-label="Close tooling explanation">×</a></div><div class="modal-body tooling-body"><span class="micro">Tool literacy / How I work</span><h2 id="tooling-title">Get more from<br>the computer.</h2><p class="tooling-intro">My focus is practical digital fluency: choosing a useful tool, organizing the inputs, connecting the steps and checking the result. I treat AI as one part of that process, not a substitute for judgment.</p><div class="tooling-tabs" role="group" aria-label="Areas of digital practice"><button type="button" data-tool="web" aria-pressed="true">WEB</button><button type="button" data-tool="systems" aria-pressed="false">WORKFLOWS</button><button type="button" data-tool="design" aria-pressed="false">DESIGN</button></div><div class="tooling-stage" aria-live="polite"><div class="tooling-stage-label micro" id="tooling-stage-label">WORKING EXAMPLE / THIS WEBSITE</div><h3 id="tooling-stage-title">Make the interface usable.</h3><p id="tooling-stage-text">This website demonstrates responsive page structure, accessible explanation windows and a printable CV. The front end is built with HTML, CSS and JavaScript.</p><div class="tooling-footnote" id="tooling-stage-foot">Proof: you are using the output now.</div></div><figure class="tooling-art"><img src="assets/images/portfolio-04-resourcefulness.jpg" alt="Graphic composition about resourcefulness and making more from available tools" loading="lazy" decoding="async"></figure><noscript><div class="tooling-stage" style="margin-top:14px"><h3>Workflow design</h3><p>I define the outcome, gather the right files and context, use appropriate software or AI for preparation, then check accuracy, correct weak parts and deliver an organized result.</p><h3>Visual and interface work</h3><p>I explore typography, hierarchy, visual artwork and digital layouts, and distinguish conceptual studies from actual project evidence.</p></div></noscript><p class="tooling-disclaimer">Independent personal practice. This does not imply professional software-engineering credentials, backend infrastructure ownership or AI deployment at employers.</p></div></div></section>
