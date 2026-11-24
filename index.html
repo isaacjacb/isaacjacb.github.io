@@ -239,7 +239,7 @@ body:has(.modal-overlay:target) .entrance{opacity:0;visibility:hidden;pointer-ev
 .practice-art{margin:0;min-width:0}
 .practice-art img{display:block;width:100%;height:auto;aspect-ratio:1.6;object-fit:cover;object-position:center;border:1px solid #c6c6b8;filter:saturate(.83);transition:filter .3s ease}
 .practice-art:hover img{filter:saturate(1)}
-.practice-art figcaption{display:flex;justify-content:space-between;gap:20px;border-bottom:1px solid #a3a89e;padding:10px 0;font:600 10px/1.5 var(--mono);color:#565b52}
+.practice-art figcaption{display:flex;justify-content:space-between;gap:20px;border-bottom:0;padding:10px 0 4px;font:600 10px/1.5 var(--mono);color:#565b52}
 .practice-index{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:38px}
 .practice-index>div{border-top:1px solid #8b9089;padding-top:15px}
 .practice-index h3{font-size:clamp(23px,2.3vw,31px);letter-spacing:-.056em;line-height:1.03;margin:12px 0 10px}
@@ -247,9 +247,9 @@ body:has(.modal-overlay:target) .entrance{opacity:0;visibility:hidden;pointer-ev
 .practice-note{border-top:1px solid var(--ink);margin-top:34px;padding-top:20px;display:flex;justify-content:space-between;gap:30px;align-items:baseline}
 .practice-note .micro{color:var(--cobalt)}
 .practice-note p{max-width:600px;font-size:12px;line-height:1.65;color:var(--muted);margin:0}
-.closing-art{display:grid;grid-template-columns:minmax(220px,390px) 1fr;gap:34px;align-items:end;padding:54px 0 0}
+.closing-art{display:grid;grid-template-columns:minmax(220px,360px) 1fr;gap:44px;align-items:center;padding:54px 0 46px}
 .closing-art img{display:block;width:100%;height:auto;aspect-ratio:3 / 2;object-fit:cover;border:1px solid #c6c6b8;filter:saturate(.84)}
-.closing-art p{max-width:430px;font-size:15px;line-height:1.7;margin:0 0 3px;color:#384247}
+.closing-art p{max-width:430px;font-size:15px;line-height:1.7;margin:0;color:#384247}
 .tooling-art{margin:0;max-width:none}
 .tooling-art img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover;border:1px solid #c6d0cb;filter:saturate(.86)}
 .tooling-artwork{margin-top:44px;display:flex;justify-content:flex-end}
@@ -597,6 +597,9 @@ body:has(#site:target) .entrance{opacity:0;visibility:hidden;pointer-events:none
   let lastTrigger=null;
   // Progressive enhancement: a normal #cv-content link works even if scripts are disabled.
   // The URL target also hides the cover in modern mobile browsers using CSS :has().
+  // A full reload always starts at the cover. In-page links still use the hash
+  // for smooth transitions and progressive-enhancement fallbacks.
+  if(location.hash)history.replaceState(null,'',location.pathname+location.search);
   const entered=()=>location.hash==='#site'||location.hash==='#cv-content'||['#contact-dialog','#tooling-dialog','#ai-dialog','#systems-title'].includes(location.hash);
   function finishEntrance(){
     entrance.setAttribute('aria-hidden','true');
@@ -637,6 +640,7 @@ body:has(#site:target) .entrance{opacity:0;visibility:hidden;pointer-events:none
   function closeOverlay(d,e,restore=true){
     if(e)e.preventDefault();
     delete d.dataset.visible;
+    if(location.hash===`#${d.id}`)history.replaceState(null,'','#site');
     if(!overlays.some(el=>el.dataset.visible==='true'))document.body.classList.remove('modal-open');
     if(restore && lastTrigger && lastTrigger.isConnected)lastTrigger.focus({preventScroll:true});
   }
