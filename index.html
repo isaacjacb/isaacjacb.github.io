@@ -1,11 +1,11 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
+<!DOCTYPE html>
+<!-- saved from url=(0028)https://isaacjacb.github.io/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#f4f1e9">
-<meta name="description" content="Isaac Jacob Dajay. Customer relations, sales, web & visual design, and independent AI workflow practice. Personal CV and selected work.">
-<title>Isaac Jacob Dajay | Experience & Selected Work</title>
+<meta name="description" content="Isaac Jacob Dajay. Customer relations, sales, web &amp; visual design, and independent AI workflow practice. Personal CV and selected work.">
+<title>Isaac Jacob Dajay | Experience &amp; Selected Work</title>
 <style>
 :root{
   --paper:#f4f1e9; --white:#fcfaf5; --ink:#16191a; --muted:#52595d; --line:#b9bcb5;
@@ -28,7 +28,8 @@ button:disabled{cursor:not-allowed;opacity:1}
 .rule{border-top:1px solid var(--line)}
 .site-width{width:min(calc(100% - 96px),1220px);margin-inline:auto}
 /* Entrance: typographic cover, not an additional résumé page. */
-.entrance{position:fixed;inset:0;z-index:50;display:flex;align-items:center;background:var(--paper);transition:opacity .36s ease,visibility .36s ease;overflow:auto}
+.entrance{display:none;position:fixed;inset:0;z-index:50;align-items:center;background:var(--paper);transition:opacity .36s ease,visibility .36s ease;overflow:auto}
+.js .entrance{display:flex}
 .entrance[aria-hidden="true"]{opacity:0;visibility:hidden;pointer-events:none}
 .entrance-inner{width:min(calc(100% - 96px),1320px);margin:auto;min-height:100%;padding:44px 0;display:flex;flex-direction:column}
 .entry-top{display:flex;justify-content:space-between;align-items:center;padding-bottom:13px;border-bottom:1px solid var(--ink);gap:12px}
@@ -118,7 +119,7 @@ body:has(.modal-overlay:target) .entrance{opacity:0;visibility:hidden;pointer-ev
 .modal-overlay .close:hover{color:#fff}
 .modal-header{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:20px 28px;border-bottom:1px solid var(--ink)}
 .modal-header strong{font-size:13px;font-weight:800;letter-spacing:-.025em}
-.close{background:transparent;border:1px solid var(--ink);width:36px;height:36px;display:grid;place-items:center;font-size:19px;line-height:1}.close:hover{background:var(--ink);color:white}
+.close{background:transparent;border:1px solid var(--ink);width:44px;height:44px;flex-shrink:0;display:grid;place-items:center;font-size:19px;line-height:1}.close:hover{background:var(--ink);color:white}
 .modal-body{padding:31px 32px 35px}
 .modal-body h2{font-size:clamp(33px,4vw,58px);line-height:.97;letter-spacing:-.073em;margin:9px 0 17px;font-weight:800}
 .modal-body p{font-size:14px;line-height:1.73;max-width:690px;color:#364247}
@@ -257,7 +258,7 @@ body:has(.modal-overlay:target) .entrance{opacity:0;visibility:hidden;pointer-ev
 .tooling-body{padding-bottom:36px}
 .tooling-intro{max-width:680px!important}
 .tooling-tabs{display:flex;gap:6px;margin:24px 0 0;flex-wrap:wrap;border-bottom:1px solid var(--ink);padding-bottom:15px}
-.tooling-tabs button{border:1px solid #89918a;background:#f9f8f3;color:#232a29;min-height:39px;padding:10px 15px;font:700 11px var(--mono)}
+.tooling-tabs button{border:1px solid #89918a;background:#f9f8f3;color:#232a29;min-height:44px;padding:10px 15px;font:700 11px var(--mono)}
 .tooling-tabs button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
 .tooling-tabs button:hover:not([aria-pressed="true"]){background:#e4e9e4}
 .tooling-stage{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:10px 24px;align-items:center;background:#e8ece6;padding:20px 24px;min-height:0;border-left:3px solid var(--cobalt)}
@@ -291,6 +292,20 @@ body:has(.modal-overlay:target) .entrance{opacity:0;visibility:hidden;pointer-ev
  .tooling-stage{padding:18px 18px 17px}
 }
 @media(prefers-reduced-motion:reduce){.practice-art img{transition:none}}
+
+/* Professional pass: use spacing and grouped structure instead of a rule at every edge. */
+@media screen{
+ .chapter,.practice,.ai-band{border-bottom:0}
+ .strap{border-top:0;border-bottom:0}
+ .work-entry{border-top:0;padding-top:28px;padding-bottom:34px;position:relative}
+ .work-entry:first-child{border-top:0;padding-top:28px}
+ .work-entry+.work-entry::before{content:"";position:absolute;top:0;left:0;width:34%;border-top:1px solid var(--line)}
+ .related{border-left:0;border-top:1px solid var(--line)}
+ .practice-index>div{border-top:0;border-left:1px solid var(--line);padding:4px 0 4px 16px}
+ .practice-index>div:first-child{border-left:0;padding-left:0}
+ .system-items div{border-right:0;padding-inline:0}
+ .system-items div+div{padding-left:16px}
+}
 @media print{
  .practice{display:none!important}
  .hero h1.screen-name,.hero-annotation{display:none!important}
@@ -305,7 +320,6 @@ body:has(.modal-overlay:target) .entrance{opacity:0;visibility:hidden;pointer-ev
 
 /* Final identity treatment: no illustration assets, complete formal name. */
 .entrance[hidden]{display:none!important}
-body:has(#site:target) .entrance{opacity:0;visibility:hidden;pointer-events:none}
 .entry-main{display:flex;align-items:center;padding:35px 0;min-height:0}
 .entry-identity{width:100%}
 .entry-name{font-size:clamp(72px,10.35vw,151px);line-height:.86;letter-spacing:-.095em;max-width:none;margin:0}
@@ -318,6 +332,7 @@ body:has(#site:target) .entrance{opacity:0;visibility:hidden;pointer-events:none
 .entry-bottom{align-items:center}
 .entry-bottom p{max-width:500px}
 .entry-bottom .action{text-decoration:none;white-space:nowrap}
+.entry-skip{font:600 10px/1.4 var(--mono);letter-spacing:.04em;text-transform:uppercase;text-decoration:underline;text-underline-offset:4px;color:var(--muted);margin-left:auto;white-space:nowrap}
 .hero h1.screen-name{font-size:clamp(58px,7.15vw,104px);line-height:.92;letter-spacing:-.084em;margin-bottom:13px}
 .hero h1.screen-name span{display:block;white-space:nowrap}
 .hero h1.screen-name span:first-child{color:var(--ink)}
@@ -503,6 +518,21 @@ body:has(#site:target) .entrance{opacity:0;visibility:hidden;pointer-events:none
  .system-items .system-stage:last-child{padding-right:7px}
  .system-diagram p{padding-top:13px}
 }
+/* Final screen-only polish: reduce repeated divider noise without flattening hierarchy. */
+@media screen{
+ .chapter,.practice,.ai-band{border-bottom:0}
+ .strap{border-top:0;border-bottom:0}
+ .work-entry,.work-entry:first-child{border-top:0}
+ .work-entry{position:relative}
+ .work-entry+.work-entry::before{content:"";position:absolute;top:0;left:0;width:34%;border-top:1px solid var(--line)}
+ .related{border-left:0;border-top:1px solid var(--line)}
+ .practice-index>div{border-top:0;border-left:1px solid var(--line);padding-top:4px;padding-bottom:4px}
+ .practice-index>div:first-child{border-left:0}
+ .system-items div,.system-items .system-stage{border-right:0}
+ .system-items div+div,.system-items .system-stage+div{padding-left:16px}
+}
+@media(max-width:730px){.entry-skip{margin-left:0}}
+@media screen and (max-width:1450px) and (min-width:521px){.practice-index{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}.practice-index>div:last-child{grid-column:1/-1}}
 </style>
 </head>
 <body>
@@ -515,49 +545,50 @@ body:has(#site:target) .entrance{opacity:0;visibility:hidden;pointer-events:none
         <h1 class="entry-name"><span class="entry-line"><span>ISAAC</span> <span>JACOB</span></span><span class="entry-line">DAJAY<span class="entry-period">.</span></span></h1>
         <p class="entry-formal micro">Sales · Customer Relations · Web &amp; AI Workflows</p>
       </div>
-      <div class="entry-showcase"><img src="assets/images/portfolio-01-personal-identity-v3.jpg" alt="Original editorial graphic composition exploring personal identity" loading="eager" decoding="async"><div class="entry-aside"><span class="micro">Independent visual practice</span><p>Original graphic design and visual curation, developed alongside the work shown here.</p></div></div>
+      <div class="entry-showcase"><img src="./assets/images/portfolio-01-personal-identity-v3.jpg" width="3840" height="2160" alt="Original editorial graphic composition exploring personal identity" loading="eager" decoding="async"><div class="entry-aside"><span class="micro">Independent visual practice</span><p>Original graphic design and visual curation, developed alongside the work shown here.</p></div></div>
     </div>
-    <div class="entry-bottom"><p>Customer-facing experience and independent digital work. A concise record of the work, the tools, and the thinking behind them.</p><a class="action" id="enter-site" href="#site">VIEW MY CV <span aria-hidden="true">↗</span></a></div>
+      <div class="entry-bottom"><p>Customer-facing experience and independent digital work. A concise record of the work, the tools, and the thinking behind them.</p><a class="entry-skip" href="#cv-content">Skip to CV</a><a class="action" id="enter-site" href="#site">VIEW MY CV <span aria-hidden="true">↗</span></a></div>
   </div>
 </section>
 <div id="site">
   <div class="ticker" aria-label="Isaac Jacob Dajay portfolio"><div class="ticker-track" aria-hidden="true">
-    <div class="ticker-run"><span>ISAAC JACOB DAJAY</span><span class="dot">●</span><span>EXPERIENCE & SELECTED WORK</span><span class="dot">●</span><span>BACOLOD / PHILIPPINES</span><span class="dot">●</span></div>
-    <div class="ticker-run"><span>ISAAC JACOB DAJAY</span><span class="dot">●</span><span>EXPERIENCE & SELECTED WORK</span><span class="dot">●</span><span>BACOLOD / PHILIPPINES</span><span class="dot">●</span></div>
-    <div class="ticker-run"><span>ISAAC JACOB DAJAY</span><span class="dot">●</span><span>EXPERIENCE & SELECTED WORK</span><span class="dot">●</span><span>BACOLOD / PHILIPPINES</span><span class="dot">●</span></div>
-    <div class="ticker-run"><span>ISAAC JACOB DAJAY</span><span class="dot">●</span><span>EXPERIENCE & SELECTED WORK</span><span class="dot">●</span><span>BACOLOD / PHILIPPINES</span><span class="dot">●</span></div>
+    <div class="ticker-run"><span>ISAAC JACOB DAJAY</span><span class="dot">●</span><span>EXPERIENCE &amp; SELECTED WORK</span><span class="dot">●</span><span>BACOLOD / PHILIPPINES</span><span class="dot">●</span></div>
+    <div class="ticker-run"><span>ISAAC JACOB DAJAY</span><span class="dot">●</span><span>EXPERIENCE &amp; SELECTED WORK</span><span class="dot">●</span><span>BACOLOD / PHILIPPINES</span><span class="dot">●</span></div>
+    <div class="ticker-run"><span>ISAAC JACOB DAJAY</span><span class="dot">●</span><span>EXPERIENCE &amp; SELECTED WORK</span><span class="dot">●</span><span>BACOLOD / PHILIPPINES</span><span class="dot">●</span></div>
+    <div class="ticker-run"><span>ISAAC JACOB DAJAY</span><span class="dot">●</span><span>EXPERIENCE &amp; SELECTED WORK</span><span class="dot">●</span><span>BACOLOD / PHILIPPINES</span><span class="dot">●</span></div>
   </div></div>
-  <header class="site-width nav"><span class="nav-home">Isaac Jacob Dajay<span class="nav-dot">.</span></span><span class="print-contact">Bacolod City, Philippines · +63 966 699 6966 · isaacjacobdajay@gmail.com</span><div class="nav-right"><span class="nav-note">WORK / EXPERIENCE / SYSTEMS</span><button type="button" class="text-button" id="print-cv">Save CV as PDF ↗</button><a href="#contact-dialog" class="text-button" data-open-contact>Contact ↗</a></div></header>
+  <header class="site-width nav"><span class="nav-home">Isaac Jacob Dajay<span class="nav-dot">.</span></span><span class="print-contact">Bacolod City, Philippines · +63 966 699 6966 · isaacjacobdajay@gmail.com</span><div class="nav-right"><span class="nav-note">WORK / EXPERIENCE / SYSTEMS</span><button type="button" class="text-button" id="print-cv">Save CV as PDF ↗</button><a href="#contact-dialog" class="text-button" data-open-contact="">Contact ↗</a></div></header>
   <main id="cv-content">
     <section class="site-width hero">
       <div><span class="micro">Personal profile / 2026</span><h1 class="screen-name"><span>ISAAC JACOB</span><span>DAJAY<span class="hero-period">.</span></span></h1><h1 class="print-name">ISAAC JACOB<br>DAJAY</h1><p class="hero-annotation micro">Client relations / Sales / Digital systems / Creative work</p></div>
-      <div class="hero-right"><h2>Customer Relations, Sales & Digital Workflow Design</h2><p>I work in customer service, sales and business development. Outside those roles, I explore website building, visual communication and human-directed AI workflows. I bring the same priorities to each: understand the context, work carefully and make the result useful.</p><div class="role-chips"><span>On-site & Remote</span><span>Client-facing</span><span>Web & creative practice</span></div></div>
+      <div class="hero-right"><h2>Customer Relations, Sales &amp; Digital Workflow Design</h2><p>I work in customer service, sales and business development. Outside those roles, I explore website building, visual communication and human-directed AI workflows. I bring the same priorities to each: understand the context, work carefully and make the result useful.</p><div class="role-chips"><span>On-site &amp; Remote</span><span>Client-facing</span><span>Web &amp; creative practice</span></div></div>
     </section>
     <div class="strap"><div class="site-width strap-inner"><strong>People. Processes. Interfaces.</strong><span>Experience, digital craft and selected practice</span></div></div>
     <section class="site-width chapter" aria-labelledby="experience-title">
-      <div class="chapter-left"><span class="micro">Background</span><h2 id="experience-title">Professional<br>experience.</h2><p>Customer service, relationship building and digital operations experience across on-site and remote environments.</p><figure class="experience-art"><img src="assets/images/portfolio-05-human-connections.png" alt="Editorial graphic composition about human connection and working relationships" loading="eager" decoding="async"></figure></div>
+      <div class="chapter-left"><span class="micro">Background</span><h2 id="experience-title">Professional<br>experience.</h2><p>Customer service, relationship building and digital operations experience across on-site and remote environments.</p><figure class="experience-art"><img src="./assets/images/portfolio-05-human-connections.png" width="3200" height="4000" alt="Editorial graphic composition about human connection and working relationships" loading="lazy" decoding="async"></figure></div>
       <div class="chapter-right">
-        <article class="work-entry"><div><p class="employer">Concentrix · Bacolod City</p><h3>Sales & Customer Service Representative</h3><p class="work-meta">On-site / July 2026 – November 2026</p></div><p class="work-desc">Supported customers in sales and service conversations by clarifying needs, explaining options and addressing concerns. I focused on clear communication, careful follow-through and balancing the customer experience with business goals.</p></article>
+        <article class="work-entry"><div><p class="employer">RAZE TECH · Bacolod City</p><h3>Business Development Lead</h3><p class="work-meta">Current / Leadership roster</p></div><p class="work-desc">Business development role within a multidisciplinary technology team bringing business strategy, software development and ongoing support together to help organizations improve how they work.</p></article>
+        <article class="work-entry"><div><p class="employer">Concentrix · Bacolod City</p><h3>Sales &amp; Customer Service Representative</h3><p class="work-meta">On-site / July 2026 – November 2026</p></div><p class="work-desc">Supported customers in sales and service conversations by clarifying needs, explaining options and addressing concerns. I focused on clear communication, careful follow-through and balancing the customer experience with business goals.</p></article>
         <article class="work-entry"><div><p class="employer">Haulla</p><h3>Business Development Manager</h3><p class="work-meta">Remote / Mar 2025 to Jan 2026</p></div><p class="work-desc">Worked across lead generation, outreach and business development, from initial prospecting to sales follow-up. The role emphasized organized communication, relationship building and keeping conversations moving toward clear next steps.</p></article>
-        <article class="work-entry"><div><p class="employer">Independent systems practice</p><h3>AI Workflow & Operations Design</h3><p class="work-meta">Project-based / Applied systems</p></div><p class="work-desc">Developed an independent approach to AI-assisted workflows: organize reliable information, prepare drafts with tools, review the results and deliver usable outputs. This practice also includes interactive website building and visual design. Examples are identified as demonstrations where appropriate.</p></article>
+        <article class="work-entry"><div><p class="employer">Independent systems practice</p><h3>AI Workflow &amp; Operations Design</h3><p class="work-meta">Project-based / Applied systems</p></div><p class="work-desc">Developed an independent approach to AI-assisted workflows: organize reliable information, prepare drafts with tools, review the results and deliver usable outputs. This practice also includes interactive website building and visual design. Examples are identified as demonstrations where appropriate.</p></article>
         <aside class="related"><span class="micro">Related experience</span><p>Real estate client relations and property-information work, including understanding requirements, discussing listings and coordinating clear, approved information for prospective clients. I also build the operational backend behind the work: organizing information, improving handoffs and using digital tools to make the operation more efficient and dependable.</p></aside>
         <p class="print-related">Related experience: Real estate client relations, property-information work and operational backend support, including requirements gathering, approved listing details and tooling for clearer handoffs.</p>
       </div>
     </section>
     <section class="practice" aria-labelledby="practice-title">
       <div class="site-width practice-grid">
-        <div class="practice-copy"><span class="micro">Digital practice / Selected work</span><h2 id="practice-title">Behind<br><em>the</em><br>screen.</h2><p>Alongside client-facing work, I build websites, explore visual design and use digital tools to organize work. I focus on clear interfaces, reliable source material and results that people can actually use.</p><a href="#tooling-dialog" class="action light" data-open-tooling>HOW I USE THE TOOLS <span aria-hidden="true">↗</span></a></div>
-        <figure class="practice-art"><img src="assets/images/portfolio-02-behind-the-screen-v2.jpg" alt="Editorial graphic composition about digital practice and the work behind interfaces" loading="eager" decoding="async"><figcaption><span>Digital practice</span><span>Original graphic work</span></figcaption></figure>
+      <div class="practice-copy"><span class="micro">Digital practice / Selected work</span><h2 id="practice-title">Behind<br><em>the</em><br>screen.</h2><p>Alongside client-facing work, I build websites, explore visual design and use digital tools to organize work. I focus on clear interfaces, reliable source material and results that people can actually use.</p><a href="#tooling-dialog" class="action light" data-open-tooling="">HOW I USE THE TOOLS <span aria-hidden="true">↗</span></a></div>
+        <figure class="practice-art"><img src="./assets/images/portfolio-02-behind-the-screen-v2.jpg" width="4000" height="3000" alt="Editorial graphic composition about digital practice and the work behind interfaces" loading="lazy" decoding="async"><figcaption><span>Digital practice</span><span>Original graphic work</span></figcaption></figure>
       </div>
       <div class="site-width practice-note"><span class="micro">Visual practice</span><p>The graphic compositions and visual direction throughout this site are original work by Isaac Jacob Dajay, curated to show how I think through identity, technology, work and contemporary life.</p></div>
       <div class="site-width practice-index" aria-label="Independent digital capabilities">
-        <div><span class="micro">Built and working</span><h3>Web & interface</h3><p>This website demonstrates responsive layouts, interactive detail windows and a printable CV, built with HTML, CSS and JavaScript.</p></div>
+        <div><span class="micro">Built and working</span><h3>Web &amp; interface</h3><p>This website demonstrates responsive layouts, interactive detail windows and a printable CV, built with HTML, CSS and JavaScript.</p></div>
         <div><span class="micro">Creative practice</span><h3>Visual direction</h3><p>I work with typography, editorial layouts and visual studies, choosing composition and hierarchy to make ideas easier to understand.</p></div>
-        <div><span class="micro">Independent systems</span><h3>Tooling & operations</h3><p>My workflow is to define the task, organize the inputs, prepare with appropriate tools, review the work and hand off a usable result.</p></div>
+        <div><span class="micro">Independent systems</span><h3>Tooling &amp; operations</h3><p>My workflow is to define the task, organize the inputs, prepare with appropriate tools, review the work and hand off a usable result.</p></div>
       </div>
     </section>
     <section class="ai-band" aria-labelledby="systems-title"><div class="site-width ai-wrap">
-      <div><span class="micro">Independent work / Applied systems</span><h2 id="systems-title">AI is a tool.<br><span>The work is human.</span></h2><p>I use digital tools to turn information into clear, useful work. The approach is adaptable: understand the task, prepare a first version, review it carefully and take responsibility for the result.</p><a href="#ai-dialog" class="action" data-open-ai>EXPLORE THE WORKFLOW <span aria-hidden="true">↗</span></a><img class="ai-inline-art" src="assets/images/portfolio-03-ai-is-a-tool-v2.jpg" alt="Editorial graphic composition about human judgment and AI as a tool" loading="lazy" decoding="async"></div>
+      <div><span class="micro">Independent work / Applied systems</span><h2 id="systems-title">AI is a tool.<br><span>The work is human.</span></h2><p>I use digital tools to turn information into clear, useful work. The approach is adaptable: understand the task, prepare a first version, review it carefully and take responsibility for the result.</p><a href="#ai-dialog" class="action" data-open-ai="">EXPLORE THE WORKFLOW <span aria-hidden="true">↗</span></a><img class="ai-inline-art" src="./assets/images/portfolio-03-ai-is-a-tool-v2.jpg" width="3600" height="2400" alt="Editorial graphic composition about human judgment and AI as a tool" loading="lazy" decoding="async"></div>
       <div class="system-diagram" role="group" aria-label="Human-reviewed workflow overview"><div class="system-heading"><span class="micro">Process study</span><span class="micro">Human-reviewed</span></div><div class="system-items">
         <div class="system-stage"><span class="symbol" aria-hidden="true">◌</span><span class="system-label">Context</span></div>
         <div class="system-stage"><span class="symbol" aria-hidden="true">≈</span><span class="system-label">Prepare</span></div>
@@ -565,44 +596,46 @@ body:has(#site:target) .entrance{opacity:0;visibility:hidden;pointer-events:none
         <div class="system-stage"><span class="symbol" aria-hidden="true">↗</span><span class="system-label">Deliver</span></div>
       </div><p>A simple method for different kinds of work, always guided and checked by a person.</p></div>
     </div></section>
-    <section class="site-width end-grid"><div><span class="micro">Education</span><h2>University of St. La Salle.</h2><p><strong>Bachelor of Arts in Interdisciplinary Studies</strong></p><p>Undergraduate studies · Bacolod City, Negros Occidental</p></div><div><span class="micro">Working strengths</span><h2>Tools & capabilities.</h2><p>Customer communication, sales outreach, business development, follow-through and operational coordination.</p><p><strong>Digital practice:</strong> responsive web interfaces (HTML, CSS, JavaScript), visual design, AI-assisted research and workflow organization, source verification and output review.</p><p><strong>Business tools:</strong> Microsoft Office, Google Workspace, HubSpot · <strong>Language:</strong> English</p></div></section>
-    <section class="site-width closing-art"><img src="assets/images/portfolio-06-life-within-the-internet.png" alt="Editorial graphic composition about life within an interconnected internet" loading="eager" decoding="async"><p>Work, information, culture and personal life now move through the same connected field. I stay curious about that field—and about how to make the tools inside it more useful.</p></section>
+    <section class="site-width end-grid"><div><span class="micro">Education</span><h2>University of St. La Salle.</h2><p><strong>Bachelor of Arts in Interdisciplinary Studies</strong></p><p>Undergraduate studies · Bacolod City, Negros Occidental</p></div><div><span class="micro">Working strengths</span><h2>Tools &amp; capabilities.</h2><p>Customer communication, sales outreach, business development, follow-through and operational coordination.</p><p><strong>Digital practice:</strong> responsive web interfaces (HTML, CSS, JavaScript), visual design, AI-assisted research and workflow organization, source verification and output review.</p><p><strong>Business tools:</strong> Microsoft Office, Google Workspace, HubSpot · <strong>Language:</strong> English</p></div></section>
+    <section class="site-width closing-art"><img src="./assets/images/portfolio-06-life-within-the-internet.png" width="3600" height="2400" alt="Editorial graphic composition about life within an interconnected internet" loading="lazy" decoding="async"><p>Work, information, culture and personal life now move through the same connected field. I stay curious about that field—and about how to make the tools inside it more useful.</p></section>
   </main>
-  <footer class="site-width footer"><span class="full-name">Isaac Jacob Dajay</span><span class="footer-credit">All graphic compositions and visual direction shown here are original work by Isaac Jacob Dajay.</span><span>Bacolod City, Philippines · <a href="#contact-dialog" class="text-button" data-open-contact>Get in touch ↗</a></span></footer>
+  <footer class="site-width footer"><span class="full-name">Isaac Jacob Dajay</span><span class="footer-credit">All graphic compositions and visual direction shown here are original work by Isaac Jacob Dajay.</span><span>Bacolod City, Philippines · <a href="#contact-dialog" class="text-button" data-open-contact="">Get in touch ↗</a></span></footer>
 </div>
-<section class="modal-overlay" id="contact-dialog" aria-labelledby="contact-title"><a class="modal-dismiss" href="#cv-content" data-close aria-label="Close dialog"></a><div class="modal-panel"><div class="modal-header"><strong>CONTACT / ISAAC JACOB DAJAY</strong><a class="close" data-close href="#cv-content" aria-label="Close contact dialog">×</a></div><div class="modal-body"><span class="micro">Get in touch</span><h2 id="contact-title">Let's talk work.</h2><p>For professional opportunities, collaborations or questions about the experience and systems work shown here:</p><a class="contact-link" href="mailto:isaacjacobdajay@gmail.com">isaacjacobdajay@gmail.com ↗</a><a class="contact-link" href="tel:+639666996966">+63 966 699 6966 ↗</a><p class="contact-copy">Bacolod City, Philippines. Contact details are taken from the supplied CV.</p></div></div></section>
-<section class="modal-overlay" id="tooling-dialog" aria-labelledby="tooling-title">
-  <a class="modal-dismiss" href="#cv-content" aria-label="Close dialog"></a>
+<section class="modal-overlay" id="contact-dialog" aria-labelledby="contact-title"><a class="modal-dismiss" href="#cv-content" data-close="" aria-label="Close dialog"></a><div class="modal-panel"><div class="modal-header"><strong>CONTACT / ISAAC JACOB DAJAY</strong><a class="close" data-close="" href="#cv-content" aria-label="Close contact dialog">×</a></div><div class="modal-body"><span class="micro">Get in touch</span><h2 id="contact-title">Let's talk work.</h2><p>For professional opportunities, collaborations or questions about the experience and systems work shown here:</p><a class="contact-link" href="mailto:isaacjacobdajay@gmail.com">isaacjacobdajay@gmail.com ↗</a><a class="contact-link" href="tel:+639666996966">+63 966 699 6966 ↗</a><p class="contact-copy">Bacolod City, Philippines. Contact details are taken from the supplied CV.</p></div></div></section>
+<section class="modal-overlay" id="tooling-dialog" role="dialog" aria-modal="true" aria-labelledby="tooling-title">
+  <a class="modal-dismiss" href="#cv-content" data-close="" aria-label="Close dialog"></a>
   <div class="modal-panel">
-    <div class="modal-header"><strong>JACOB / DIGITAL PRACTICE</strong><a class="close" data-close href="#cv-content" aria-label="Close tooling explanation">×</a></div>
+    <div class="modal-header"><strong>JACOB / DIGITAL PRACTICE</strong><a class="close" data-close="" href="#cv-content" aria-label="Close tooling explanation">×</a></div>
     <div class="modal-body tooling-body">
       <span class="micro">Tool literacy / How I work</span>
       <h2 id="tooling-title">Get more from<br>the computer.</h2>
       <p class="tooling-intro">My focus is practical digital fluency: choosing a useful tool, organizing the inputs, connecting the steps and checking the result. I treat AI as one part of that process, not a substitute for judgment.</p>
       <div class="tooling-tabs" role="group" aria-label="Areas of digital practice"><button type="button" data-tool="web" aria-pressed="true">WEB</button><button type="button" data-tool="systems" aria-pressed="false">WORKFLOWS</button><button type="button" data-tool="design" aria-pressed="false">DESIGN</button></div>
-      <div class="tooling-stage" aria-live="polite"><div class="tooling-stage-label micro" id="tooling-stage-label"></div><h3 id="tooling-stage-title">Make the interface usable.</h3><p id="tooling-stage-text">This website demonstrates responsive page structure, accessible explanation windows and a printable CV. The front end is built with HTML, CSS and JavaScript.</p><div class="tooling-footnote" id="tooling-stage-foot"></div><figure class="tooling-art"><img id="tooling-stage-art" src="assets/images/portfolio-07-digital-spaces.png" alt="Original graphic composition about digital spaces and usable interfaces" loading="lazy" decoding="async"></figure></div>
+      <div class="tooling-stage" aria-live="polite"><div class="tooling-stage-label micro" id="tooling-stage-label"></div><h3 id="tooling-stage-title">Make the interface usable.</h3><p id="tooling-stage-text">This website demonstrates responsive page structure, accessible explanation windows and a printable CV. The front end is built with HTML, CSS and JavaScript.</p><div class="tooling-footnote" id="tooling-stage-foot"></div><figure class="tooling-art"><img id="tooling-stage-art" src="./assets/images/portfolio-07-digital-spaces.png" width="3200" height="3200" alt="Original graphic composition about digital spaces and usable interfaces" loading="lazy" decoding="async"></figure></div>
       <noscript><div class="tooling-stage" style="margin-top:14px"><h3>Workflow design</h3><p>I define the outcome, gather the right files and context, use appropriate software or AI for preparation, then check accuracy, correct weak parts and deliver an organized result.</p><h3>Visual and interface work</h3><p>I explore typography, hierarchy, visual artwork and digital layouts, and distinguish conceptual studies from actual project evidence.</p></div></noscript>
       <p class="tooling-disclaimer"></p>
     </div>
   </div>
 </section>
-<section class="modal-overlay" id="ai-dialog" role="dialog" aria-modal="true" aria-labelledby="ai-dialog-title"><a class="modal-dismiss" href="#systems-title" data-close aria-label="Close workflow overview"></a><div class="modal-panel ai-simple-panel"><div class="modal-header"><strong>AI WORKFLOW / INDEPENDENT PRACTICE</strong><a class="close" data-close href="#cv-content" aria-label="Close workflow overview">×</a></div>
+<section class="modal-overlay" id="ai-dialog" role="dialog" aria-modal="true" aria-labelledby="ai-dialog-title"><a class="modal-dismiss" href="#systems-title" data-close="" aria-label="Close workflow overview"></a><div class="modal-panel ai-simple-panel"><div class="modal-header"><strong>AI WORKFLOW / INDEPENDENT PRACTICE</strong><a class="close" data-close="" href="#cv-content" aria-label="Close workflow overview">×</a></div>
   <div class="modal-body ai-simple-body">
     <div class="ai-simple-intro"><span class="micro">A method for different kinds of work</span><h2 id="ai-dialog-title">Tools prepare.<br>People decide.</h2><p>I start with the task and the information available. Software and AI can help with the preparation. I check the work, make the decisions and deliver the result.</p><div class="ai-simple-sequence" aria-label="Context, prepare, review, deliver"><span>CONTEXT</span><i aria-hidden="true">→</i><span>PREPARE</span><i aria-hidden="true">→</i><span>REVIEW</span><i aria-hidden="true">→</i><span>DELIVER</span></div></div>
-    <div class="ai-simple-examples"><figure class="ai-workflow-art"><img src="assets/images/portfolio-09-orchestration.png" alt="Original graphic composition about orchestration and purposeful coordination" loading="lazy" decoding="async"></figure><span class="micro">What this looks like</span><div class="ai-example"><h3>Organize</h3><p>Turn notes, files and instructions into a clear picture of what matters.</p></div><div class="ai-example"><h3>Create</h3><p>Use suitable tools to prepare a draft, plan or working output.</p></div><div class="ai-example"><h3>Check</h3><p>Verify the details, refine the result and decide when it is ready.</p></div></div>
+    <div class="ai-simple-examples"><figure class="ai-workflow-art"><img src="./assets/images/portfolio-09-orchestration.png" width="3600" height="2400" alt="Original graphic composition about orchestration and purposeful coordination" loading="lazy" decoding="async"></figure><span class="micro">What this looks like</span><div class="ai-example"><h3>Organize</h3><p>Turn notes, files and instructions into a clear picture of what matters.</p></div><div class="ai-example"><h3>Create</h3><p>Use suitable tools to prepare a draft, plan or working output.</p></div><div class="ai-example"><h3>Check</h3><p>Verify the details, refine the result and decide when it is ready.</p></div></div>
   </div><div class="ai-simple-note">A flexible method from independent practice. The examples illustrate an approach, not employer deployments or measured results.</div>
 </div></section>
 <script>
 (()=>{
+  document.documentElement.classList.add('js');
   const entrance=document.getElementById('entrance'),site=document.getElementById('site'),enter=document.getElementById('enter-site');
   const contact=document.getElementById('contact-dialog'),ai=document.getElementById('ai-dialog'),tooling=document.getElementById('tooling-dialog');
+  contact.setAttribute('role','dialog');
+  contact.setAttribute('aria-modal','true');
   let lastTrigger=null;
   // Progressive enhancement: a normal #cv-content link works even if scripts are disabled.
   // The URL target also hides the cover in modern mobile browsers using CSS :has().
   // A full reload always starts at the cover. In-page links still use the hash
   // for smooth transitions and progressive-enhancement fallbacks.
-  if(location.hash)history.replaceState(null,'',location.pathname+location.search);
-  const entered=()=>location.hash==='#site'||location.hash==='#cv-content'||['#contact-dialog','#tooling-dialog','#ai-dialog','#systems-title'].includes(location.hash);
+  const entered=()=>location.hash==='#cv-content'||['#contact-dialog','#tooling-dialog','#ai-dialog','#systems-title'].includes(location.hash);
   function finishEntrance(){
     entrance.setAttribute('aria-hidden','true');
     site.inert=false;
@@ -639,6 +672,8 @@ body:has(#site:target) .entrance{opacity:0;visibility:hidden;pointer-events:none
     if(location.hash==='#site')requestAnimationFrame(()=>window.scrollTo(0,0));
   });
   const overlays=[contact,ai,tooling];
+  const initialOverlay=overlays.find(d=>location.hash===`#${d.id}`);
+  if(initialOverlay){initialOverlay.dataset.visible='true';document.body.classList.add('modal-open');}
   function closeOverlay(d,e,restore=true){
     if(e)e.preventDefault();
     delete d.dataset.visible;
@@ -676,9 +711,8 @@ body:has(#site:target) .entrance{opacity:0;visibility:hidden;pointer-events:none
     const art=document.getElementById('tooling-stage-art');art.src=info[4];art.alt=info[5];
   }));
   document.getElementById('print-cv').addEventListener('click',()=>window.print());
-  // Mark the page enhanced only after all interactive controls are wired.
-  document.documentElement.classList.add('js');
 })();
 </script>
-</body>
-</html>
+
+
+</body></html>
